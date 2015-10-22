@@ -1,0 +1,19 @@
+[user]
+	name = shuhei
+	email = kawashu0723@gmail.com
+[core]
+	editor = vim
+        excludesfile = ~/.gitignore
+[alias]
+  a = add --all
+  co = checkout
+  cm = commit
+  p = push -u origin
+  st = status -sb
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  br = branch -a
+  remotes = remote -v
+  d = diff
+[color]
+	ui = 1
