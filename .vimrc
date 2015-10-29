@@ -1,6 +1,23 @@
 syntax on
 colorscheme molokai
 
+
+if has('vim_starting')
+  set rtp+=~/.vim/bundle/neobundle.vim
+endif
+call neobundle#begin()
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+NeoBundle 'tpope/vim-endwise'
+
+call neobundle#end()
+filetype plugin indent on
+
+if !has('vim_starting')
+  call neobundle#call_hook('on_source')
+endif
+
+
 "graphical
 set number
 set title
@@ -39,36 +56,5 @@ set wildmenu
 set scrolloff=5
 set vb t_vb=
 set novisualbell
-
-"auto insert
-inoremap {<Enter> {}<Left><CR><ESC><S-o>
-inoremap [ []<LEFT>
-inoremap ( ()<LEFT>
-"inoremap < <><LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
-function! DeleteParenthesesAdjoin()
-    let pos = col(".") - 1
-    let str = getline(".")
-    let parentLList = ["(", "[", "{", "\'", "\""]
-    let parentRList = [")", "]", "}", "\'", "\""]
-    let cnt = 0
-    let output = ""
-
-    if pos == strlen(str)
-        return "\b"
-    endif
-    for c in parentLList
-        if str[pos-1] == c && str[pos] == parentRList[cnt]
-            call cursor(line("."), pos + 2)
-            let output = "\b"
-            break
-        endif
-        let cnt += 1
-    endfor
-    return output."\b"
-endfunction
-inoremap <silent> <BS> <C-R>=DeleteParenthesesAdjoin()<CR>
-
 
 filetype plugin indent on
