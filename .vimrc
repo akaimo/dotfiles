@@ -1,20 +1,8 @@
 syntax on
 colorscheme molokai
 
-
-if has('vim_starting')
-  set rtp+=~/.vim/bundle/neobundle.vim
-endif
-call neobundle#begin()
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-NeoBundle 'tpope/vim-endwise'
-
-call neobundle#end()
-filetype plugin indent on
-
-if !has('vim_starting')
-  call neobundle#call_hook('on_source')
+if isdirectory(expand("~/.vim/bundle/neobundle.vim"))
+  source ~/.vim/vimrc.plugin
 endif
 
 
