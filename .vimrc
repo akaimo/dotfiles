@@ -16,8 +16,8 @@ set fileencoding=utf-8
 
 "space, tab, indent
 set ambiwidth=double
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set expandtab
 set autoindent
 
@@ -69,3 +69,6 @@ function! DeleteParenthesesAdjoin()
     return output."\b"
 endfunction
 inoremap <silent> <BS> <C-R>=DeleteParenthesesAdjoin()<CR>
+
+
+filetype plugin indent on
