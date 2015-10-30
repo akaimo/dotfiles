@@ -16,8 +16,8 @@ NeoBundle 'tpope/vim-endwise', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby']}}
 
 "document
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'yuku-t/vim-ref-ri'
+NeoBundle 'thinca/vim-ref', {'autoload': {'filetypes': ['ruby']}}
+NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
 
 call neobundle#end()
 filetype plugin indent on
