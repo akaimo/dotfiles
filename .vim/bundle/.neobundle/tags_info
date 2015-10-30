@@ -2,4 +2,7 @@ neobundle.vim
 neocomplete-rsense.vim
 neocomplete.vim
 rsense
+syntastic
 vim-endwise
+vim-ref
+vim-ref-ri
