@@ -4,6 +4,13 @@ endif
 call neobundle#begin()
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+
+NeoBundle 'Yggdroot/indentLine'
+
+
+"---------------------------------------
+"ruby
+"---------------------------------------
 "autocomplete
 NeoBundle 'Shougo/neocomplete.vim', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'marcus/rsense', {'autoload': {'filetypes': ['ruby']}}
@@ -19,6 +26,7 @@ NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'thinca/vim-ref', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
 
+
 call neobundle#end()
 filetype plugin indent on
 
@@ -27,6 +35,12 @@ if !has('vim_starting')
 endif
 
 
+
+"---------------------------------------
+"indentLine
+"---------------------------------------
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
 
 "----------------------------------------
 "rsense
