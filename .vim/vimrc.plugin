@@ -27,8 +27,13 @@ NeoBundle 'thinca/vim-ref', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
 
 
+"---------------------------------------
 "python
-NeoBundle 'davidhalter/jedi-vim', {'autoload': {'filetypes': ['python3']}}
+"---------------------------------------
+NeoBundle 'davidhalter/jedi-vim', {'autoload': {'filetypes': ['python']}}
+NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
+
+
 
 
 "---------------------------------------
@@ -105,4 +110,5 @@ if !has('vim_starting')
   call neobundle#call_hook('on_source')
 endif
 
+autocmd BufWritePost *.py call Flake8()
 autocmd FileType python setlocal completeopt-=preview

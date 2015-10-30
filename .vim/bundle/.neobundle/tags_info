@@ -6,5 +6,6 @@ neocomplete.vim
 rsense
 syntastic
 vim-endwise
+vim-flake8
 vim-ref
 vim-ref-ri
