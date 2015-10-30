@@ -1,4 +1,5 @@
 indentLine
+jedi-vim
 neobundle.vim
 neocomplete-rsense.vim
 neocomplete.vim
