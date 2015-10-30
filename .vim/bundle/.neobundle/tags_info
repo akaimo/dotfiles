@@ -1,2 +1,5 @@
 neobundle.vim
+neocomplete-rsense.vim
+neocomplete.vim
+rsense
 vim-endwise

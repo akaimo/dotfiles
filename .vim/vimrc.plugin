@@ -4,7 +4,10 @@ endif
 call neobundle#begin()
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'tpope/vim-endwise'
+NeoBundle 'Shougo/neocomplete.vim', {'autoload': {'filetypes': ['ruby']}}
+NeoBundle 'marcus/rsense', {'autoload': {'filetypes': ['ruby']}}
+NeoBundle 'supermomonga/neocomplete-rsense.vim', {'autoload': {'filetypes': ['ruby']}}
+NeoBundle 'tpope/vim-endwise', {'autoload': {'filetypes': ['ruby']}}
 
 call neobundle#end()
 filetype plugin indent on
@@ -12,3 +15,23 @@ filetype plugin indent on
 if !has('vim_starting')
   call neobundle#call_hook('on_source')
 endif
+
+
+"----------------------------------------
+"rsense
+"brew install rsense
+"----------------------------------------
+let g:rsenseUseOmniFunc = 1
+"----------------------------------------
+"neocomplete.vim
+"brew install lua
+"brew install vim --override-system-vi --with-lua --with-python3
+"----------------------------------------
+let g:neocomplete#sources#rsense#home_directory = '/usr/local/bin/rsense'
+let g:acp_enableAtStartup = 1
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
