@@ -47,7 +47,7 @@ endfunction
 
 "----------------------------------------
 "rsense
-"$  brew install rsense
+"$ brew install rsense
 "----------------------------------------
 let s:hooks = neobundle#get_hooks("rsense")
 function! s:hooks.on_source(bundle)
@@ -101,6 +101,10 @@ function! s:hooks.on_source(bundle)
   let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
 endfunction
 
+"----------------------------------------
+"vim-flake8
+"$ pip install flake8
+"----------------------------------------
 
 
 call neobundle#end()
@@ -109,6 +113,7 @@ filetype plugin indent on
 if !has('vim_starting')
   call neobundle#call_hook('on_source')
 endif
+
 
 autocmd BufWritePost *.py call Flake8()
 autocmd FileType python setlocal completeopt-=preview
