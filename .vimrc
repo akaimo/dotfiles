@@ -2,7 +2,9 @@ syntax on
 colorscheme molokai
 
 if isdirectory(expand("~/.vim/bundle/neobundle.vim"))
- source ~/.vim/vimrc.plugin
+  if filereadable(expand("~/.vim/vimrc.plugin"))
+    source ~/.vim/vimrc.plugin
+  endif
 endif
 
 
