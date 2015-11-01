@@ -4,8 +4,10 @@ jedi-vim
 neobundle.vim
 neocomplete-rsense.vim
 neocomplete.vim
+neomru.vim
 rsense
 syntastic
+unite.vim
 vim-endwise
 vim-flake8
 vim-ref
