@@ -1,6 +1,7 @@
 caw.vim
 indentLine
 jedi-vim
+lightline.vim
 neobundle.vim
 neocomplete-rsense.vim
 neocomplete.vim
@@ -10,6 +11,7 @@ syntastic
 unite.vim
 vim-endwise
 vim-flake8
+vim-fugitive
 vim-ref
 vim-ref-ri
 vimproc.vim

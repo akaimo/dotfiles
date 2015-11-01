@@ -1,6 +1,7 @@
 if has('vim_starting')
   set rtp+=~/.vim/bundle/neobundle.vim
 endif
+
 call neobundle#begin()
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -18,7 +19,8 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
-
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'itchyny/lightline.vim'
 
 "---------------------------------------
 "ruby
@@ -70,6 +72,14 @@ let g:indentLine_char = '¦'
 "---------------------------------------
 nmap <C-K> <Plug>(caw:i:toggle)
 vmap <C-K> <Plug>(caw:i:toggle)
+
+"---------------------------------------
+"lightline
+"---------------------------------------
+if filereadable(expand("~/.vim/vimrc.lightline"))
+  source ~/.vim/vimrc.lightline
+endif
+
 
 "----------------------------------------
 "rsense
