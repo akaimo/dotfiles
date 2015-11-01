@@ -10,3 +10,4 @@ NeoBundleLock vim-endwise f06abe3d6eca6f6ebfc31ea3163a51575f450df6
 NeoBundleLock vim-flake8 21bc78d9a3a17653dd5ea1f6a6c92445d23b215b
 NeoBundleLock vim-ref 007b0ac409100cf2b83eb7dace5c8235e3737fef
 NeoBundleLock vim-ref-ri e3a2dbb71af73bf15c9c2134cc3630edc60331eb
+NeoBundleLock vimproc.vim c40f7e77e6ff0586ff6951e7cf479b3dc81bb69d

@@ -10,3 +10,4 @@ vim-endwise
 vim-flake8
 vim-ref
 vim-ref-ri
+vimproc.vim
