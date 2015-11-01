@@ -6,6 +6,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'tyru/caw.vim'
 
 
 "---------------------------------------
@@ -39,11 +40,14 @@ NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
 "---------------------------------------
 "indentLine
 "---------------------------------------
-let s:hooks = neobundle#get_hooks("indentLine")
-function! s:hooks.on_source(bundle)
-  let g:indentLine_color_term = 239
-  let g:indentLine_char = '¦'
-endfunction
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
+
+"---------------------------------------
+"caw.vim
+"---------------------------------------
+nmap <C-K> <Plug>(caw:i:toggle)
+vmap <C-K> <Plug>(caw:i:toggle)
 
 "----------------------------------------
 "rsense
