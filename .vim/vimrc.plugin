@@ -22,6 +22,7 @@ NeoBundle 'tyru/caw.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'itchyny/lightline.vim'
 
+
 "---------------------------------------
 "ruby
 "---------------------------------------
@@ -46,7 +47,6 @@ NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
 "---------------------------------------
 NeoBundle 'davidhalter/jedi-vim', {'autoload': {'filetypes': ['python']}}
 NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
-
 
 
 
