@@ -9,8 +9,8 @@
   co = checkout
   cm = commit
   p = push -u origin
+  f = fetch -p
   st = status -sb
-  # Show verbose output about tags, branches or remotes
   tags = tag -l
   br = branch -a
   remotes = remote -v
