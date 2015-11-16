@@ -13,6 +13,7 @@ set number
 set title
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+"set listchars=tab:>-,trail:-
 set ruler
 set wrap
 set showcmd
