@@ -1,0 +1,22 @@
+# This file overrides https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/AbcSize:
+  Max: 20
