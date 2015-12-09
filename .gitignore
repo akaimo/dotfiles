@@ -9,3 +9,6 @@ xcuserdata
 #CocoaPod
 Pods/*
 Podfile.lock
+
+# rubocop
+.rubocop_todo.yml
