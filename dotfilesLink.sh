@@ -6,3 +6,4 @@ ln -s ~/dotfiles/.vim ~/.vim
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/.gitignore ~/.gitignore
 ln -s ~/dotfiles/.rubocop.yml ~/.rubocop.yml
+ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
