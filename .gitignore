@@ -12,3 +12,7 @@ Podfile.lock
 
 # rubocop
 .rubocop_todo.yml
+
+# Carthage
+Carthage/Build
+Carthage/Checkouts

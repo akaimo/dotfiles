@@ -26,3 +26,9 @@ Style/Documentation:
 
 Style/ClassVars:
   Enabled: false
+
+Style/Semicolon:
+  Enabled: false
+
+Lint/Eval:
+  Enabled: false
