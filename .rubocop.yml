@@ -32,3 +32,18 @@ Style/Semicolon:
 
 Lint/Eval:
   Enabled: false
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/DefWithParentheses:
+  Enabled: false
+
+Style/MethodCallParentheses:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Metrics/LineLength:
+    Max: 100
