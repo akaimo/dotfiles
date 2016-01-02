@@ -1,1 +1,1 @@
-setlocal noexpandtab list tabstop=2 shiftwidth=2
+setlocal noexpandtab list tabstop=4 shiftwidth=4
