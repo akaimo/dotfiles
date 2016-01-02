@@ -8,6 +8,7 @@ neocomplete.vim
 neomru.vim
 rsense
 syntastic
+unite-outline
 unite.vim
 vim-endwise
 vim-flake8

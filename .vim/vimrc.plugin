@@ -16,6 +16,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \    },
 \ }
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go']}}
@@ -63,6 +64,7 @@ nnoremap <silent> [unite]m   :<C-u>Unite file_mru<CR>
 nnoremap <silent> [unite]b   :<C-u>Unite buffer<CR>
 nnoremap <silent> [unite]r   :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [unite]k   :<C-u>Unite bookmark<CR>
+nnoremap <silent> [unite]o   :<C-u>Unite outline<CR>
 
 "---------------------------------------
 "indentLine
