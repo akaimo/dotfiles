@@ -17,6 +17,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \ }
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -27,7 +28,6 @@ NeoBundle 'itchyny/lightline.vim'
 "ruby
 "---------------------------------------
 "autocomplete
-NeoBundle 'Shougo/neocomplete.vim', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'marcus/rsense', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'supermomonga/neocomplete-rsense.vim', {'autoload': {'filetypes': ['ruby']}}
 
