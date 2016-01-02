@@ -18,6 +18,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go']}}
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -34,9 +35,6 @@ NeoBundle 'supermomonga/neocomplete-rsense.vim', {'autoload': {'filetypes': ['ru
 "auto close
 NeoBundle 'tpope/vim-endwise', {'autoload': {'filetypes': ['ruby']}}
 
-"static code analysis
-NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby']}}
-
 "document
 NeoBundle 'thinca/vim-ref', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
@@ -48,6 +46,11 @@ NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
 NeoBundle 'davidhalter/jedi-vim', {'autoload': {'filetypes': ['python']}}
 NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
 
+
+"---------------------------------------
+"Golang
+"---------------------------------------
+NeoBundle 'fatih/vim-go'
 
 
 "---------------------------------------
@@ -105,17 +108,25 @@ function! s:hooks.on_source(bundle)
     let g:neocomplete#force_omni_input_patterns = {}
   endif
   let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
+  let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
+  let g:neocomplete#force_omni_input_patterns.go = '\h\w\.\w*'
   inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+  autocmd FileType python setlocal completeopt-=previe
+  autocmd FileType go setlocal completeopt-=preview
 endfunction
 
 "----------------------------------------
-"rubocop
+"syntastic
+"rubocop, golint
 "$ sudo gem install -n /usr/local/bin rubocop
 "----------------------------------------
 let s:hooks = neobundle#get_hooks("syntastic")
 function! s:hooks.on_source(bundle)
-  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
+  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go'] }
   let g:syntastic_ruby_checkers = ['rubocop']
+
+  let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 endfunction
 
 "----------------------------------------
@@ -142,6 +153,17 @@ endfunction
 "vim-flake8
 "$ pip install flake8
 "----------------------------------------
+
+"----------------------------------------
+"vim-go
+":GoInstallBinaries
+"----------------------------------------
+let s:hooks = neobundle#get_hooks("vim-go")
+function! s:hooks.on_source(bundle)
+  let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
+endfunction
 
 
 call neobundle#end()

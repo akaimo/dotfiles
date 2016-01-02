@@ -12,6 +12,7 @@ unite.vim
 vim-endwise
 vim-flake8
 vim-fugitive
+vim-go
 vim-ref
 vim-ref-ri
 vimproc.vim
