@@ -1,7 +1,7 @@
 *unite.txt*	Unite and create user interfaces.
 
 Version: 6.2
-Author : Shougo <Shougo.Matsu@gmail.com>
+Author:  Shougo <Shougo.Matsu@gmail.com>
 Documentation Author: ujihisa <ujihisa at gmail com>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -632,6 +632,12 @@ g:unite_source_menu_menus			*g:unite_source_menu_menus*
 		Menu candidates.  If candidates type is a dictionary, keys are
 		ignored, but you can refer to the map attribute described below.
 
+		file_candidates
+				(List)			(Optional)
+		Menu candidates for files.
+		The first item is used for word.  The second item is file
+		path.
+
 		command_candidates
 				(List or Dictionary)	(Optional)
 		Menu candidates for commands.
@@ -678,6 +684,15 @@ g:unite_source_menu_menus			*g:unite_source_menu_menus*
 		      \   ['python', 'VimShellInteractive python'],
 		      \ ]
 
+		let g:unite_source_menu_menus.zsh = {
+		      \     'description' : 'zsh files',
+		      \ }
+		let g:unite_source_menu_menus.zsh.file_candidates = [
+		      \       ['zshenv'    , '~/.zshenv'],
+		      \       ['zshrc'     , '~/.zshrc'],
+		      \       ['zplug'     , '~/.zplug'],
+		      \ ]
+
 		nnoremap <silent> sm  :<C-u>Unite menu:test<CR>
 <
 		The default value is "{}".
@@ -689,6 +704,11 @@ g:unite_source_process_enable_confirm
 		really want to do that.
 
 		The default value is 1.
+
+					*g:unite_source_output_shellcmd_colors*
+g:unite_source_output_shellcmd_colors
+		A list of colors correspond to coloring in escape sequence.
+		0-8 as normal colors, 9-15 as highlight colors.
 
 KIND VARIABLES					*unite-kind-variables*
 
@@ -2221,7 +2241,7 @@ window/gui	Nominates opened GUI windows as candidates.
 		Note: "wmctrl" command is needed.  For Linux only.
 
 						*unite-source-output*
-output		Nominates executed Vim command as candidates.
+output		Nominates executed Vim command output as candidates.
 
 		Source arguments:
 		1. Vim command.
@@ -2235,6 +2255,20 @@ output		Nominates executed Vim command as candidates.
 		:Unite output:echo\ "foo\ bar"
 		" It outputs "foo bar" by dummy.
 		:Unite output:echo:"foo:bar":!
+<
+						*unite-source-output/shellcmd*
+output/shellcmd
+		Nominates executed shell command output as candidates.
+
+		Source arguments:
+		1. Shell command.
+		2. command args (but you cannot use "!" by itself)
+
+		If the last argument is "!", it prints by dummy candidates.
+		This behavior is useful for output message.
+>
+		" It outputs "ls" output.
+		:Unite -log -wrap output/shellcmd:ls
 <
 						*unite-source-command*
 command		Nominates Vim Ex commands as candidates.
@@ -2282,13 +2316,13 @@ grep		Nominates "grep" command output as candidates.
 	let g:unite_source_grep_max_candidates = 200
 
 	if executable('hw')
-	  " Use hw(highway)
+	  " Use hw (highway)
 	  " https://github.com/tkengo/highway
 	  let g:unite_source_grep_command = 'hw'
 	  let g:unite_source_grep_default_opts = '--no-group --no-color'
 	  let g:unite_source_grep_recursive_opt = ''
 	elseif executable('ag')
-	  " Use ag(the silver searcher)
+	  " Use ag (the silver searcher)
 	  " https://github.com/ggreer/the_silver_searcher
 	  let g:unite_source_grep_command = 'ag'
 	  let g:unite_source_grep_default_opts =
@@ -2296,7 +2330,7 @@ grep		Nominates "grep" command output as candidates.
 	  \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
 	  let g:unite_source_grep_recursive_opt = ''
 	elseif executable('pt')
-	  " Use pt(the platinum searcher)
+	  " Use pt (the platinum searcher)
 	  " https://github.com/monochromegane/the_platinum_searcher
 	  let g:unite_source_grep_command = 'pt'
 	  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
@@ -2378,11 +2412,11 @@ line		Nominates current buffer lines as candidates.
 		Max candidates: 100
 		Source arguments:
 		1. the search direction:
-		"all"      : Search from buffer top
-		"forward"  : Search from the current to the buffer top
-		"backward" : Search from the current to the buffer bottom
-		"buffers"  : Search from all buffers
-		"args"     : Search from argument buffers
+		"all":       Search from buffer top
+		"forward":   Search from the current to the buffer top
+		"backward":  Search from the current to the buffer bottom
+		"buffers":   Search from all buffers
+		"args":      Search from argument buffers
 		Note: If the direction is "all" or omitted, it searches from
 		buffer top.
 		2. the wrap option. "wrap" or "nowrap". This is used when the
@@ -2390,7 +2424,7 @@ line		Nominates current buffer lines as candidates.
 		'wrapscan' option will be used.
 
 		Source custom options:
-		-custom-line-enable-highlight : enable buffer highlight
+		-custom-line-enable-highlight: enable buffer highlight
 
 		Example: >
 	nnoremap <silent> /  :<C-u>Unite -buffer-name=search
@@ -2929,6 +2963,7 @@ Opens a file into a new buffer.  This kind extends |unite-action-openable| and
 	dirdiff		|:DirDiff| with the other candidate.
 			(|DirDiff.vim| plugin is needed.)
 	backup		Simple backup files.
+	argadd		Add to the argument list.
 
 buffer						*unite-action-buffer*
 This kind extends |unite-action-file|.
@@ -2974,11 +3009,12 @@ command						*unite-action-command*
 	grep		Grep the command.
 
 window						*unite-action-window*
-This kind extends actions of |unite-action-cdable|.
-	open		Move to the window.
+This kind extends actions of |unite-action-cdable| and |unite-action-openable|.
+	jump		Move to the window.
 	delete		Close the window.
 	only		Close all windows except the window.
 	preview		Preview the window.
+	open		Open the window buffer.
 
 completion					*unite-action-completion*
 	insert		Insert the candidate.
@@ -3911,7 +3947,7 @@ A: You can use |unite-options-prompt-focus| option for it.
 
 Q: I want to specify file pattern in grep source.
 
-A: It cannot.  Because, original grep does not support the feature.
+A: You cannot.  Because original grep does not support the feature.
 But if you use "ag" command, you can use it like below. >
 	Unite grep::-G\ \\.txt$
 
