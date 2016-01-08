@@ -16,3 +16,5 @@ Podfile.lock
 # Carthage
 Carthage/Build
 Carthage/Checkouts
+
+~/dotfiles/.vim/bundle/
