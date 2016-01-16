@@ -125,7 +125,8 @@ endfunction
 "----------------------------------------
 let s:hooks = neobundle#get_hooks("syntastic")
 function! s:hooks.on_source(bundle)
-  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go'] }
+  " let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go'] }
+  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['go'] }
   let g:syntastic_ruby_checkers = ['rubocop']
 
   let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
