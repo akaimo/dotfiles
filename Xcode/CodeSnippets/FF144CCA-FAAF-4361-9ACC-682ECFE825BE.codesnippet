@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>ClassImplementation</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>// MARK: - UICollectionViewDataSource
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -&gt; Int {
+        return &lt;#section num#&gt;
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -&gt; Int {
+        return &lt;#item num in section#&gt;
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -&gt; UICollectionViewCell {
+        &lt;#cell#&gt;
+        return &lt;#cell#&gt;
+    }</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>FF144CCA-FAAF-4361-9ACC-682ECFE825BE</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Swift</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>UICollectionViewDataSource</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>2</integer>
+</dict>
+</plist>
