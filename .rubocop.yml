@@ -47,3 +47,6 @@ Style/PerlBackrefs:
 
 Metrics/LineLength:
     Max: 100
+
+Style/RedundantReturn:
+  Enabled: false

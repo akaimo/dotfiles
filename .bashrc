@@ -3,3 +3,6 @@ export PS1="\n\[\e[0;37m\][\[\e[1;33m\]\u\[\e[0;37m\]@\h \[\e[0;33m\]\W\[\e[0;37
 alias la='ls -a'
 alias ll='ls -la'
 alias tree='tree -N'
+
+# added by travis gem
+[ -f /Users/shu/.travis/travis.sh ] && source /Users/shu/.travis/travis.sh

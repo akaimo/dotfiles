@@ -3,7 +3,7 @@
 	email = kawashu0723@gmail.com
 [core]
 	editor = vim
-        excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 [alias]
   a = add --all
   co = checkout
@@ -17,3 +17,9 @@
   d = diff
 [color]
 	ui = 1
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

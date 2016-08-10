@@ -6,6 +6,10 @@
 *.xcworkspace
 xcuserdata
 
+# XcodePlugin
+ObjcUML
+iOSInjectionProject
+
 #CocoaPod
 Pods/*
 Podfile.lock
@@ -16,6 +20,10 @@ Podfile.lock
 # Carthage
 Carthage/Build
 Carthage/Checkouts
+Carthage/Cartfile.resolved
 
 # vim
 .vim/bundle
+
+# IntelliJ IDEA
+.idea
