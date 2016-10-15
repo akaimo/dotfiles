@@ -27,3 +27,6 @@ Carthage/Cartfile.resolved
 
 # IntelliJ IDEA
 .idea
+
+# Node
+node_modules
