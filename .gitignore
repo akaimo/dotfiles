@@ -3,7 +3,7 @@
 *.swp
 
 #Xcode
-*.xcworkspace
+#*.xcworkspace
 xcuserdata
 
 # XcodePlugin
