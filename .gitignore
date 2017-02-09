@@ -24,6 +24,7 @@ Carthage/Cartfile.resolved
 
 # vim
 .vim/bundle
+.netrwhist
 
 # IntelliJ IDEA
 .idea

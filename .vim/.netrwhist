@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/Users/akaimo/.zprezto'
-let g:netrw_dirhist_2='/Users/shu/workspace/lenet-ios-app/Scripts'
-let g:netrw_dirhist_3='/Applications/IntelliJ IDEA.app/Contents/MacOS'
-let g:netrw_dirhist_4='/Applications/IntelliJ IDEA.app/Contents/bin'
