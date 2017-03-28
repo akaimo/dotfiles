@@ -1,0 +1,82 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# 非同期処理
+[[plugins]]
+repo = 'Shougo/vimproc'
+build = 'make'
+
+# 補完
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = '''
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources = {}
+let g:deoplete#sources._ = ['buffer', 'tag']
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.ruby = ['[^. *\t]\.\w*','\h\w*::']
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+'''
+
+# インデントの表示
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+hook_add = '''
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
+'''
+
+# コメントアウト
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = '''
+nmap <C-K> <Plug>(caw:i:toggle)
+vmap <C-K> <Plug>(caw:i:toggle)
+'''
+
+[[plugins]]
+repo = 'vim-scripts/vim-auto-save'
+hook_add = '''
+let g:auto_save = 1
+let g:auto_save_in_insert_mode = 0
+'''
+
+# configure statusline
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+
+
+# 言語系
+[[plugins]]
+repo = 'plasticboy/vim-markdown'
+hook_add = '''
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_new_list_item_indent = 2
+'''
+
+# [[plugins]]
+# repo = 'cespare/vim-toml'
+# on_ft = 'toml'
+
+[[plugins]]
+repo = 'elzr/vim-json'
+on_ft = 'json'
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+on_ft = 'python'
+hook_add = '''
+let g:jedi#popup_select_first = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_command = "<C-c>"
+autocmd FileType python setlocal completeopt-=preview
+'''
+
+#[plugins]]
+#repo = 'zchee/deoplete-jedi'
+#on_ft = 'python'
+#hook_add = '''
+#let g:jedi#auto_initialization = 1
+#let g:jedi#popup_on_dot        = 0
+#'''
