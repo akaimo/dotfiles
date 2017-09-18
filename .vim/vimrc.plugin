@@ -24,6 +24,7 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'vim-scripts/vim-auto-save'
 
 
 "---------------------------------------
@@ -166,6 +167,16 @@ function! s:hooks.on_source(bundle)
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_structs = 1
+endfunction
+
+
+"----------------------------------------
+"vim-auto-save
+"----------------------------------------
+let s:hooks = neobundle#get_hooks("vim-auto-save")
+function! s:hooks.on_source(bundle)
+  let g:auto_save = 1
+  let g:auto_save_in_insert_mode = 0
 endfunction
 
 
