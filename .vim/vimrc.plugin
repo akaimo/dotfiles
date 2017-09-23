@@ -52,7 +52,7 @@ NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
 "---------------------------------------
 "Golang
 "---------------------------------------
-NeoBundle 'fatih/vim-go'
+NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
 
 
 "---------------------------------------
