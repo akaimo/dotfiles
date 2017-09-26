@@ -66,6 +66,17 @@ endfunction
 
 
 "---------------------------------------
+"Rust
+"$ cargo install racer
+"---------------------------------------
+NeoBundle 'racer-rust/vim-racer', {'autoload': {'filetypes': ['rust']}}
+let s:hooks = neobundle#get_hooks("vim-racer")
+function! s:hooks.on_source(bundle)
+  let g:racer_cmd = "$HOME/.cargo/bin/racer"
+endfunction
+
+
+"---------------------------------------
 "unite
 "---------------------------------------
 nnoremap [unite]    <Nop>
