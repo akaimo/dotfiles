@@ -19,7 +19,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go']}}
+NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go', 'rust']}}
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -68,11 +68,18 @@ endfunction
 "---------------------------------------
 "Rust
 "$ cargo install racer
+"$ cargo install rustfmt
 "---------------------------------------
 NeoBundle 'racer-rust/vim-racer', {'autoload': {'filetypes': ['rust']}}
 let s:hooks = neobundle#get_hooks("vim-racer")
 function! s:hooks.on_source(bundle)
   let g:racer_cmd = "$HOME/.cargo/bin/racer"
+endfunction
+NeoBundle 'rust-lang/rust.vim', {'autoload': {'filetypes': ['rust']}}
+let s:hooks = neobundle#get_hooks("rust.vim")
+function! s:hooks.on_source(bundle)
+  " let g:rustfmt_autosave = 1
+  let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
 endfunction
 
 
@@ -150,11 +157,10 @@ endfunction
 "----------------------------------------
 let s:hooks = neobundle#get_hooks("syntastic")
 function! s:hooks.on_source(bundle)
-  " let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go'] }
-  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['go'] }
+  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go', 'rust'] }
   let g:syntastic_ruby_checkers = ['rubocop']
-
   let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+  let g:syntastic_rust_checkers = ['rustc', 'cargo']
 endfunction
 
 "----------------------------------------
