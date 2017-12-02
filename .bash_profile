@@ -13,13 +13,7 @@ fi
 
 PATH=$HOME/Python/python3/bin:$PATH
 
-# MacPorts Installer addition on 2015-02-15_at_15:28:04: adding an appropriate PATH variable for use with MacPorts.
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-# Finished adapting your PATH environment variable for use with MacPorts.
-
-alias ls='/opt/local/bin/gls --color=auto'
-
-eval $(/opt/local/bin/gdircolors /Users/akaimo/Public/solarized/dircolors-solarized-master/dircolors.ansi-universal)
+alias ls='/usr/local/bin/gls --color=auto'
 
 JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home
 export JAVA_HOM
