@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-UUID=$(defaults read /Applications/Xcode7.3.app/Contents/Info DVTPlugInCompatibilityUUID)
+UUID=$(defaults read /Applications/Xcode9.1.app/Contents/Info DVTPlugInCompatibilityUUID)
 echo Xcode DVTPlugInCompatibilityUUID is $UUID
 for MyPlugin in ~/Library/Application\ Support/Developer/Shared/Xcode/Plug-ins/*
 do
