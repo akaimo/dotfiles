@@ -1,4 +1,9 @@
 # dotfiles
+## install
+```
+./dotfilesLink.sh
+```
+
 ## vim
 ```
 # install vim
