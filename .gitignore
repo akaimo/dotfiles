@@ -12,15 +12,9 @@ iOSInjectionProject
 
 #CocoaPod
 Pods/*
-Podfile.lock
 
 # rubocop
 .rubocop_todo.yml
-
-# Carthage
-Carthage/Build
-Carthage/Checkouts
-Carthage/Cartfile.resolved
 
 # vim
 .vim/bundle
