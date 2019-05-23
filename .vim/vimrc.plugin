@@ -18,7 +18,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/neocomplete.vim', {'autoload': {'filetypes': ['python', 'ruby', 'go', 'rust', 'gitcommit']}}
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go', 'rust']}}
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'tyru/caw.vim'
