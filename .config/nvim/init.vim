@@ -1,6 +1,12 @@
 syntax on
 colorscheme molokai
 
+if filereadable(expand("~/.local/share/nvim/site/autoload/plug.vim"))
+  if filereadable(expand("~/.config/nvim/vimrc.plugin"))
+    source ~/.config/nvim/vimrc.plugin
+  endif
+endif
+
 "graphical
 set number
 set title
