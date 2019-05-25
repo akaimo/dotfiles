@@ -1,2 +1,9 @@
 call plug#begin('~/.local/share/nvim/plugged')
+
+Plug 'prabirshrestha/asyncomplete.vim'
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
 call plug#end()
