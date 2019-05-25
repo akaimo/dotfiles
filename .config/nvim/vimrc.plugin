@@ -42,4 +42,9 @@ if executable('pyls')
         \})
 endif
 
+" Comment functions
+Plug 'tyru/caw.vim'
+nmap <C-K> <Plug>(caw:zeropos:toggle)
+vmap <C-K> <Plug>(caw:zeropos:toggle)
+
 call plug#end()
