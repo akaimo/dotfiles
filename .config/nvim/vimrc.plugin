@@ -49,6 +49,19 @@ au User lsp_setup call lsp#register_server({
    \ 'whitelist': ['php'],
    \ })
 
+" Check syntax (linting) and fix files asynchronously
+Plug 'w0rp/ale'
+let g:ale_fix_on_save = 0
+let g:ale_fix_on_text_changed = 'never'
+let g:ale_sign_column_always = 1
+
+let g:ale_linters = {
+\   'go': ['gopls', 'go vet', 'golint'],
+\}
+let g:ale_fixers = {
+\   'go': ['gofmt'],
+\}
+
 " Comment functions
 Plug 'tyru/caw.vim'
 nmap <C-K> <Plug>(caw:zeropos:toggle)
