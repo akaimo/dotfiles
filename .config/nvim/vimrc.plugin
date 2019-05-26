@@ -42,6 +42,13 @@ if executable('pyls')
         \})
 endif
 
+au User lsp_setup call lsp#register_server({
+   \ 'name': 'intelephense',
+   \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/intelephense/lib/intelephense.js'), '--stdio']},
+   \ 'initialization_options': {"storagePath": "/tmp/intelephense"},
+   \ 'whitelist': ['php'],
+   \ })
+
 " Comment functions
 Plug 'tyru/caw.vim'
 nmap <C-K> <Plug>(caw:zeropos:toggle)
