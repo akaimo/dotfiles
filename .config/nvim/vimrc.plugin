@@ -54,4 +54,7 @@ Plug 'tyru/caw.vim'
 nmap <C-K> <Plug>(caw:zeropos:toggle)
 vmap <C-K> <Plug>(caw:zeropos:toggle)
 
+" Auto close parentheses
+Plug 'cohama/lexima.vim'
+
 call plug#end()
