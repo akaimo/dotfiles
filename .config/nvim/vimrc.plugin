@@ -113,4 +113,8 @@ nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>s :Rg<CR>
 nnoremap <Leader>b :Buffer<CR>
 
+" tree explorer
+Plug 'scrooloose/nerdtree'
+map <Leader>t :NERDTreeToggle<CR>
+
 call plug#end()
