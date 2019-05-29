@@ -117,4 +117,9 @@ nnoremap <Leader>b :Buffer<CR>
 Plug 'scrooloose/nerdtree'
 map <Leader>t :NERDTreeToggle<CR>
 
+" auto save
+Plug 'vim-scripts/vim-auto-save'
+let g:auto_save = 1
+let g:auto_save_in_insert_mode = 0
+
 call plug#end()
