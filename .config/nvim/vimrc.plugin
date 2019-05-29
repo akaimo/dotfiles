@@ -13,6 +13,8 @@ Plug 'prabirshrestha/async.vim'
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('~/.config/nvim/vim-lsp.log')
 
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+
 if executable('cquery')
    au User lsp_setup call lsp#register_server({
       \ 'name': 'cquery',
