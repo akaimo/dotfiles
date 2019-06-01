@@ -1,42 +1,41 @@
-" load plugins
-if filereadable(expand("~/.config/nvim/dein_init.toml"))
-  source ~/.config/nvim/dein_init.toml
-endif
-
-
-" syntax
 syntax on
-set t_Co=256
 colorscheme molokai
 
-" graphical
+let mapleader = "\<Space>"
+
+if filereadable(expand("~/.local/share/nvim/site/autoload/plug.vim"))
+  if filereadable(expand("~/.config/nvim/vimrc.plugin"))
+    source ~/.config/nvim/vimrc.plugin
+  endif
+endif
+
+"graphical
 set number
 set title
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
-" set listchars=tab:>-,trail:-
 set ruler
 set wrap
 set showcmd
 
-" encodie
+"encodie
 set encoding=utf8
 set fileencoding=utf-8
 
-" space, tab, indent
+"space, tab, indent
 set ambiwidth=double
 set tabstop=2
 set shiftwidth=2
 set expandtab
 set autoindent
 
-" backup, swap
+"backup, swap
 set noswapfile
 set nowritebackup
 set nobackup
 
-" control
-set clipboard=unnamedplus
+"control
+set clipboard=unnamed
 set nrformats-=octal
 set hidden
 set history=50
@@ -48,6 +47,5 @@ set wildmenu
 set scrolloff=5
 set vb t_vb=
 set novisualbell
-set noswapfile
 
 filetype plugin indent on

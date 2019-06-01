@@ -1,0 +1,136 @@
+call plug#begin('~/.local/share/nvim/plugged')
+
+Plug 'prabirshrestha/asyncomplete.vim'
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'blacklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+
+Plug 'prabirshrestha/asyncomplete-file.vim'
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'blacklist': ['go'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/.config/nvim/vim-lsp.log')
+
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+
+nnoremap <C-]> :LspDefinition<CR>
+
+if executable('cquery')
+   au User lsp_setup call lsp#register_server({
+      \ 'name': 'cquery',
+      \ 'cmd': {server_info->['cquery']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+      \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery/cache' },
+      \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+      \ })
+endif
+
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': { server_info -> ['pyls'] },
+        \ 'whitelist': ['python'],
+        \ 'workspace_config': {'pyls': {'plugins': {
+        \   'pycodestyle': {'enabled': v:false},
+        \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
+        \})
+endif
+
+au User lsp_setup call lsp#register_server({
+   \ 'name': 'intelephense',
+   \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/intelephense/lib/intelephense.js'), '--stdio']},
+   \ 'initialization_options': {"storagePath": "/tmp/intelephense"},
+   \ 'whitelist': ['php'],
+   \ })
+
+" Check syntax (linting) and fix files asynchronously
+Plug 'w0rp/ale'
+let g:ale_fix_on_save = 0
+let g:ale_fix_on_text_changed = 'never'
+let g:ale_sign_column_always = 1
+
+let g:ale_linters = {
+\   'go': ['gopls', 'go vet', 'golint'],
+\}
+let g:ale_fixers = {
+\   'go': ['gofmt'],
+\}
+
+" Comment functions
+Plug 'tyru/caw.vim'
+nmap <C-K> <Plug>(caw:zeropos:toggle)
+vmap <C-K> <Plug>(caw:zeropos:toggle)
+
+" Auto close parentheses
+Plug 'cohama/lexima.vim'
+
+" fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" fzf mapping
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>s :Rg<CR>
+nnoremap <Leader>b :Buffer<CR>
+
+" tree explorer
+Plug 'scrooloose/nerdtree'
+map <Leader>t :NERDTreeToggle<CR>
+
+" auto save
+Plug 'vim-scripts/vim-auto-save'
+let g:auto_save = 1
+let g:auto_save_in_insert_mode = 0
+
+" shows a git diff
+Plug 'airblade/vim-gitgutter'
+
+" status bar
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'maximbaz/lightline-ale'
+if filereadable(expand("~/.config/nvim/vimrc.lightline"))
+  source ~/.config/nvim/vimrc.lightline
+endif
+
+call plug#end()
