@@ -133,4 +133,8 @@ if filereadable(expand("~/.config/nvim/vimrc.lightline"))
   source ~/.config/nvim/vimrc.lightline
 endif
 
+Plug 'Yggdroot/indentLine'
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
+
 call plug#end()
