@@ -59,6 +59,12 @@ au User lsp_setup call lsp#register_server({
    \ 'whitelist': ['php'],
    \ })
 
+au User lsp_setup call lsp#register_server({
+ \ 'name': 'yaml-language-server',
+ \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/yaml-language-server/out/server/src/server.js'), '--stdio']},
+ \ 'whitelist': ['yaml'],
+ \ })
+
 " Check syntax (linting) and fix files asynchronously
 Plug 'w0rp/ale'
 let g:ale_fix_on_save = 0
@@ -67,9 +73,11 @@ let g:ale_sign_column_always = 1
 
 let g:ale_linters = {
 \   'go': ['gopls', 'go vet', 'golint'],
+\   'yaml': ['yamllint'],
 \}
 let g:ale_fixers = {
 \   'go': ['gofmt', 'goimports'],
+\   'yaml': ['prettier'],
 \}
 
 " Comment functions
