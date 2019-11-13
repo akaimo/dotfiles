@@ -4,5 +4,3 @@ alias la='ls -a'
 alias ll='ls -la'
 alias tree='tree -N'
 
-# added by travis gem
-[ -f /Users/shu/.travis/travis.sh ] && source /Users/shu/.travis/travis.sh
