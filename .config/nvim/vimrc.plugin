@@ -58,7 +58,6 @@ if executable('pyls')
         \ 'cmd': { server_info -> ['pyls'] },
         \ 'whitelist': ['python'],
         \ 'workspace_config': {'pyls': {'plugins': {
-        \   'pycodestyle': {'enabled': v:false},
         \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
         \})
 endif
@@ -86,12 +85,16 @@ nmap <C-L> :ALEFix<CR>
 
 let g:ale_linters = {
 \   'go': ['gopls', 'go vet', 'golint'],
+\   'python': ['flake8'],
 \   'yaml': ['yamllint'],
 \}
 let g:ale_fixers = {
 \   'go': ['gofmt', 'goimports'],
+\   'python': ['black', 'isort'],
 \   'yaml': ['prettier'],
 \}
+
+let g:ale_python_flake8_options = '--max-line-length=88'
 
 " Comment functions
 Plug 'tyru/caw.vim'
