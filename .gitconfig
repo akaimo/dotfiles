@@ -15,6 +15,7 @@
   br = branch -a
   remotes = remote -v
   d = diff
+  delete-merged-branch = "!f() { git branch --merged|egrep -v '\\*|develop|master' | xargs git branch -d; };f"
 [color]
 	ui = 1
 [difftool "sourcetree"]
