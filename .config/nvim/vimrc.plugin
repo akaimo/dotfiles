@@ -22,6 +22,8 @@ let g:lsp_log_file = expand('~/.config/nvim/vim-lsp.log')
 let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
 nnoremap <C-]> :LspDefinition<CR>
+nnoremap <Leader>h :LspHover<CR>
+nnoremap <Leader>hh <c-w><c-z>
 
 if executable('cquery')
    au User lsp_setup call lsp#register_server({
