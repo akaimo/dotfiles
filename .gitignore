@@ -19,6 +19,7 @@ Pods/*
 # vim
 .vim/bundle
 .netrwhist
+.config/nvim/vim-lsp.log
 
 # IntelliJ IDEA
 .idea
