@@ -1,7 +1,7 @@
 syntax on
 colorscheme molokai
 
-if isdirectory(expand("~/.vim/bundle/neobundle.vim"))
+if filereadable(expand("~/.vim/autoload/plug.vim"))
   if filereadable(expand("~/.vim/vimrc.plugin"))
     source ~/.vim/vimrc.plugin
   endif
