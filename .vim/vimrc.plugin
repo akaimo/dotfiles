@@ -62,4 +62,16 @@ let g:auto_save_in_insert_mode = 0
 " shows a git diff
 Plug 'airblade/vim-gitgutter'
 
+" status bar
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'maximbaz/lightline-ale'
+if filereadable(expand("~/.config/nvim/vimrc.lightline"))
+  source ~/.config/nvim/vimrc.lightline
+endif
+
+Plug 'Yggdroot/indentLine'
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
+
 call plug#end()
