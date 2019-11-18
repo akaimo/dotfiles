@@ -4,4 +4,22 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 
+let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+Plug 'lighttiger2505/deoplete-vim-lsp'
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/.config/nvim/vim-lsp.log')
+
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+
+nnoremap <C-]> :LspDefinition<CR>
+nnoremap <Leader>h :LspHover<CR>
+nnoremap <Leader>hh <c-w><c-z>
+
 call plug#end()
