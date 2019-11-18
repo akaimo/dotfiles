@@ -18,6 +18,8 @@ Pods/*
 
 # vim
 .vim/bundle
+.vim/autoload/plug.vim
+.vim/plugged
 .netrwhist
 .config/nvim/vim-lsp.log
 

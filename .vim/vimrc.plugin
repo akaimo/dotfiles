@@ -1,222 +1,146 @@
-if has('vim_starting')
-  set rtp+=~/.vim/bundle/neobundle.vim
+call plug#begin('~/.vim/plugged')
+
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+
+let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
+Plug 'lighttiger2505/deoplete-vim-lsp'
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/.config/nvim/vim-lsp.log')
+
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+
+nnoremap <C-]> :LspDefinition<CR>
+nnoremap <Leader>h :LspHover<CR>
+nnoremap <Leader>hh <c-w><c-z>
+
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd', '-background-index']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+        \ })
 endif
 
-call neobundle#begin()
-NeoBundleFetch 'Shougo/neobundle.vim'
+augroup LspGo
+  au!
+  autocmd User lsp_setup call lsp#register_server({
+      \ 'name': 'go-lang',
+      \ 'cmd': {server_info->['gopls']},
+      \ 'whitelist': ['go'],
+      \ 'workspace_config': {'gopls': {
+      \     'completeUnimported': v:true,
+      \     'caseSensitiveCompletion': v:true,
+      \     'usePlaceholders': v:true,
+      \     'completionDocumentation': v:true,
+      \     'watchFileChanges': v:true,
+      \   }},
+      \ })
+  autocmd FileType go setlocal omnifunc=lsp#complete
+augroup END
 
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': { server_info -> ['pyls'] },
+        \ 'whitelist': ['python'],
+        \ 'workspace_config': {'pyls': {'plugins': {
+        \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
+        \})
+endif
 
-NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'scrooloose/syntastic', {'autoload': {'filetypes': ['ruby', 'go', 'rust']}}
-NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'tyru/caw.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'vim-scripts/vim-auto-save'
+au User lsp_setup call lsp#register_server({
+   \ 'name': 'intelephense',
+   \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/intelephense/lib/intelephense.js'), '--stdio']},
+   \ 'initialization_options': {"storagePath": "/tmp/intelephense"},
+   \ 'whitelist': ['php'],
+   \ })
 
+au User lsp_setup call lsp#register_server({
+ \ 'name': 'yaml-language-server',
+ \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/yaml-language-server/out/server/src/server.js'), '--stdio']},
+ \ 'whitelist': ['yaml'],
+ \ })
 
-"---------------------------------------
-"ruby
-"---------------------------------------
-"autocomplete
-NeoBundle 'marcus/rsense', {'autoload': {'filetypes': ['ruby']}}
-NeoBundle 'supermomonga/neocomplete-rsense.vim', {'autoload': {'filetypes': ['ruby']}}
+" Check syntax (linting) and fix files asynchronously
+Plug 'w0rp/ale'
+let g:ale_fix_on_save = 0
+let g:ale_fix_on_text_changed = 'never'
+let g:ale_sign_column_always = 1
 
-"auto close
-NeoBundle 'tpope/vim-endwise', {'autoload': {'filetypes': ['ruby']}}
+nmap <C-L> :ALEFix<CR>
 
-"document
-NeoBundle 'thinca/vim-ref', {'autoload': {'filetypes': ['ruby']}}
-NeoBundle 'yuku-t/vim-ref-ri', {'autoload': {'filetypes': ['ruby']}}
+let g:ale_linters = {
+\   'go': ['gopls', 'go vet', 'golint'],
+\   'python': ['flake8'],
+\   'yaml': ['yamllint'],
+\}
+let g:ale_fixers = {
+\   'go': ['gofmt', 'goimports'],
+\   'python': ['black', 'isort'],
+\   'yaml': ['prettier'],
+\}
 
+let g:ale_python_flake8_options = '--max-line-length=88'
 
-"---------------------------------------
-"python
-"---------------------------------------
-NeoBundle 'davidhalter/jedi-vim', {'autoload': {'filetypes': ['python']}}
-NeoBundle 'nvie/vim-flake8', {'autoload': {'filetypes': ['python']}}
+" Comment functions
+Plug 'tyru/caw.vim'
+nmap <C-K> <Plug>(caw:zeropos:toggle)
+vmap <C-K> <Plug>(caw:zeropos:toggle)
 
+" Auto close parentheses
+Plug 'cohama/lexima.vim'
 
-"---------------------------------------
-"Golang
-"---------------------------------------
-NeoBundle 'fatih/vim-go', {'autoload': {'filetypes': ['go']}}
+" fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-"---------------------------------------
-"C/C++
-"---------------------------------------
-NeoBundle 'justmao945/vim-clang', {'autoload': {'filetypes': ['c', 'cpp']}}
-let s:hooks = neobundle#get_hooks("vim-clang")
-function! s:hooks.on_source(bundle)
-  let g:clang_exec = 'clang'
-endfunction
+" fzf mapping
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>s :Rg<CR>
+nnoremap <Leader>b :Buffer<CR>
 
+" tree explorer
+Plug 'scrooloose/nerdtree'
+map <Leader>t :NERDTreeToggle<CR>
 
-"---------------------------------------
-"Rust
-"$ cargo install racer
-"$ cargo install rustfmt
-"---------------------------------------
-NeoBundle 'racer-rust/vim-racer', {'autoload': {'filetypes': ['rust']}}
-let s:hooks = neobundle#get_hooks("vim-racer")
-function! s:hooks.on_source(bundle)
-  let g:racer_cmd = "$HOME/.cargo/bin/racer"
-endfunction
-NeoBundle 'rust-lang/rust.vim', {'autoload': {'filetypes': ['rust']}}
-let s:hooks = neobundle#get_hooks("rust.vim")
-function! s:hooks.on_source(bundle)
-  " let g:rustfmt_autosave = 1
-  let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
-endfunction
+" auto save
+Plug 'vim-scripts/vim-auto-save'
+let g:auto_save = 1
+let g:auto_save_in_insert_mode = 0
 
+" shows a git diff
+Plug 'airblade/vim-gitgutter'
 
-"---------------------------------------
-"unite
-"---------------------------------------
-nnoremap [unite]    <Nop>
-nmap     <Space>u [unite]
-nnoremap <silent> [unite]f   :<C-u>Unite file<CR>
-nnoremap <silent> [unite]m   :<C-u>Unite file_mru<CR>
-nnoremap <silent> [unite]b   :<C-u>Unite buffer<CR>
-nnoremap <silent> [unite]r   :<C-u>Unite -buffer-name=register register<CR>
-nnoremap <silent> [unite]k   :<C-u>Unite bookmark<CR>
-nnoremap <silent> [unite]o   :<C-u>Unite outline<CR>
+" status bar
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'maximbaz/lightline-ale'
+if filereadable(expand("~/.config/nvim/vimrc.lightline"))
+  source ~/.config/nvim/vimrc.lightline
+endif
 
-"---------------------------------------
-"indentLine
-"---------------------------------------
+Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 239
 let g:indentLine_char = '¦'
 
-"---------------------------------------
-"caw.vim
-"---------------------------------------
-nmap <C-K> <Plug>(caw:i:toggle)
-vmap <C-K> <Plug>(caw:i:toggle)
-
-"---------------------------------------
-"lightline
-"---------------------------------------
-if filereadable(expand("~/.vim/vimrc.lightline"))
-  source ~/.vim/vimrc.lightline
-endif
-
-
-"----------------------------------------
-"rsense
-"$ brew install rsense
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("rsense")
-function! s:hooks.on_source(bundle)
-  let g:rsenseUseOmniFunc = 1
-endfunction
-
-"----------------------------------------
-"neocomplete.vim
-"$ brew install lua
-"# brew install vim --override-system-vi --with-lua --with-python3
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("neocomplete.vim")
-function! s:hooks.on_source(bundle)
-  let g:neocomplete#sources#rsense#home_directory = '/usr/local/bin/rsense'
-  let g:acp_enableAtStartup = 0
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#force_overwrite_completefunc = 1
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif
-  let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
-  let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
-  let g:neocomplete#force_omni_input_patterns.go = '\h\w\.\w*'
-  let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-  let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-  autocmd FileType python setlocal completeopt-=previe
-  autocmd FileType go setlocal completeopt-=preview
-endfunction
-
-"----------------------------------------
-"syntastic
-"rubocop, golint
-"$ sudo gem install -n /usr/local/bin rubocop
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("syntastic")
-function! s:hooks.on_source(bundle)
-  let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'go', 'rust'] }
-  let g:syntastic_ruby_checkers = ['rubocop']
-  let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-  let g:syntastic_rust_checkers = ['rustc', 'cargo']
-endfunction
-
-"----------------------------------------
-"vim-ref
-"$ sudo gem install -n /usr/local/bin refe2
-"$ bitclust setup
-"----------------------------------------
-
-"----------------------------------------
-"jedi-vim
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("jedi-vim")
-function! s:hooks.on_source(bundle)
-  "let g:jedi#completions_enabled = 0
-  let g:jedi#auto_vim_configuration = 0
-
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif 
-  let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
-endfunction
-
-"----------------------------------------
-"vim-flake8
-"$ pip install flake8
-"----------------------------------------
-
-"----------------------------------------
-"vim-go
-":GoInstallBinaries
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("vim-go")
-function! s:hooks.on_source(bundle)
-  let g:go_highlight_functions = 1
-  let g:go_highlight_methods = 1
-  let g:go_highlight_structs = 1
-endfunction
-
-
-"----------------------------------------
-"vim-auto-save
-"----------------------------------------
-let s:hooks = neobundle#get_hooks("vim-auto-save")
-function! s:hooks.on_source(bundle)
-  let g:auto_save = 1
-  let g:auto_save_in_insert_mode = 0
-endfunction
-
-
-call neobundle#end()
-filetype plugin indent on
-
-if !has('vim_starting')
-  call neobundle#call_hook('on_source')
-endif
-
-
-autocmd BufWritePost *.py call Flake8()
-autocmd FileType python setlocal completeopt-=preview
+call plug#end()
