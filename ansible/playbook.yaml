@@ -1,0 +1,8 @@
+---
+- name: Setup develop pc
+  hosts: localhost
+  connection: local
+  become: 'no'
+  tasks:
+    - include: tasks/macos.yaml
+      when: "ansible_os_family == 'Darwin'"
