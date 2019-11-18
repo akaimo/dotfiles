@@ -1,6 +1,8 @@
 syntax on
 colorscheme molokai
 
+let mapleader = "\<Space>"
+
 if filereadable(expand("~/.vim/autoload/plug.vim"))
   if filereadable(expand("~/.vim/vimrc.plugin"))
     source ~/.vim/vimrc.plugin
