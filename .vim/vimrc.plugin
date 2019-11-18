@@ -22,4 +22,44 @@ nnoremap <C-]> :LspDefinition<CR>
 nnoremap <Leader>h :LspHover<CR>
 nnoremap <Leader>hh <c-w><c-z>
 
+" Comment functions
+Plug 'tyru/caw.vim'
+nmap <C-K> <Plug>(caw:zeropos:toggle)
+vmap <C-K> <Plug>(caw:zeropos:toggle)
+
+" Auto close parentheses
+Plug 'cohama/lexima.vim'
+
+" fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+" fzf mapping
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>s :Rg<CR>
+nnoremap <Leader>b :Buffer<CR>
+
+" tree explorer
+Plug 'scrooloose/nerdtree'
+map <Leader>t :NERDTreeToggle<CR>
+
+" auto save
+Plug 'vim-scripts/vim-auto-save'
+let g:auto_save = 1
+let g:auto_save_in_insert_mode = 0
+
+" shows a git diff
+Plug 'airblade/vim-gitgutter'
+
 call plug#end()
