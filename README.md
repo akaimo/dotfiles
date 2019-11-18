@@ -7,13 +7,11 @@
 ## vim
 ```
 # install vim
-brew install ghq lua python3
-./install_vim.sh
-exec $SHELL -l
+brew install vim
 
-# setup vim plugin
-curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
-sh ./install.sh
-:NeoBundleInstall
+# setup vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+:PlugInstall
 ```
 
