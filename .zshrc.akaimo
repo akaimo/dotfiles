@@ -19,6 +19,10 @@ else
   alias diff='diff -u'
 fi
 
+# color the less
+export LESS='-R'
+export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
+
 # my command
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi

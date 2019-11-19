@@ -11,6 +11,7 @@
     - name: fzf
     - name: ripgrep
     - name: colordiff
+    - name: source-highlight
     - name: jq
 
 - name: Install homebrew paclages required by vim
