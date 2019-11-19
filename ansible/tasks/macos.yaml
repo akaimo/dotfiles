@@ -8,3 +8,10 @@
   homebrew: name={{ item.name }} install_options={{ item.options|default() }}
   with_items:
     - name: vim
+    - name: neovim
+    - name: fzf
+    - name: ripgrep
+    - name: llvm
+    - name: cquery
+    - name: yamllint
+
