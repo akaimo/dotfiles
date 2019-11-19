@@ -1,0 +1,10 @@
+---
+- name: Install yaml language server
+  npm:
+    name: yaml-language-server
+    global: 'yes'
+- name: Install php language server
+  npm:
+    name: intelephense
+    global: 'yes'
+
