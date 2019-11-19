@@ -7,10 +7,17 @@
 - name: Install homebrew packages
   homebrew: name={{ item.name }} install_options={{ item.options|default() }}
   with_items:
-    - name: vim
-    - name: neovim
+    - name: git
     - name: fzf
     - name: ripgrep
+    - name: colordiff
+    - name: jq
+
+- name: Install homebrew paclages required by vim
+  homebrew: name={{ item.name }} install_options={{ item.options|default() }}
+  with_items:
+    - name: vim
+    - name: neovim
     - name: llvm
     - name: cquery
     - name: yamllint
