@@ -4,6 +4,16 @@
     update_homebrew: 'yes'
     upgrade_all: 'no'
 
+- name: Install prezto
+  git:
+    repo: 'https://github.com/sorin-ionescu/prezto.git'
+    dest: '~/.zprezto'
+    update: 'no'
+
+- name: Please set up prezto
+  debug:
+    msg: "see: https://github.com/sorin-ionescu/prezto"
+
 - name: Install homebrew packages
   homebrew:
     name: "{{ item.name }}"
