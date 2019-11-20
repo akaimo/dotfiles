@@ -29,7 +29,7 @@
     update_homebrew: 'yes'
     upgrade_all: 'no'
 
-- name: Install vim and required packages for mac
+- name: Install vim and required packages for Mac
   when: "ansible_os_family == 'Darwin'"
   homebrew:
     name: "{{ item.name }}"
@@ -40,4 +40,29 @@
     - name: llvm
     - name: cquery
     - name: yamllint
+
+- name: node version
+  shell: node -v
+  args:
+    executable: /bin/bash
+  register: node_version
+
+- name: go version
+  shell: go version
+  args:
+    executable: /bin/bash
+  register: go_version
+
+- name: python version
+  shell: python -V
+  args:
+    executable: /bin/bash
+  register: python_version
+
+- name: print versions
+  debug:
+    msg: >-
+      node: {{ node_version.stdout  }},
+      {{ go_version.stdout }},
+      {{ python_version.stdout }}
 
