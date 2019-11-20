@@ -41,30 +41,24 @@
     - name: cquery
     - name: yamllint
 
-- name: node version
-  shell: node -v
+- name: language versions
+  shell: "{{ item }}"
   args:
     executable: /bin/bash
-  register: node_version
-
-- name: go version
-  shell: go version
-  args:
-    executable: /bin/bash
-  register: go_version
-
-- name: python version
-  shell: python -V
-  args:
-    executable: /bin/bash
-  register: python_version
+  register: lang_versions
+  with_items:
+    - node -v
+    - go version
+    - python -V
 
 - name: print versions
   debug:
-    msg: >-
-      node: {{ node_version.stdout  }},
-      {{ go_version.stdout }},
-      {{ python_version.stdout }}
+    msg: "{{ item.stdout_lines }}"
+  with_items: "{{ lang_versions.results }}"
+  loop_control:
+    label: "{{ item.cmd | default(item) }}"
+  when: lang_versions.results is defined
+    and item.stdout_lines is defined
 
 - name: Install npm packages for vim
   npm:
