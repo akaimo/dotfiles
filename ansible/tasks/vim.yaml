@@ -75,3 +75,16 @@
   npm:
     name: intelephense
     global: 'yes'
+
+- name: Install go modules for vim
+  shell: |
+    go get {{ item  }}@latest
+  environment:
+    GO111MODULE: 'on'
+  args:
+    executable: /bin/bash
+  with_items:
+    - golang.org/x/tools/gopls
+    - golang.org/x/lint/golint
+    - golang.org/x/tools/cmd/goimports
+
