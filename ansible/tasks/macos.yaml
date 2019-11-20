@@ -26,14 +26,3 @@
     - name: source-highlight
     - name: jq
 
-- name: Install homebrew paclages required by vim
-  homebrew:
-    name: "{{ item.name }}"
-    install_options: "{{ item.options|default() }}"
-  with_items:
-    - name: vim
-    - name: neovim
-    - name: llvm
-    - name: cquery
-    - name: yamllint
-

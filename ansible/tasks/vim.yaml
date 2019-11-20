@@ -1,0 +1,43 @@
+---
+- name: Create vim-plug directory for vim
+  file:
+    state: directory
+    path: '~/.vim/autoload'
+    mode: '755'
+
+- name: Install vim-plug for vim
+  get_url:
+    url: 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    dest: '~/.vim/autoload/plug.vim'
+    mode: '644'
+
+- name: Create vim-plug directory for neovim
+  file:
+    state: directory
+    path: '~/.local/share/nvim/site/autoload'
+    mode: '755'
+
+- name: Install vim-plug for neovim
+  get_url:
+    url: 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    dest: '~/.local/share/nvim/site/autoload/plug.vim'
+    mode: '644'
+
+- name: Update homebrew
+  when: "ansible_os_family == 'Darwin'"
+  homebrew:
+    update_homebrew: 'yes'
+    upgrade_all: 'no'
+
+- name: Install vim and required packages for mac
+  when: "ansible_os_family == 'Darwin'"
+  homebrew:
+    name: "{{ item.name }}"
+    install_options: "{{ item.options|default() }}"
+  with_items:
+    - name: vim
+    - name: neovim
+    - name: llvm
+    - name: cquery
+    - name: yamllint
+
