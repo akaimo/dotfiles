@@ -10,10 +10,6 @@
       tags:
         - never
         - anyenv
-    - include: tasks/node.yaml
-      tags:
-        - never
-        - node
     - include: tasks/vim.yaml
       tags:
         - never
