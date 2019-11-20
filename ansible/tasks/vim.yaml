@@ -66,15 +66,14 @@
       {{ go_version.stdout }},
       {{ python_version.stdout }}
 
-- name: Install yaml language server
+- name: Install npm packages for vim
   npm:
-    name: yaml-language-server
+    name: "{{ item }}"
     global: 'yes'
-
-- name: Install php language server
-  npm:
-    name: intelephense
-    global: 'yes'
+  with_items:
+    - yaml-language-server
+    - intelephense
+    - prettier
 
 - name: Install go modules for vim
   shell: |
