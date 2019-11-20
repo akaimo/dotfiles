@@ -5,7 +5,9 @@
     upgrade_all: 'no'
 
 - name: Install homebrew packages
-  homebrew: name={{ item.name }} install_options={{ item.options|default() }}
+  homebrew:
+    name: "{{ item.name }}"
+    install_options: "{{ item.options|default() }}"
   with_items:
     - name: git
     - name: fzf
@@ -15,7 +17,9 @@
     - name: jq
 
 - name: Install homebrew paclages required by vim
-  homebrew: name={{ item.name }} install_options={{ item.options|default() }}
+  homebrew:
+    name: "{{ item.name }}"
+    install_options: "{{ item.options|default() }}"
   with_items:
     - name: vim
     - name: neovim
