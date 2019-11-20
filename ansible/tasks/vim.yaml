@@ -77,3 +77,11 @@
     - golang.org/x/lint/golint
     - golang.org/x/tools/cmd/goimports
 
+- name: Install python packages for vim
+  pip:
+    name:
+      - python-language-server
+      - black
+      - flake8
+    executable: pip3
+
