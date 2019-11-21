@@ -85,3 +85,7 @@
       - flake8
     executable: pip3
 
+- name: Request installation of vim plugin
+  debug:
+    msg: ":PlugInstall"
+
