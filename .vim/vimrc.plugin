@@ -121,6 +121,7 @@ nnoremap <Leader>b :Buffer<CR>
 
 " tree explorer
 Plug 'scrooloose/nerdtree'
+let NERDTreeShowHidden=1
 map <Leader>t :NERDTreeToggle<CR>
 
 " auto save

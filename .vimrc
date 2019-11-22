@@ -50,4 +50,8 @@ set scrolloff=5
 set vb t_vb=
 set novisualbell
 
+" search highlight
+set hlsearch
+nmap <Esc><Esc> :nohl<CR>
+
 filetype plugin indent on

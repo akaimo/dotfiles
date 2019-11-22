@@ -1,17 +1,23 @@
 # dotfiles
-## install
-```
-./dotfilesLink.sh
-```
 
-## vim
-```
-# install vim
-brew install vim
-
-# setup vim-plug
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-:PlugInstall
-```
+## usage
+- (mac only) install homebrew
+  - https://brew.sh/index_ja
+- install git
+  - mac: `brew install git`
+- clone dotfiles
+  - `git clone --recursive https://github.com/akaimo/dotfiles.git ~/dotfiles`
+- install ansible
+  - mac: `brew install ansible`
+- run basic playbook
+  - `make`
+- link dotfiles
+  - `./dotfilesLink.sh`
+  - `echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc`
+- install anyenv and language
+  - `make anyenv`
+- install vim
+  - `make vim`
+- install vim plugin
+  - `:PlugInstall`
 

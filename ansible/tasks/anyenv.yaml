@@ -1,0 +1,50 @@
+---
+- name: Install anyenv
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - repo: "https://github.com/anyenv/anyenv"
+      dest: "~/.anyenv"
+    - repo: "https://github.com/znz/anyenv-update.git"
+      dest: "~/.anyenv/plugins/anyenv-update"
+    - repo: "https://github.com/znz/anyenv-git.git"
+      dest: "~/.anyenv/plugins/anyenv-git"
+
+- name: Update anyenv
+  shell: |
+    eval "$(anyenv init -)"
+    anyenv update
+  args:
+    executable: /bin/bash
+
+- name: Install envs
+  shell: |
+    eval "$(anyenv init -)"
+    anyenv install --force-init
+    anyenv install {{ item.env }}
+    eval "$(anyenv init -)"
+  args:
+    executable: /bin/bash
+    creates: ~/.anyenv/envs/{{ item.env }}
+  with_items:
+    - env: nodenv
+    - env: goenv
+    - env: pyenv
+
+- name: Install language
+  shell: |
+    {{ item.env }} install {{ item.version  }}
+    {{ item.env }} rehash
+    {{ item.env }} global {{ item.version }}
+  args:
+    executable: /bin/bash
+    creates: ~/.anyenv/envs/{{ item.env }}/versions/{{ item.version  }}
+  with_items:
+    - env: nodenv
+      version: '{{ lang.node.version }}'
+    - env: goenv
+      version: '{{ lang.go.version }}'
+    - env: pyenv
+      version: '{{ lang.python3.version }}'
+

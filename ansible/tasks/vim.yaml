@@ -1,0 +1,91 @@
+---
+- name: Create vim-plug directory
+  file:
+    state: directory
+    path: "{{ item }}"
+    mode: '755'
+  with_items:
+    - '~/.vim/autoload'
+    - '~/.local/share/nvim/site/autoload'
+
+- name: Install vim-plug
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: '644'
+  with_items:
+    - url: 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      dest: '~/.vim/autoload/plug.vim'
+    - url: 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      dest: '~/.local/share/nvim/site/autoload/plug.vim'
+
+- name: Update homebrew
+  when: "ansible_os_family == 'Darwin'"
+  homebrew:
+    update_homebrew: 'yes'
+    upgrade_all: 'no'
+
+- name: Install vim and required packages for Mac
+  when: "ansible_os_family == 'Darwin'"
+  homebrew:
+    name: "{{ item.name }}"
+    install_options: "{{ item.options|default() }}"
+  with_items:
+    - name: vim
+    - name: neovim
+    - name: llvm
+    - name: cquery
+    - name: yamllint
+
+- name: language versions
+  shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+  register: lang_versions
+  with_items:
+    - node -v
+    - go version
+    - python -V
+
+- name: print versions
+  debug:
+    msg: "{{ item.stdout_lines }}"
+  with_items: "{{ lang_versions.results }}"
+  loop_control:
+    label: "{{ item.cmd | default(item) }}"
+  when: lang_versions.results is defined
+    and item.stdout_lines is defined
+
+- name: Install npm packages for vim
+  npm:
+    name: "{{ item }}"
+    global: 'yes'
+  with_items:
+    - yaml-language-server
+    - intelephense
+    - prettier
+
+- name: Install go modules for vim
+  shell: |
+    go get {{ item  }}@latest
+  environment:
+    GO111MODULE: 'on'
+  args:
+    executable: /bin/bash
+  with_items:
+    - golang.org/x/tools/gopls
+    - golang.org/x/lint/golint
+    - golang.org/x/tools/cmd/goimports
+
+- name: Install python packages for vim
+  pip:
+    name:
+      - python-language-server
+      - black
+      - flake8
+    executable: pip3
+
+- name: Request installation of vim plugin
+  debug:
+    msg: ":PlugInstall"
+

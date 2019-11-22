@@ -1,0 +1,46 @@
+# direnv
+eval "$(direnv hook zsh)"
+
+# anyenv
+eval "$(direnv hook zsh)"
+export ANY_ENV_HOME=$HOME/.anyenv
+export PATH=$PATH:$ANY_ENV_HOME/bin
+eval "$(anyenv init -)"
+
+# golang
+export GOPATH=$HOME/go
+export PATH=${GOPATH}/bin:${PATH}
+export GOENV_DISABLE_GOPATH=1
+
+# npm global bin path
+export PATH=$PATH:$(npm -g bin)
+
+# color the diff
+if [[ -x `which colordiff` ]]; then
+  alias diff='colordiff -u'
+else
+  alias diff='diff -u'
+fi
+
+# less settings
+# - color text
+# - display line numbers
+export LESS='-NR'
+export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
+
+# fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
+
+# my command
+fif() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  file=$(rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}")
+  less ${file}
+  echo ${file}
+}
+
+git_history() {
+  file=$(rg --files --hidden . | fzf --preview 'cat {}')
+  git log -p "$file"
+}
+
