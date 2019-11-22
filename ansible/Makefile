@@ -4,5 +4,5 @@ run:
 anyenv:
 	ansible-playbook -i .inventory playbook.yaml -t anyenv
 
-vim-install:
+vim:
 	ansible-playbook -i .inventory playbook.yaml -t vim
