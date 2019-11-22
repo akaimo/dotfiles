@@ -1,3 +1,6 @@
+# direnv
+eval "$(direnv hook zsh)"
+
 # anyenv
 eval "$(direnv hook zsh)"
 export ANY_ENV_HOME=$HOME/.anyenv

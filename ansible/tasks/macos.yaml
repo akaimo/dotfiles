@@ -25,4 +25,5 @@
     - name: colordiff
     - name: source-highlight
     - name: jq
+    - name: direnv
 
