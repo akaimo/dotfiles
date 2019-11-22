@@ -16,7 +16,7 @@
   remotes = remote -v
   d = diff
   delete-merged-branch = "!f() { git branch --merged|egrep -v '\\*|develop|master' | xargs git branch -d; };f"
-  history = "!f() { file=$(rg --files --hidden . | fzf --preview 'cat {}'); git log -p ${file}; };f"
+  history = "!f() { file=$(rg --files --hidden . | fzf --preview 'cat {}'); if [${file} = '']; then exit 1; fi; git log -p ${file}; };f"
 [color]
 	ui = 1
 [difftool "sourcetree"]
