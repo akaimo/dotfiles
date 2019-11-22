@@ -14,12 +14,8 @@
 - link dotfiles
   - `./dotfilesLink.sh`
   - `echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc`
-- install anyenv
+- install anyenv and language
   - `make anyenv`
-- install language using anyenv and set it globally
-  - python 3.6 or later
-  - node 12 or later
-  - go 1.13 or later
 - install vim
   - `make vim`
 - install vim plugin
