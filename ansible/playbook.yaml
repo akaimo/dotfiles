@@ -6,6 +6,12 @@
   tasks:
     - include: tasks/macos.yaml
       when: "ansible_os_family == 'Darwin'"
+    - include_vars:
+        file: vars/lang.yaml
+        name: lang
+      tags:
+        - never
+        - anyenv
     - include: tasks/anyenv.yaml
       tags:
         - never

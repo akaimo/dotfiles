@@ -31,3 +31,20 @@
     - env: nodenv
     - env: goenv
     - env: pyenv
+
+- name: Install language
+  shell: |
+    {{ item.env }} install {{ item.version  }}
+    {{ item.env }} rehash
+    {{ item.env }} global {{ item.version }}
+  args:
+    executable: /bin/bash
+    creates: ~/.anyenv/envs/{{ item.env }}/versions/{{ item.version  }}
+  with_items:
+    - env: nodenv
+      version: '{{ lang.node.version }}'
+    - env: goenv
+      version: '{{ lang.go.version }}'
+    - env: pyenv
+      version: '{{ lang.python3.version }}'
+
