@@ -31,6 +31,9 @@ export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 # fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
 
+# aliacs
+alias kc='kubectl'
+
 # my command
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
