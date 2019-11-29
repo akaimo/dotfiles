@@ -23,4 +23,6 @@
   - `make vim`
 - install vim plugin
   - `:PlugInstall`
+- (option) use ssh
+  - `git remote set-url origin git@github.com:akaimo/dotfiles.git`
 
