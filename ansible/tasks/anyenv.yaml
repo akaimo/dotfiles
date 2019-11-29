@@ -1,4 +1,12 @@
 ---
+- name: Echo PATH
+  command: echo "$PATH"
+  register: default_path
+
+- name: Echo anyenv PATH
+  command: echo "$HOME/.anyenv"
+  register: anyenv_home
+
 - name: Install anyenv
   git:
     repo: "{{ item.repo }}"
@@ -10,8 +18,13 @@
       dest: "~/.anyenv/plugins/anyenv-update"
     - repo: "https://github.com/znz/anyenv-git.git"
       dest: "~/.anyenv/plugins/anyenv-git"
+    - repo: "https://github.com/anyenv/anyenv-install.git"
+      dest: "~/.config/anyenv/anyenv-install"
 
 - name: Update anyenv
+  environment:
+    ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
+    PATH: "{{ anyenv_home.stdout }}/bin:{{ default_path.stdout }}"
   shell: |
     eval "$(anyenv init -)"
     anyenv update
@@ -19,11 +32,13 @@
     executable: /bin/bash
 
 - name: Install envs
+  environment:
+    ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
+    PATH: "{{ anyenv_home.stdout }}/bin:{{ default_path.stdout }}"
   shell: |
     eval "$(anyenv init -)"
     anyenv install --force-init
     anyenv install {{ item.env }}
-    eval "$(anyenv init -)"
   args:
     executable: /bin/bash
     creates: ~/.anyenv/envs/{{ item.env }}
@@ -33,7 +48,11 @@
     - env: pyenv
 
 - name: Install language
+  environment:
+    ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
+    PATH: "{{ anyenv_home.stdout }}/bin:{{ default_path.stdout }}"
   shell: |
+    eval "$(anyenv init -)"
     {{ item.env }} install {{ item.version  }}
     {{ item.env }} rehash
     {{ item.env }} global {{ item.version }}
