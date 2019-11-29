@@ -11,6 +11,8 @@
   - mac: `brew install ansible`
 - run basic playbook
   - `make`
+- setup prezto
+  - https://github.com/sorin-ionescu/prezto
 - link dotfiles
   - `./dotfilesLink.sh`
   - `echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc`
