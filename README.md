@@ -18,6 +18,7 @@
   - `echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc`
 - install anyenv and language
   - `make anyenv`
+  - `exec $SHELL -l`
 - install vim
   - `make vim`
 - install vim plugin
