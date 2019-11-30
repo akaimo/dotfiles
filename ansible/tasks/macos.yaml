@@ -27,4 +27,5 @@
     - name: jq
     - name: direnv
     - name: watch
+    - name: tree
 
