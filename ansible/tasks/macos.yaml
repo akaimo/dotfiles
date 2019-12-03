@@ -29,3 +29,9 @@
     - name: watch
     - name: tree
 
+- name: Create symbolic link fir diff-highlight
+  file:
+    src: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
+    dest: '/usr/local/bin/diff-highlight'
+    state: link
+
