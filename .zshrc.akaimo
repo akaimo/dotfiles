@@ -44,6 +44,8 @@ fif() {
 
 git_history() {
   file=$(rg --files --hidden . | fzf --preview 'cat {}')
-  git log -p "$file"
+  if [ -n "$file" ]; then
+    git log -p ${file}
+  fi
 }
 
