@@ -10,6 +10,25 @@
     dest: '~/.zprezto'
     update: 'no'
 
+- name: Setup prezto
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - src: '~/.zprezto/runcoms/zlogin'
+      dest: '~/.zlogin'
+    - src: '~/.zprezto/runcoms/zlogout'
+      dest: '~/.zlogout'
+    - src: '~/.zprezto/runcoms/zpreztorc'
+      dest: '~/.zpreztorc'
+    - src: '~/.zprezto/runcoms/zprofile'
+      dest: '~/.zprofile'
+    - src: '~/.zprezto/runcoms/zshenv'
+      dest: '~/.zshenv'
+    - src: '~/.zprezto/runcoms/zshrc'
+      dest: '~/.zshrc'
+
 - name: Please set up prezto
   debug:
     msg: "see: https://github.com/sorin-ionescu/prezto"
