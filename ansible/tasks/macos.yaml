@@ -29,6 +29,37 @@
     - src: '~/.zprezto/runcoms/zshrc'
       dest: '~/.zshrc'
 
+- name: Setup dotfiles
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - src: '~/dotfiles/.vimrc'
+      dest: '~/.vimrc'
+    - src: '~/dotfiles/.bashrc'
+      dest: '~/.bashrc'
+    - src: '~/dotfiles/.bash_profile'
+      dest: '~/.bash_profile'
+    - src: '~/dotfiles/.vim'
+      dest: '~/.vim'
+    - src: '~/dotfiles/.gitconfig'
+      dest: '~/.gitconfig'
+    - src: '~/dotfiles/.gitignore'
+      dest: '~/.gitignore'
+    - src: '~/dotfiles/.rubocop.yml'
+      dest: '~/.rubocop.yml'
+    - src: '~/dotfiles/.tmux.conf'
+      dest: '~/.tmux.conf'
+    - src: '~/dotfiles/.xvimrc'
+      dest: '~/.xvimrc'
+    - src: '~/dotfiles/.ideavimrc'
+      dest: '~/.ideavimrc'
+    - src: '~/dotfiles/.config/nvim'
+      dest: '~/.config/nvim'
+    - src: '~/dotfiles/.zshrc.akaimo'
+      dest: '~/.zshrc.akaimo'
+
 - name: Install homebrew packages
   homebrew:
     name: "{{ item.name }}"
