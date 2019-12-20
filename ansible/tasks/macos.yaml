@@ -29,10 +29,6 @@
     - src: '~/.zprezto/runcoms/zshrc'
       dest: '~/.zshrc'
 
-- name: Please set up prezto
-  debug:
-    msg: "see: https://github.com/sorin-ionescu/prezto"
-
 - name: Install homebrew packages
   homebrew:
     name: "{{ item.name }}"
