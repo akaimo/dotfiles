@@ -29,6 +29,15 @@
     - src: '~/.zprezto/runcoms/zshrc'
       dest: '~/.zshrc'
 
+- name: Check file .zshrc.akaimo
+  stat:
+    path: '~/.zshrc.akaimo'
+  register: zshrc_akaimo
+
+- name: Import .zshrc.akaimo
+  shell: 'echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc'
+  when: not zshrc_akaimo.stat.exists
+
 - name: Setup dotfiles
   file:
     src: "{{ item.src }}"
