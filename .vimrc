@@ -9,6 +9,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   endif
 endif
 
+autocmd BufNewFile,BufRead *.dig set filetype=yaml
 
 "graphical
 set number
