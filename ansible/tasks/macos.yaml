@@ -83,6 +83,7 @@
     - name: direnv
     - name: watch
     - name: tree
+    - name: bazel
 
 - name: Create symbolic link fir diff-highlight
   file:
