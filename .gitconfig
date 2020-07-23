@@ -8,7 +8,7 @@
   a = add --all
   co = checkout
   cm = commit
-  p = push -u origin
+  p = !git push -u origin `git rev-parse --abbrev-ref HEAD`
   f = fetch -p
   st = status -sb
   tags = tag -l
