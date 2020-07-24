@@ -7,6 +7,9 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   if filereadable(expand("~/.vim/vimrc.plugin"))
     source ~/.vim/vimrc.plugin
   endif
+  if filereadable(expand("~/.vim/vimrc.asyncomplete"))
+    source ~/.vim/vimrc.asyncomplete
+  endif
 endif
 
 autocmd BufNewFile,BufRead *.dig set filetype=yaml
