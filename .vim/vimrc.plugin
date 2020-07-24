@@ -68,6 +68,16 @@ au User lsp_setup call lsp#register_server({
  \ 'whitelist': ['yaml'],
  \ })
 
+if executable('terraform-lsp')
+  au User lsp_setup call lsp#register_server({
+   \ 'name': 'terraform-lsp',
+   \ 'cmd': {server_info->['terraform-lsp']},
+   \ 'whitelist': ['terraform','tf'],
+   \ })
+endif
+
+Plug 'hashivim/vim-terraform' , { 'for': 'terraform'}
+
 " Check syntax (linting) and fix files asynchronously
 Plug 'w0rp/ale'
 let g:ale_fix_on_save = 0
