@@ -9,6 +9,10 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 imap <F5> <Plug>(asyncomplete_force_refresh)
 
+let g:asyncomplete_log_file = '/tmp/vim.log'
+
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 Plug 'hrsh7th/vim-vsnip'
@@ -172,3 +176,20 @@ Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal = 0
 
 call plug#end()
+
+call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+   \ 'name': 'buffer',
+   \ 'allowlist': ['*'],
+   \ 'completor': function('asyncomplete#sources#buffer#completor'),
+   \ 'config': {
+   \    'max_buffer_size': 5000000,
+   \  },
+   \ }))
+
