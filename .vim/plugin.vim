@@ -1,3 +1,7 @@
+if !filereadable(expand("~/.vim/autoload/plug.vim"))
+  finish
+endif
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'prabirshrestha/vim-lsp'
@@ -164,9 +168,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'maximbaz/lightline-ale'
-if filereadable(expand("~/.config/nvim/vimrc.lightline"))
-  source ~/.config/nvim/vimrc.lightline
-endif
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 239

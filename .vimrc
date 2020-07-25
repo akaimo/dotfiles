@@ -3,14 +3,11 @@ colorscheme molokai
 
 let mapleader = "\<Space>"
 
-if filereadable(expand("~/.vim/autoload/plug.vim"))
-  if filereadable(expand("~/.vim/vimrc.plugin"))
-    source ~/.vim/vimrc.plugin
-  endif
-  if filereadable(expand("~/.vim/vimrc.asyncomplete"))
-    source ~/.vim/vimrc.asyncomplete
-  endif
+if filereadable(expand("~/.vim/plugin.vim"))
+  source ~/.vim/plugin.vim
 endif
+
+call map(sort(split(globpath('~/.vim', 'config/*.vim'))), {->[execute('exec "so" v:val')]})
 
 autocmd BufNewFile,BufRead *.dig set filetype=yaml
 
