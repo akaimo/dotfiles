@@ -1,7 +1,10 @@
+" see: https://github.com/cohama/lexima.vim/issues/34
+call lexima#init()
+
 " asyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : lexima#expand('<LT>CR>', 'i')
 imap <F5> <Plug>(asyncomplete_force_refresh)
 
 " vsnip
