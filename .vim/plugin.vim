@@ -36,25 +36,9 @@ Plug 'hashivim/vim-terraform' , { 'for': 'terraform'}
 
 " Check syntax (linting) and fix files asynchronously
 Plug 'w0rp/ale'
-let g:ale_fix_on_save = 0
-let g:ale_fix_on_text_changed = 'never'
-let g:ale_sign_column_always = 1
 
 nmap <C-L> :ALEFix<CR>
 nmap <C-A>p :ALEDetail<CR>
-
-let g:ale_linters = {
-\   'go': ['gopls', 'go vet', 'golint'],
-\   'python': ['flake8'],
-\   'yaml': ['yamllint'],
-\}
-let g:ale_fixers = {
-\   'go': ['gofmt', 'goimports'],
-\   'python': ['black', 'isort'],
-\   'yaml': ['prettier'],
-\}
-
-let g:ale_python_flake8_options = '--max-line-length=88'
 
 " Comment functions
 Plug 'tyru/caw.vim'
