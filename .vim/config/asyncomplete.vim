@@ -1,3 +1,9 @@
+if !isdirectory(expand("~/.vim/plugged/asyncomplete.vim"))
+  finish
+endif
+
+let g:asyncomplete_log_file = '/tmp/vim.log'
+
 call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
     \ 'whitelist': ['*'],
