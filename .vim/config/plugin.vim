@@ -2,13 +2,10 @@ if isdirectory(expand("~/.vim/plugged/nerdtree"))
   let NERDTreeShowHidden=1
 endif
 
-
 if isdirectory(expand("~/.vim/plugged/vim-auto-save"))
   let g:auto_save = 1
   let g:auto_save_in_insert_mode = 0
 endif
-
-
 
 if isdirectory(expand("~/.vim/plugged/indentLine"))
   let g:indentLine_color_term = 239
