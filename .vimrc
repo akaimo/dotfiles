@@ -9,8 +9,6 @@ endif
 
 call map(sort(split(globpath('~/.vim', 'config/*.vim'))), {->[execute('exec "so" v:val')]})
 
-autocmd BufNewFile,BufRead *.dig set filetype=yaml
-
 "graphical
 set number
 set title
