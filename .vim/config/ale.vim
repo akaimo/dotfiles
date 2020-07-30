@@ -14,6 +14,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   'go': ['gofmt', 'goimports'],
 \   'python': ['black', 'isort'],
+\   'terraform': ['terraform'],
 \   'yaml': ['prettier'],
 \}
 
