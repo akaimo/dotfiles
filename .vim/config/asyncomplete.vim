@@ -45,3 +45,10 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
    \  },
    \ }))
 
+call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
+    \ 'name': 'around',
+    \ 'allowlist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#around#completor'),
+    \ }))
+
