@@ -38,7 +38,7 @@ call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
 call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
    \ 'name': 'buffer',
    \ 'allowlist': ['*'],
-   \ 'priority': 10,
+   \ 'priority': 20,
    \ 'completor': function('asyncomplete#sources#buffer#completor'),
    \ 'config': {
    \    'max_buffer_size': 5000000,
