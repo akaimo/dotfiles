@@ -4,7 +4,10 @@ call lexima#init()
 " asyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : lexima#expand('<LT>CR>', 'i')
+" inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+" inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : lexima#expand('<LT>CR>', 'i')
+" inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() . "\<C-y>" : lexima#expand('<LT>CR>', 'i')
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : lexima#expand('<LT>CR>', 'i')
 imap <F5> <Plug>(asyncomplete_force_refresh)
 
 " vsnip
