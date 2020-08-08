@@ -53,4 +53,7 @@ set novisualbell
 set hlsearch
 nmap <Esc><Esc> :nohl<CR>
 
+" see: https://github.com/vim-jp/issues/issues/1076
+set redrawtime=10000
+
 filetype plugin indent on
