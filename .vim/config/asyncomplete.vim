@@ -42,3 +42,5 @@ call asyncomplete#register_source(asyncomplete#sources#around#get_source_options
     \ 'completor': function('asyncomplete#sources#around#completor'),
     \ }))
 
+let g:asyncomplete_around_range = 50
+
