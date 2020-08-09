@@ -67,3 +67,11 @@ if executable('terraform-lsp')
    \ })
 endif
 
+if executable('vim-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'vim-language-server',
+        \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/vim-language-server/bin/index.js'), '--stdio']},
+        \ 'whitelist': ['vim'],
+        \ })
+endif
+
