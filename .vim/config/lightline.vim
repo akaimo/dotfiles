@@ -32,12 +32,22 @@ function! MyReadonly()
   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
 endfunction
 
+function! s:optimize_filename()
+  let l:max = 30
+  let l:len = len(expand('%:F'))
+  if l:len > l:max
+    let l:s = l:len - l:max
+    return '...' . expand('%:F')[l:s:]
+  endif
+  return expand('%:F')
+endfunction
+
 function! MyFilename()
   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
         \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
         \  &ft == 'unite' ? unite#get_status_string() :
         \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ '' != expand('%:F') ? s:optimize_filename() : '[No Name]') .
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
