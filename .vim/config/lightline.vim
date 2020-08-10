@@ -33,13 +33,16 @@ function! MyReadonly()
 endfunction
 
 function! s:optimize_filename()
+  let l:path = expand('%:F')
   let l:max = 30
-  let l:len = len(expand('%:F'))
-  if l:len > l:max
-    let l:s = l:len - l:max
-    return '...' . expand('%:F')[l:s:]
+  if len(l:path) > l:max
+    let l:name = split(l:path, '/')
+    if len(l:name) < 6
+      return l:path
+    endif
+    return l:name[0] . '/' . l:name[1] . '/.../' . l:name[-3] . '/' . l:name[-2] . '/' . l:name[-1]
   endif
-  return expand('%:F')
+  return l:path
 endfunction
 
 function! MyFilename()
