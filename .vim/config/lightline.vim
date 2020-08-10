@@ -35,6 +35,7 @@ endfunction
 function! s:optimize_filename()
   let l:path = expand('%:F')
   let l:max = 30
+  let l:path = substitute(l:path, '^' . getcwd() . '/', '', 'g')
   if len(l:path) > l:max
     let l:name = split(l:path, '/')
     if len(l:name) < 6
