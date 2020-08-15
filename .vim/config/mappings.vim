@@ -49,6 +49,15 @@ nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>s :Rg<CR>
 nnoremap <Leader>b :Buffer<CR>
 
-" nerdtree
-map <Leader>t :NERDTreeToggle<CR>
+" fern.vim
+map <Leader>t :Fern . -reveal=% -drawer -toggle<CR>
+
+function! s:init_fern() abort
+  nmap <silent><buffer> <CR> <Plug>(fern-action-open)<ESC><BAR>:FernDo close<CR>
+endfunction
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
 

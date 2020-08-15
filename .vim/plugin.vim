@@ -30,7 +30,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " tree explorer
-Plug 'scrooloose/nerdtree'
+Plug 'lambdalisue/fern.vim'
 
 " auto save
 Plug 'vim-scripts/vim-auto-save'

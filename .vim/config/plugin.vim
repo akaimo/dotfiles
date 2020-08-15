@@ -16,3 +16,7 @@ if isdirectory(expand("~/.vim/plugged/vim-json"))
   let g:vim_json_syntax_conceal = 0
 endif
 
+if isdirectory(expand("~/.vim/plugged/fern.vim"))
+  let g:fern#default_hidden = 1
+endif
+
