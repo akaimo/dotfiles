@@ -32,12 +32,26 @@ function! MyReadonly()
   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
 endfunction
 
+function! s:optimize_filename()
+  let l:path = expand('%:F')
+  let l:max = 30
+  let l:path = substitute(l:path, '^' . getcwd() . '/', '', 'g')
+  if len(l:path) > l:max
+    let l:name = split(l:path, '/')
+    if len(l:name) < 6
+      return l:path
+    endif
+    return l:name[0] . '/' . l:name[1] . '/.../' . l:name[-3] . '/' . l:name[-2] . '/' . l:name[-1]
+  endif
+  return l:path
+endfunction
+
 function! MyFilename()
   return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
         \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
         \  &ft == 'unite' ? unite#get_status_string() :
         \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ '' != expand('%:F') ? s:optimize_filename() : '[No Name]') .
         \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 

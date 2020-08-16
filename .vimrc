@@ -3,13 +3,11 @@ colorscheme molokai
 
 let mapleader = "\<Space>"
 
-if filereadable(expand("~/.vim/autoload/plug.vim"))
-  if filereadable(expand("~/.vim/vimrc.plugin"))
-    source ~/.vim/vimrc.plugin
-  endif
+if filereadable(expand("~/.vim/plugin.vim"))
+  source ~/.vim/plugin.vim
 endif
 
-autocmd BufNewFile,BufRead *.dig set filetype=yaml
+call map(sort(split(globpath('~/.vim', 'config/*.vim'))), {->[execute('exec "so" v:val')]})
 
 "graphical
 set number
@@ -54,5 +52,8 @@ set novisualbell
 " search highlight
 set hlsearch
 nmap <Esc><Esc> :nohl<CR>
+
+" see: https://github.com/vim-jp/issues/issues/1076
+set redrawtime=10000
 
 filetype plugin indent on
