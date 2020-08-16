@@ -28,19 +28,23 @@ endfunction
 
 let g:asyncomplete_preprocessor = [function('s:sort_by_priority_preprocessor')]
 
-call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
+if isdirectory(expand("~/.vim/plugged/asyncomplete-file.vim"))
+  call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+      \ 'name': 'file',
+      \ 'whitelist': ['*'],
+      \ 'priority': 10,
+      \ 'completor': function('asyncomplete#sources#file#completor')
+      \ }))
+endif
 
-call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
-    \ 'name': 'around',
-    \ 'allowlist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#around#completor'),
-    \ }))
+if isdirectory(expand("~/.vim/plugged/asyncomplete-around.vim"))
+  call asyncomplete#register_source(asyncomplete#sources#around#get_source_options({
+      \ 'name': 'around',
+      \ 'allowlist': ['*'],
+      \ 'priority': 10,
+      \ 'completor': function('asyncomplete#sources#around#completor'),
+      \ }))
 
-let g:asyncomplete_around_range = 50
+  let g:asyncomplete_around_range = 50
+endif
 
