@@ -12,7 +12,7 @@ let g:ale_linters = {
 \   'yaml': ['yamllint'],
 \}
 let g:ale_fixers = {
-\   'go': ['gofmt'],
+\   'go': ['gofmt', 'goimports'],
 \   'python': ['black', 'isort'],
 \   'terraform': ['terraform'],
 \   'yaml': ['prettier'],
