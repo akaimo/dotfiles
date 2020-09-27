@@ -9,7 +9,6 @@ let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
 nnoremap <C-]> :LspDefinition<CR>
 nnoremap <Leader>h :LspHover<CR>
-nnoremap <Leader>hh <c-w><c-z>
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
