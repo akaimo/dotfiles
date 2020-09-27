@@ -25,7 +25,18 @@ smap <expr> <C-b> vsnip#available(-1) ? '<Plug>(vsnip-jump-prev)'      : '<C-b>'
 
 " ALE
 nmap <C-L> :ALEFix<CR>
-nmap <C-A>p :ALEDetail<CR>
+
+function! PreviewWindowOpened()
+    for nr in range(1, winnr('$'))
+        if getwinvar(nr, "&pvw") == 1
+            " found a preview
+            return 1
+        endif
+    endfor
+    return 0
+endfunction
+
+nmap <expr> <Leader>p PreviewWindowOpened() ? ':pc<CR>' : ':ALEDetail<CR>'
 
 " caw.vim
 nmap <C-K> <Plug>(caw:zeropos:toggle)
