@@ -4,6 +4,7 @@
   connection: local
   become: 'no'
   tasks:
+    - include: tasks/zsh.yaml
     - include: tasks/macos.yaml
       when: "ansible_os_family == 'Darwin'"
     - include_vars:
