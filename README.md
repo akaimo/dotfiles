@@ -3,12 +3,11 @@
 ## usage
 - (mac only) install homebrew
   - https://brew.sh/index_ja
-- install git
-  - mac: `brew install git`
+- install tools
+  - mac: `brew install git ansible`
+  - debian: `apt install ansible`
 - clone dotfiles
   - `git clone --recursive https://github.com/akaimo/dotfiles.git ~/dotfiles`
-- install ansible
-  - mac: `brew install ansible`
 - run basic playbook
   - `make`
   - `exec $SHELL -l`
