@@ -32,7 +32,7 @@
   shell: 'echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc'
   when: not zshrc_akaimo.stat.exists
 
-- name: Setup prezto
+- name: Setup my config
   file:
     src: '~/dotfiles/.zshrc.akaimo'
     dest: '~/.zshrc.akaimo'
