@@ -1,5 +1,5 @@
 run:
-	ansible-playbook -i .inventory playbook.yaml
+	ansible-playbook -i .inventory playbook.yaml --ask-become-pass
 
 anyenv:
 	ansible-playbook -i .inventory playbook.yaml -t anyenv
