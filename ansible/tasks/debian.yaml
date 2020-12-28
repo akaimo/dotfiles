@@ -19,3 +19,19 @@
       dest: '~/.gitconfig'
     - src: '~/dotfiles/.gitignore'
       dest: '~/.gitignore'
+
+- name: Install apt packages
+  become: yes
+  become_method: sudo
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name:
+      - git
+      - fzf
+      - ripgrep
+      - colordiff
+      - source-highlight
+      - jq
+      - direnv
+      - tree
