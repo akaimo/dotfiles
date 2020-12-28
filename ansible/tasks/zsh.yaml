@@ -38,3 +38,8 @@
     dest: '~/.zshrc.akaimo'
     state: link
 
+- name: set default shell
+  become: yes
+  become_method: sudo
+  shell: 'chsh -s /bin/zsh {{ the_user }}'
+
