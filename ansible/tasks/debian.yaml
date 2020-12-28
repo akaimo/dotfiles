@@ -1,0 +1,11 @@
+- name: change mode for diff-highlight
+  file:
+    path: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
+    mode: '755'
+
+- name: Create symbolic link for diff-highlight
+  file:
+    src: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
+    dest: '/usr/local/bin/diff-highlight'
+    state: link
+

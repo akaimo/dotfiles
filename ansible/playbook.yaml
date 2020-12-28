@@ -7,6 +7,8 @@
     - include: tasks/zsh.yaml
       vars:
         the_user: "{{ ansible_user_id }}"
+    - include: tasks/debian.yaml
+      when: "ansible_os_family == 'Debian'"
     - include: tasks/macos.yaml
       when: "ansible_os_family == 'Darwin'"
     - include_vars:
