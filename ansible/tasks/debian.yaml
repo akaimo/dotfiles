@@ -35,3 +35,4 @@
       - jq
       - direnv
       - tree
+      - python-is-python3
