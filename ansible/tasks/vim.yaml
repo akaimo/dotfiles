@@ -37,7 +37,22 @@
     - name: cquery
     - name: yamllint
 
+- name: Install vim and required packages for Debian
+  when: "ansible_os_family == 'Debian'"
+  become: yes
+  become_method: sudo
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name:
+      - vim
+      - neovim
+      - python3-neovim
+      - llvm
+      - yamllint
+
 - name: Install pynvim in system python
+  when: "ansible_os_family == 'Darwin'"
   shell: /usr/local/bin/pip3 install pynvim
   args:
     executable: /bin/bash
