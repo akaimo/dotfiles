@@ -69,6 +69,7 @@
       - libreadline-dev
 
 - name: Install language
+  when: "ansible_os_family == 'Darwin'"
   environment:
     ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
     PATH: "{{ anyenv_home.stdout }}/bin:{{ default_path.stdout }}"
@@ -87,9 +88,3 @@
       version: '{{ lang.go.version }}'
     - env: pyenv
       version: '{{ lang.python3.version }}'
-
-- name: install ansible python module
-  when: "ansible_os_family == 'Debian'"
-  shell: ~/.anyenv/envs/pyenv/shims/pip install ansible
-  args:
-    executable: /bin/bash
