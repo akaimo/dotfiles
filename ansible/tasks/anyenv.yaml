@@ -88,3 +88,8 @@
     - env: pyenv
       version: '{{ lang.python3.version }}'
 
+- name: install ansible python module
+  when: "ansible_os_family == 'Debian'"
+  shell: ~/.anyenv/envs/pyenv/shims/pip install ansible
+  args:
+    executable: /bin/bash
