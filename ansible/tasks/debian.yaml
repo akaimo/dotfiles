@@ -36,6 +36,3 @@
       - direnv
       - tree
       - python-is-python3
-      - golang
-      - nodejs
-      - npm

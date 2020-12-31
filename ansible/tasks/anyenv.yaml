@@ -69,7 +69,6 @@
       - libreadline-dev
 
 - name: Install language
-  when: "ansible_os_family == 'Darwin'"
   environment:
     ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
     PATH: "{{ anyenv_home.stdout }}/bin:{{ default_path.stdout }}"
@@ -86,5 +85,3 @@
       version: '{{ lang.node.version }}'
     - env: goenv
       version: '{{ lang.go.version }}'
-    - env: pyenv
-      version: '{{ lang.python3.version }}'
