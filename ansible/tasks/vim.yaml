@@ -1,4 +1,22 @@
 ---
+- name: Create config directory
+  file:
+    path: ~/.config/nvim
+    state: directory
+
+- name: Setup dotfiles
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - src: '~/dotfiles/.vimrc'
+      dest: '~/.vimrc'
+    - src: '~/dotfiles/.vim'
+      dest: '~/.vim'
+    - src: '~/dotfiles/.config/nvim'
+      dest: '~/.config/nvim'
+
 - name: Create vim-plug directory
   file:
     state: directory
