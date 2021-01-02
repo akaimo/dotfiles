@@ -30,6 +30,7 @@ augroup LspGo
       \     'usePlaceholders': v:true,
       \     'completionDocumentation': v:true,
       \     'watchFileChanges': v:true,
+      \     'experimentalWorkspaceModule': v:true,
       \   }},
       \ })
   autocmd FileType go setlocal omnifunc=lsp#complete
