@@ -49,6 +49,11 @@ source <(kubectl completion zsh)
 complete -F __start_kubectl k
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+# terraform
+alias tf='terraform'
+alias tfp='terraform plan'
+alias tfa='terraform apply'
+
 # my command
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
