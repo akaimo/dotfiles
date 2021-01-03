@@ -1,0 +1,11 @@
+{
+  "Function": {
+    "prefix": "func",
+    "body": [
+      "func ${1:name}(${2:var}) {",
+      "\t$3",
+      "}"
+    ],
+    "description": "..."
+  }
+}
