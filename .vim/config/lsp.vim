@@ -9,7 +9,6 @@ let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 
 nnoremap <C-]> :LspDefinition<CR>
 nnoremap <Leader>h :LspHover<CR>
-nnoremap <Leader>hh <c-w><c-z>
 
 if executable('clangd')
     au User lsp_setup call lsp#register_server({
@@ -31,6 +30,7 @@ augroup LspGo
       \     'usePlaceholders': v:true,
       \     'completionDocumentation': v:true,
       \     'watchFileChanges': v:true,
+      \     'experimentalWorkspaceModule': v:true,
       \   }},
       \ })
   autocmd FileType go setlocal omnifunc=lsp#complete

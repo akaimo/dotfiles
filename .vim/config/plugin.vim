@@ -20,3 +20,7 @@ if isdirectory(expand("~/.vim/plugged/fern.vim"))
   let g:fern#default_hidden = 1
 endif
 
+if isdirectory(expand("~/.vim/plugged/vim-vsnip"))
+  let g:vsnip_snippet_dir = expand('~/.vim/vsnip')
+endif
+

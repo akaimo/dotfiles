@@ -84,6 +84,7 @@
     - name: watch
     - name: tree
     - name: bazel
+    - name: kubectx
 
 - name: Create symbolic link fir diff-highlight
   file:

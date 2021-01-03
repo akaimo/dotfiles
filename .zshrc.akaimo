@@ -34,8 +34,25 @@ export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 # fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
 
-# aliacs
-alias kc='kubectl'
+# kubectl
+alias k='kubectl'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias ka='kubectl apply'
+alias kl='kubectl logs -f'
+alias ke='kubectl exec -it'
+alias krm='kubectl delete'
+alias wk='watch kubectl'
+alias wkg='watch kubectl get'
+alias wkd='watch kubectl describe'
+source <(kubectl completion zsh)
+complete -F __start_kubectl k
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# terraform
+alias tf='terraform'
+alias tfp='terraform plan'
+alias tfa='terraform apply'
 
 # my command
 fif() {
