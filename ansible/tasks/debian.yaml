@@ -36,6 +36,18 @@
   apt_repository:
     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
 
+- name: Add helm GPG key
+  become: yes
+  become_method: sudo
+  apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+
+- name: Add helm APT repository
+  become: yes
+  become_method: sudo
+  apt_repository:
+    repo: deb https://baltocdn.com/helm/stable/debian/ all main
+
 - name: Install apt packages
   become: yes
   become_method: sudo
@@ -55,3 +67,4 @@
       - python3-pip
       - python-is-python3
       - kubectl
+      - helm
