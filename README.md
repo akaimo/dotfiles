@@ -5,7 +5,7 @@
   - https://brew.sh/index_ja
 - install tools
   - mac: `brew install git ansible`
-  - debian: `apt install zsh ansible make`
+  - debian: `apt install zsh ansible make git`
 - clone dotfiles
   - `git clone --recursive https://github.com/akaimo/dotfiles.git ~/dotfiles`
 - run basic playbook
