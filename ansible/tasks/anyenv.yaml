@@ -47,6 +47,27 @@
     - env: goenv
     - env: pyenv
 
+- name: Install build dependencies
+  when: "ansible_os_family == 'Debian'"
+  become: yes
+  become_method: sudo
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name:
+      - build-essential
+      - zlib1g-dev
+      - libffi-dev
+      - libssl-dev
+      - libbz2-dev
+      - libncursesw5-dev
+      - libgdbm-dev
+      - liblzma-dev
+      - libsqlite3-dev
+      - tk-dev
+      - uuid-dev
+      - libreadline-dev
+
 - name: Install language
   environment:
     ANY_ENV_HOME: "{{ anyenv_home.stdout }}"
@@ -64,6 +85,3 @@
       version: '{{ lang.node.version }}'
     - env: goenv
       version: '{{ lang.go.version }}'
-    - env: pyenv
-      version: '{{ lang.python3.version }}'
-

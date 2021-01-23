@@ -1,0 +1,39 @@
+- name: change mode for diff-highlight
+  file:
+    path: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
+    mode: '755'
+
+- name: Create symbolic link for diff-highlight
+  file:
+    src: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
+    dest: '/usr/local/bin/diff-highlight'
+    state: link
+
+- name: Setup dotfiles
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - src: '~/dotfiles/.gitconfig'
+      dest: '~/.gitconfig'
+    - src: '~/dotfiles/.gitignore'
+      dest: '~/.gitignore'
+
+- name: Install apt packages
+  become: yes
+  become_method: sudo
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name:
+      - git
+      - fzf
+      - ripgrep
+      - colordiff
+      - source-highlight
+      - jq
+      - direnv
+      - tree
+      - python3-pip
+      - python-is-python3

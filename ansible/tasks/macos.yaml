@@ -4,40 +4,6 @@
     update_homebrew: 'yes'
     upgrade_all: 'no'
 
-- name: Install prezto
-  git:
-    repo: 'https://github.com/sorin-ionescu/prezto.git'
-    dest: '~/.zprezto'
-    update: 'no'
-
-- name: Setup prezto
-  file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: link
-  with_items:
-    - src: '~/.zprezto/runcoms/zlogin'
-      dest: '~/.zlogin'
-    - src: '~/.zprezto/runcoms/zlogout'
-      dest: '~/.zlogout'
-    - src: '~/.zprezto/runcoms/zpreztorc'
-      dest: '~/.zpreztorc'
-    - src: '~/.zprezto/runcoms/zprofile'
-      dest: '~/.zprofile'
-    - src: '~/.zprezto/runcoms/zshenv'
-      dest: '~/.zshenv'
-    - src: '~/.zprezto/runcoms/zshrc'
-      dest: '~/.zshrc'
-
-- name: Check file .zshrc.akaimo
-  stat:
-    path: '~/.zshrc.akaimo'
-  register: zshrc_akaimo
-
-- name: Import .zshrc.akaimo
-  shell: 'echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc'
-  when: not zshrc_akaimo.stat.exists
-
 - name: Setup dotfiles
   file:
     src: "{{ item.src }}"
