@@ -8,7 +8,7 @@ eval "$(direnv hook zsh)"
 eval "$(direnv hook zsh)"
 export ANY_ENV_HOME=$HOME/.anyenv
 export PATH=$PATH:$ANY_ENV_HOME/bin
-eval "$(anyenv init -)"
+eval "$(anyenv init - zsh)"
 
 # golang
 export GOPATH=$HOME/go

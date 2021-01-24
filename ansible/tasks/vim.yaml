@@ -9,6 +9,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
+    force: true
   with_items:
     - src: '~/dotfiles/.vimrc'
       dest: '~/.vimrc'

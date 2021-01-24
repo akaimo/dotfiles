@@ -1,9 +1,13 @@
 - name: change mode for diff-highlight
+  become: yes
+  become_method: sudo
   file:
     path: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
     mode: '755'
 
 - name: Create symbolic link for diff-highlight
+  become: yes
+  become_method: sudo
   file:
     src: '/usr/share/doc/git/contrib/diff-highlight/diff-highlight'
     dest: '/usr/local/bin/diff-highlight'
@@ -20,6 +24,30 @@
     - src: '~/dotfiles/.gitignore'
       dest: '~/.gitignore'
 
+- name: Add K8S GPG key
+  become: yes
+  become_method: sudo
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: Add K8S APT repository
+  become: yes
+  become_method: sudo
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+
+- name: Add helm GPG key
+  become: yes
+  become_method: sudo
+  apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+
+- name: Add helm APT repository
+  become: yes
+  become_method: sudo
+  apt_repository:
+    repo: deb https://baltocdn.com/helm/stable/debian/ all main
+
 - name: Install apt packages
   become: yes
   become_method: sudo
@@ -27,6 +55,7 @@
     update_cache: yes
     cache_valid_time: 3600
     name:
+      - curl
       - git
       - fzf
       - ripgrep
@@ -37,3 +66,5 @@
       - tree
       - python3-pip
       - python-is-python3
+      - kubectl
+      - helm
