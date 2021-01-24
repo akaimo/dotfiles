@@ -36,7 +36,7 @@ set nowritebackup
 set nobackup
 
 "control
-set clipboard=unnamed,autoselect
+set clipboard=unnamed,autoselect,unnamedplus
 set nrformats-=octal
 set hidden
 set history=50
