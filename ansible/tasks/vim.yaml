@@ -64,7 +64,7 @@
     update_cache: yes
     cache_valid_time: 3600
     name:
-      - vim
+      - vim-gtk
       - neovim
       - python3-neovim
       - llvm
