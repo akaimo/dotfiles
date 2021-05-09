@@ -59,12 +59,12 @@ au User lsp_setup call lsp#register_server({
  \ 'whitelist': ['yaml'],
  \ })
 
-if executable('terraform-lsp')
-  au User lsp_setup call lsp#register_server({
-   \ 'name': 'terraform-lsp',
-   \ 'cmd': {server_info->['terraform-lsp']},
-   \ 'whitelist': ['terraform','tf'],
-   \ })
+if executable('terraform-ls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'terraform-ls',
+        \ 'cmd': {server_info->['terraform-ls', 'serve']},
+        \ 'whitelist': ['terraform'],
+        \ })
 endif
 
 if executable('vim-language-server')
