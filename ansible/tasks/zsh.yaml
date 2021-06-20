@@ -9,6 +9,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
+    force: yes
   with_items:
     - src: '~/.zprezto/runcoms/zlogin'
       dest: '~/.zlogin'
@@ -45,6 +46,6 @@
 
 - name: Configure prezto
   shell: |
-    sed -i 's/sorin/steeef/g' ~/.zprezto/runcoms/zpreztorc
-    sed -i 's/emacs/vi/g' ~/.zprezto/runcoms/zpreztorc
+    sed -i '' 's/sorin/steeef/g' ~/.zprezto/runcoms/zpreztorc
+    sed -i '' 's/emacs/vi/g' ~/.zprezto/runcoms/zpreztorc
 
