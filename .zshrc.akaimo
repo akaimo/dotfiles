@@ -45,6 +45,9 @@ export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 # fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
 
+# jumo
+eval "$(jump shell --bind=z)"
+
 # kubectl
 alias k='kubectl'
 alias kg='kubectl get'
