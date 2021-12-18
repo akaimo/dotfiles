@@ -57,7 +57,7 @@ alias wk='watch kubectl'
 alias wkg='watch kubectl get'
 alias wkd='watch kubectl describe'
 source <(kubectl completion zsh)
-complete -F __start_kubectl k
+compdef __start_kubectl k
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # terraform
