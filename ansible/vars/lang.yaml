@@ -2,6 +2,6 @@
 node:
   version: 12.13.0
 go:
-  version: 1.13.4
+  version: 1.16.5
 python3:
   version: 3.6.1

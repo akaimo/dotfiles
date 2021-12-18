@@ -52,9 +52,17 @@
     - name: bazel
     - name: kubectx
 
-- name: Create symbolic link fir diff-highlight
+- name: Create symbolic link fir diff-highlight (Intel)
+  when: "ansible_architecture == 'x86_64'"
   file:
     src: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
     dest: '/usr/local/bin/diff-highlight'
+    state: link
+
+- name: Create symbolic link fir diff-highlight (ARM)
+  when: "ansible_architecture == 'arm64'"
+  file:
+    src: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
+    dest: '/opt/homebrew/bin/diff-highlight'
     state: link
 

@@ -53,7 +53,7 @@
     - name: vim
     - name: neovim
     - name: llvm
-    - name: cquery
+#    - name: cquery
     - name: yamllint
 
 - name: Install vim and required packages for Debian
@@ -72,7 +72,7 @@
 
 - name: Install pynvim in system python
   when: "ansible_os_family == 'Darwin'"
-  shell: /usr/local/bin/pip3 install pynvim
+  shell: /usr/bin/pip3 install pynvim --user
   args:
     executable: /bin/bash
 
