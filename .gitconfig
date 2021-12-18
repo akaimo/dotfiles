@@ -19,6 +19,7 @@
   history = "!f() { file=$(rg --files --hidden . | fzf --preview 'cat {}'); if [ -n \"${file}\" ]; then git log -p ${file}; fi;  };f"
 [color]
 	ui = 1
+	status = always
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
