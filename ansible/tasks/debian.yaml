@@ -68,3 +68,14 @@
       - python-is-python3
       - kubectl
       - helm
+
+- name: Download jump command
+  ansible.builtin.get_url:
+    url: https://github.com/gsamokovarov/jump/releases/download/v0.50.0/jump_0.50.0_amd64.deb
+    dest: /tmp
+
+- name: Install jump command
+  become: yes
+  become_method: sudo
+  ansible.builtin.apt:
+    deb: /tmp/jump_0.50.0_amd64.deb

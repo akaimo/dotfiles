@@ -51,6 +51,7 @@
     - name: tree
     - name: bazel
     - name: kubectx
+    - name: jump
 
 - name: Create symbolic link fir diff-highlight (Intel)
   when: "ansible_architecture == 'x86_64'"
