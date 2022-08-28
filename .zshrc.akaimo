@@ -25,7 +25,7 @@ eval "$(anyenv init - zsh)"
 export GOPATH=$HOME/go
 export PATH=${GOPATH}/bin:${PATH}
 export GOENV_DISABLE_GOPATH=1
-export GOENV_DISABLE_GOROOT=1
+# export GOENV_DISABLE_GOROOT=1
 
 # npm global bin path
 export PATH=$PATH:$(npm -g bin)
@@ -85,4 +85,6 @@ git_history() {
     git log -p ${file}
   fi
 }
+
+alias x86='arch -x86_64 zsh'
 
