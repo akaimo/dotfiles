@@ -69,6 +69,8 @@ alias tf='terraform'
 alias tfp='terraform plan'
 alias tfa='terraform apply'
 
+export GPG_TTY=$(tty)
+
 # my command
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
