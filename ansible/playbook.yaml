@@ -4,12 +4,12 @@
   connection: local
   become: 'no'
   tasks:
-    - include: tasks/zsh.yaml
+    - import_tasks: tasks/zsh.yaml
       vars:
         the_user: "{{ ansible_user_id }}"
-    - include: tasks/debian.yaml
+    - import_tasks: tasks/debian.yaml
       when: "ansible_os_family == 'Debian'"
-    - include: tasks/macos.yaml
+    - import_tasks: tasks/macos.yaml
       when: "ansible_os_family == 'Darwin'"
     - include_vars:
         file: vars/lang.yaml
@@ -17,11 +17,11 @@
       tags:
         - never
         - anyenv
-    - include: tasks/anyenv.yaml
+    - import_tasks: tasks/anyenv.yaml
       tags:
         - never
         - anyenv
-    - include: tasks/vim.yaml
+    - import_tasks: tasks/vim.yaml
       tags:
         - never
         - vim
