@@ -1,6 +1,6 @@
 [user]
 	name = akaimo
-	email = kawashu0723@gmail.com
+	email = mail@akaimo.com
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
