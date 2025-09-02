@@ -30,6 +30,9 @@ export GOENV_DISABLE_GOPATH=1
 # npm global bin path
 export PATH=$PATH:$(npm -g bin)
 
+# bun global bin path
+export PATH="$PATH:$HOME/.bun/bin"
+
 # color the diff
 if [[ -x `which colordiff` ]]; then
   alias diff='colordiff -u'
