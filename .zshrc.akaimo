@@ -28,7 +28,7 @@ export GOENV_DISABLE_GOPATH=1
 # export GOENV_DISABLE_GOROOT=1
 
 # npm global bin path
-export PATH=$PATH:$(npm -g bin)
+export PATH="$PATH:$(npm prefix -g)/bin"
 
 # bun global bin path
 export PATH="$PATH:$HOME/.bun/bin"
