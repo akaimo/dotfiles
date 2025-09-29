@@ -55,6 +55,13 @@
     - name: gpg
     - name: pinentry-mac
 
+- name: Install homebrew cask packages
+  community.general.homebrew_cask:
+    name: "{{ item.name }}"
+  with_items:
+    - name: jordanbaird-ice
+    - name: browserosaurus
+
 - name: Create symbolic link fir diff-highlight (Intel)
   when: "ansible_architecture == 'x86_64'"
   file:
