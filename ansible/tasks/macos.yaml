@@ -46,6 +46,7 @@
     - name: colordiff
     - name: source-highlight
     - name: jq
+    - name: yq
     - name: direnv
     - name: watch
     - name: tree
@@ -54,6 +55,7 @@
     - name: jump
     - name: gpg
     - name: pinentry-mac
+    - name: 1password-cli
 
 - name: Install homebrew cask packages
   community.general.homebrew_cask:
