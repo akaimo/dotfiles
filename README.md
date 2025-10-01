@@ -11,9 +11,6 @@
 - run basic playbook
   - `make`
   - `exec $SHELL -l`
-- install anyenv and language
-  - `make anyenv`
-  - `exec $SHELL -l`
 - install vim
   - `make vim`
 - install vim plugin

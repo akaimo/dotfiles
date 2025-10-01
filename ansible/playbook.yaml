@@ -11,16 +11,6 @@
       when: "ansible_os_family == 'Debian'"
     - import_tasks: tasks/macos.yaml
       when: "ansible_os_family == 'Darwin'"
-    - include_vars:
-        file: vars/lang.yaml
-        name: lang
-      tags:
-        - never
-        - anyenv
-    - import_tasks: tasks/anyenv.yaml
-      tags:
-        - never
-        - anyenv
     - import_tasks: tasks/vim.yaml
       tags:
         - never

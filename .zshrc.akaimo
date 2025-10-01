@@ -9,12 +9,6 @@ export EDITOR=vim
 # direnv
 eval "$(direnv hook zsh)"
 
-# anyenv
-eval "$(direnv hook zsh)"
-export ANY_ENV_HOME=$HOME/.anyenv
-export PATH=$PATH:$ANY_ENV_HOME/bin
-eval "$(anyenv init - zsh)"
-
 # mise
 eval "$(mise activate zsh)"
 
