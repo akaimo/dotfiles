@@ -68,9 +68,9 @@ compdef __start_kubectl k
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # terraform
-alias tf='terraform'
-alias tfp='terraform plan --parallelism=30'
-alias tfa='terraform apply'
+alias tf='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
+alias tfp='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform plan --parallelism=30'
+alias tfa='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform apply'
 
 export GPG_TTY=$(tty)
 
