@@ -13,13 +13,10 @@ eval "$(direnv hook zsh)"
 eval "$(direnv hook zsh)"
 export ANY_ENV_HOME=$HOME/.anyenv
 export PATH=$PATH:$ANY_ENV_HOME/bin
-export PYENV_ROOT="$HOME/.anyenv/envs/pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
 eval "$(anyenv init - zsh)"
+
+# mise
+eval "$(mise activate zsh)"
 
 # golang
 export GOPATH=$HOME/go
