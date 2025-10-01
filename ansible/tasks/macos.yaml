@@ -4,6 +4,12 @@
     update_homebrew: 'yes'
     upgrade_all: 'no'
 
+- name: Setup directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.claude"
+    state: directory
+    mode: "0755"
+
 - name: Setup dotfiles
   ansible.builtin.file:
     src: "{{ item.src }}"
@@ -36,6 +42,12 @@
       dest: '~/.ideavimrc'
     - src: '~/dotfiles/.config/mise'
       dest: '~/.config/mise'
+    - src: '~/dotfiles/.claude/CLAUDE.md'
+      dest: '~/.claude/CLAUDE.me'
+    - src: '~/dotfiles/.claude/settings.json'
+      dest: '~/.claude/settings.json'
+    - src: '~/dotfiles/.claude/statusline.sh'
+      dest: '~/.claude/statusline.sh'
 
 - name: Install homebrew packages
   community.general.homebrew:

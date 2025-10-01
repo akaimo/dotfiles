@@ -1,0 +1,52 @@
+{
+  "env": {
+    "DISABLE_MICROCOMPACT": "true",
+    "DISABLE_TELEMETRY": "true",
+    "DISABLE_ERROR_REPORTING": "true",
+    "MAX_THINKING_TOKENS": "31999"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(echo:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm:*)",
+      "Bash(rm -rf:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(nc:*)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(terraform apply:*)",
+      "Bash(mysql:*)",
+      "Bash(psql:*)",
+      "Read(**/.env*)",
+      "Read(**/.env.*)",
+      "Read(**/credentials.json)",
+      "Read(**/credentials.*.json)",
+      "Read(**/secret.json)",
+      "Read(**/secrets.json)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)",
+      "Read(**/*.pfx)",
+      "Read(**/*.p12)",
+      "Read(**/*.crt)",
+      "Read(**/*.cer)",
+      "Read(**/id_rsa)",
+      "Read(**/id_dsa)",
+      "Read(**/.ssh/**)",
+      "Write(/etc/*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "alwaysThinkingEnabled": true
+}
