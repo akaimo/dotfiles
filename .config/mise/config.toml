@@ -1,0 +1,21 @@
+[settings]
+experimental = true
+disable_backends = ["asdf", "vfox"]
+
+idiomatic_version_file_enable_tools = []
+
+[tools]
+github-cli = "latest"
+aws = "latest"
+op = "latest"
+docker-cli = "latest"
+colima = "latest"
+kubectl = "latest"
+minikube = "latest"
+kubectx = "0.9.5"
+kustomize = "latest"
+
+"npm:@openai/codex" = "latest"
+"npm:@google/gemini-cli" = "latest"
+
+uv = "latest"
