@@ -84,3 +84,11 @@ if executable('vim-language-server')
         \ })
 endif
 
+if executable('lua-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'lua-language-server',
+        \ 'cmd': {server_info->['lua-language-server']},
+        \ 'whitelist': ['lua'],
+        \ })
+endif
+
