@@ -35,7 +35,7 @@ fi
 # - color text
 # - display line numbers
 export LESS='-NR'
-export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
+export LESSOPEN='| /opt/homebrew/bin/src-hilite-lesspipe.sh %s'
 
 # fzf
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git"'
