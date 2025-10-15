@@ -34,7 +34,7 @@ fi
 # less settings
 # - color text
 # - display line numbers
-export LESS='-NR'
+export LESS='-R'
 export LESSOPEN='| /opt/homebrew/bin/src-hilite-lesspipe.sh %s'
 
 # fzf

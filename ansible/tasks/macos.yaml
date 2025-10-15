@@ -59,6 +59,7 @@
     - name: ripgrep
     - name: colordiff
     - name: source-highlight
+    - name: difftastic
     - name: jq
     - name: yq
     - name: direnv

@@ -17,26 +17,20 @@
   d = diff
   delete-merged-branch = "!f() { git branch --merged|egrep -v '\\*|develop|master' | xargs git branch -d; };f"
   history = "!f() { file=$(rg --files --hidden . | fzf --preview 'cat {}'); if [ -n \"${file}\" ]; then git log -p ${file}; fi;  };f"
+	dt = difftool -y -t difftastic
 [color]
 	ui = 1
 	status = always
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[credential]
-	helper = !aws --profile CodeCommitProfile codecommit credential-helper $@
-	UseHttpPath = true
 [pager]
   log = diff-highlight | less
   show = diff-highlight | less
   diff = diff-highlight | less
+	difftool = true
 [interactive]
 	diffFilter = diff-highlight
 [diff]
 	compactionHeuristic = true
+	tool = difftastic
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -48,3 +42,5 @@
 	gpgsign = true
 [tag]
 	gpgsign = true
+[difftool "difftastic"]
+	cmd = difft \"$LOCAL\" \"$REMOTE\"
