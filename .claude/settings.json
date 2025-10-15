@@ -9,9 +9,13 @@
     "allow": [
       "Bash(ls:*)",
       "Bash(find:*)",
+      "Bash(grep:*)",
       "Bash(echo:*)",
+      "Bash(tail:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr diff:*)"
+      "Bash(gh pr diff:*)",
+      "Bash(go test:*)",
+      "Bash(go build:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
