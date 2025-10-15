@@ -14,6 +14,7 @@ kubectl = "latest"
 minikube = "latest"
 kubectx = "0.9.5"
 kustomize = "latest"
+helm = "latest"
 
 "npm:@openai/codex" = "latest"
 "npm:@google/gemini-cli" = "latest"
