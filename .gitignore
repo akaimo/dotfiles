@@ -28,3 +28,6 @@ Pods/*
 
 # Node
 node_modules
+
+# serena
+.serena
