@@ -2,8 +2,7 @@
   "env": {
     "DISABLE_MICROCOMPACT": "true",
     "DISABLE_TELEMETRY": "true",
-    "DISABLE_ERROR_REPORTING": "true",
-    "MAX_THINKING_TOKENS": "31999"
+    "DISABLE_ERROR_REPORTING": "true"
   },
   "permissions": {
     "allow": [
@@ -51,6 +50,5 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  },
-  "alwaysThinkingEnabled": true
+  }
 }
