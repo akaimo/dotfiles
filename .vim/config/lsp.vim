@@ -36,12 +36,12 @@ augroup LspGo
   autocmd FileType go setlocal omnifunc=lsp#complete
 augroup END
 
-if executable('pyls')
+if executable('pylsp')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': { server_info -> ['pyls'] },
+        \ 'name': 'pylsp',
+        \ 'cmd': { server_info -> ['pylsp'] },
         \ 'whitelist': ['python'],
-        \ 'workspace_config': {'pyls': {'plugins': {
+        \ 'workspace_config': {'pylsp': {'plugins': {
         \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
         \})
 endif

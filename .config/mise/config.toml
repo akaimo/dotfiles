@@ -23,3 +23,7 @@ uv = "latest"
 
 "npm:bash-language-server" = "5.6.0"
 "npm:yaml-language-server" = "1.19.2"
+"npm:typescript-language-server" = "5.0.1"
+"pipx:python-lsp-server" = "1.13.1"
+"go:golang.org/x/tools/gopls" = "latest"
+terraform-ls = "latest"
