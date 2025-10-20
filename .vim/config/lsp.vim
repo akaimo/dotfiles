@@ -62,11 +62,13 @@ au User lsp_setup call lsp#register_server({
    \ 'whitelist': ['php'],
    \ })
 
-au User lsp_setup call lsp#register_server({
- \ 'name': 'yaml-language-server',
- \ 'cmd': {server_info->['node', expand(substitute(system('npm root -g'), "\n", "", "g") . '/yaml-language-server/out/server/src/server.js'), '--stdio']},
- \ 'whitelist': ['yaml'],
- \ })
+if executable('yaml-language-server')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'yaml-language-server',
+    \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+    \ 'whitelist': ['yaml'],
+    \ })
+endif
 
 if executable('terraform-ls')
     au User lsp_setup call lsp#register_server({
@@ -89,6 +91,14 @@ if executable('lua-language-server')
         \ 'name': 'lua-language-server',
         \ 'cmd': {server_info->['lua-language-server']},
         \ 'whitelist': ['lua'],
+        \ })
+endif
+
+if executable('bash-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'bash-language-server',
+        \ 'cmd': {server_info->['bash-language-server', 'start']},
+        \ 'allowlist': ['sh', 'bash'],
         \ })
 endif
 
