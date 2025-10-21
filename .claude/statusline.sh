@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-COMPACTION_THRESHOLD=$((200000 * 8 / 10))  # 160000
+CONTEXT_WINDOW_SIZE=200000  # 200k tokens total context window
 
 # Read JSON from stdin
 input=$(cat)
@@ -12,13 +12,13 @@ current_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "."' | xa
 session_id=$(echo "$input" | jq -r '.session_id // ""')
 
 # Initialize variables
-total_tokens=0
+context_length=0
 window_time_remaining=""
 
-# Calculate token usage for current session
+# Calculate context length for current session
 if [ -n "$session_id" ]; then
     projects_dir="$HOME/.claude/projects"
-    
+
     if [ -d "$projects_dir" ]; then
         # Search for the transcript file
         transcript_file=""
@@ -28,32 +28,45 @@ if [ -n "$session_id" ]; then
                 break
             fi
         done
-        
-        # Calculate tokens from transcript
+
+        # Calculate context length from the most recent main chain message
         if [ -n "$transcript_file" ] && [ -f "$transcript_file" ]; then
-            # Get the last assistant message with usage data
-            last_usage=$(grep '"type":"assistant"' "$transcript_file" | \
-                        grep '"usage":{' | \
-                        tail -1 | \
-                        jq '.message.usage // {}')
-            
-            if [ "$last_usage" != "{}" ]; then
-                # Calculate total tokens
-                input_tokens=$(echo "$last_usage" | jq '.input_tokens // 0')
-                output_tokens=$(echo "$last_usage" | jq '.output_tokens // 0')
-                cache_creation=$(echo "$last_usage" | jq '.cache_creation_input_tokens // 0')
-                cache_read=$(echo "$last_usage" | jq '.cache_read_input_tokens // 0')
-                
-                total_tokens=$((input_tokens + output_tokens + cache_creation + cache_read))
+            # Get the most recent main chain message (isSidechain != true) with usage data
+            # Sort by timestamp to find the most recent, excluding sidechains and API error messages
+            most_recent=$(grep '"usage":{' "$transcript_file" | \
+                         jq -s '
+                            map(select(
+                                (.isSidechain != true) and
+                                (.timestamp != null) and
+                                (.isApiErrorMessage != true)
+                            )) |
+                            sort_by(.timestamp) |
+                            last
+                         ')
+
+            if [ -n "$most_recent" ] && [ "$most_recent" != "null" ]; then
+                # Calculate context length: input_tokens + cache_read + cache_creation
+                # (output_tokens are NOT included as they represent the response, not context)
+                input_tokens=$(echo "$most_recent" | jq '.message.usage.input_tokens // 0')
+                cache_creation=$(echo "$most_recent" | jq '.message.usage.cache_creation_input_tokens // 0')
+                cache_read=$(echo "$most_recent" | jq '.message.usage.cache_read_input_tokens // 0')
+
+                context_length=$((input_tokens + cache_creation + cache_read))
             fi
         fi
     fi
 fi
 
-# Calculate percentage
-percentage=$((total_tokens * 100 / COMPACTION_THRESHOLD))
-if [ $percentage -gt 100 ]; then
-    percentage=100
+# Calculate percentage (with decimal precision) - based on 200k context window
+if [ $context_length -gt 0 ]; then
+    percentage=$(echo "scale=1; $context_length * 100 / $CONTEXT_WINDOW_SIZE" | bc)
+    # Cap at 100%
+    percentage_check=$(echo "$percentage > 100" | bc)
+    if [ "$percentage_check" -eq 1 ]; then
+        percentage="100.0"
+    fi
+else
+    percentage="0.0"
 fi
 
 # Format token display
@@ -68,7 +81,8 @@ format_token_count() {
     fi
 }
 
-token_display=$(format_token_count $total_tokens)
+token_display=$(format_token_count $context_length)
+
 
 
 # Get 5-hour window remaining time from ccusage
