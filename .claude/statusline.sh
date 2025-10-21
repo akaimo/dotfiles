@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-COMPACTION_THRESHOLD=$((200000 * 8 / 10))  # 160000
+CONTEXT_WINDOW_SIZE=200000  # 200k tokens total context window
 
 # Read JSON from stdin
 input=$(cat)
@@ -57,9 +57,9 @@ if [ -n "$session_id" ]; then
     fi
 fi
 
-# Calculate percentage (with decimal precision)
+# Calculate percentage (with decimal precision) - based on 200k context window
 if [ $context_length -gt 0 ]; then
-    percentage=$(echo "scale=1; $context_length * 100 / $COMPACTION_THRESHOLD" | bc)
+    percentage=$(echo "scale=1; $context_length * 100 / $CONTEXT_WINDOW_SIZE" | bc)
     percentage_int=$(echo "$percentage / 1" | bc)
     if [ $percentage_int -gt 100 ]; then
         percentage="100.0"
