@@ -60,14 +60,13 @@ fi
 # Calculate percentage (with decimal precision) - based on 200k context window
 if [ $context_length -gt 0 ]; then
     percentage=$(echo "scale=1; $context_length * 100 / $CONTEXT_WINDOW_SIZE" | bc)
-    percentage_int=$(echo "$percentage / 1" | bc)
-    if [ $percentage_int -gt 100 ]; then
+    # Cap at 100%
+    percentage_check=$(echo "$percentage > 100" | bc)
+    if [ "$percentage_check" -eq 1 ]; then
         percentage="100.0"
-        percentage_int=100
     fi
 else
     percentage="0.0"
-    percentage_int=0
 fi
 
 # Format token display
@@ -84,26 +83,6 @@ format_token_count() {
 
 token_display=$(format_token_count $context_length)
 
-# Generate progress bar (16 chars width for compact display)
-generate_progress_bar() {
-    local percent=$1
-    local bar_width=16
-    local filled=$(echo "scale=0; $bar_width * $percent / 100" | bc)
-    local empty=$((bar_width - filled))
-
-    # Generate filled portion (█) and empty portion (░)
-    local bar=""
-    for ((i=0; i<filled; i++)); do
-        bar="${bar}█"
-    done
-    for ((i=0; i<empty; i++)); do
-        bar="${bar}░"
-    done
-
-    echo "[$bar]"
-}
-
-progress_bar=$(generate_progress_bar $percentage_int)
 
 
 # Get 5-hour window remaining time from ccusage
@@ -139,8 +118,8 @@ if [ -n "$ccusage_output" ]; then
     fi
 fi
 
-# Build status line with progress bar
-status_line="[${model}] ${current_dir} | ${token_display} | ${progress_bar} ${percentage}%"
+# Build status line
+status_line="[${model}] ${current_dir} | ${token_display} | ${percentage}%"
 
 # Add window time if available
 if [ -n "$window_time_remaining" ]; then
