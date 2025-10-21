@@ -45,13 +45,13 @@ if [ -n "$session_id" ]; then
                          ')
 
             if [ -n "$most_recent" ] && [ "$most_recent" != "null" ]; then
-                # Calculate context length: input_tokens + cache_read + cache_creation
-                # (output_tokens are NOT included as they represent the response, not context)
+                # Calculate context length: input_tokens + cache_read + cache_creation + output_tokens
                 input_tokens=$(echo "$most_recent" | jq '.message.usage.input_tokens // 0')
                 cache_creation=$(echo "$most_recent" | jq '.message.usage.cache_creation_input_tokens // 0')
                 cache_read=$(echo "$most_recent" | jq '.message.usage.cache_read_input_tokens // 0')
+                output_tokens=$(echo "$most_recent" | jq '.message.usage.output_tokens // 0')
 
-                context_length=$((input_tokens + cache_creation + cache_read))
+                context_length=$((input_tokens + cache_creation + cache_read + output_tokens))
             fi
         fi
     fi
