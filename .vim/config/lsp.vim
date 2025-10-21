@@ -47,11 +47,14 @@ if executable('pylsp')
 endif
 
 if executable('typescript-language-server')
+  let g:tsserver_js = trim(system('mise where npm:typescript')) .
+        \ '/lib/node_modules/typescript/lib/tsserver.js'
   au User lsp_setup call lsp#register_server({
         \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'cmd': {-> ['mise','x','--','typescript-language-server','--stdio']},
+        \ 'initialization_options': { 'tsserver': { 'path': g:tsserver_js } },
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx', 'javascript', 'javascript.jsx'],
+        \ 'allowlist': ['typescript','typescriptreact','javascript','javascriptreact'],
         \ })
 endif
 
