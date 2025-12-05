@@ -24,6 +24,8 @@ export PATH="$PATH:$(npm prefix -g)/bin"
 # bun global bin path
 export PATH="$PATH:$HOME/.bun/bin"
 
+alias gti='git'
+
 # color the diff
 if [[ -x `which colordiff` ]]; then
   alias diff='colordiff -u'
@@ -84,3 +86,5 @@ git_history() {
 
 alias x86='arch -x86_64 zsh'
 
+# Disable Prezto make wrapper
+unfunction make 2>/dev/null
