@@ -18,6 +18,7 @@
   delete-merged-branch = "!f() { git branch --merged|egrep -v '\\*|develop|master' | xargs git branch -d; };f"
   history = "!f() { file=$(rg --files --hidden . | fzf --preview 'cat {}'); if [ -n \"${file}\" ]; then git log -p ${file}; fi;  };f"
 	dt = difftool -y -t difftastic
+  aicm = "!f() { COMMITMSG=$(git diff --cached | claude -p '上記差分に基づき、変更内容とその理由を要約した日本語のGitコミットメッセージを1行のみ生成してください。説明文や本文を追加しないでください。不要な空白を入れないでください。コミットサマリー行のみを出力してください。'); git commit -m \"$COMMITMSG\" -e; }; f"
 [color]
 	ui = 1
 	status = always
