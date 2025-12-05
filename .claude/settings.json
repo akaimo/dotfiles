@@ -11,6 +11,7 @@
       "Bash(grep:*)",
       "Bash(echo:*)",
       "Bash(tail:*)",
+      "Bash(date:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
       "Bash(go test:*)",
