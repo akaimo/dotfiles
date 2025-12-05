@@ -48,6 +48,8 @@
       dest: '~/.claude/settings.json'
     - src: '~/dotfiles/.claude/statusline.sh'
       dest: '~/.claude/statusline.sh'
+    - src: '~/dotfiles/.npmrc'
+      dest: '~/.npmrc'
 
 - name: Install homebrew packages
   community.general.homebrew:
