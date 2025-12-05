@@ -69,6 +69,7 @@
     - name: gpg
     - name: pinentry-mac
     - name: mise
+    - name: docker-credential-helper
 
 - name: Install homebrew cask packages
   community.general.homebrew_cask:
