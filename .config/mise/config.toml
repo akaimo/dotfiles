@@ -6,7 +6,6 @@ idiomatic_version_file_enable_tools = []
 
 [tools]
 github-cli = "latest"
-aws = "latest"
 op = "latest"
 docker-cli = "latest"
 colima = "latest"
