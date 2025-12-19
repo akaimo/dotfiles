@@ -5,6 +5,9 @@ disable_backends = ["asdf", "vfox"]
 idiomatic_version_file_enable_tools = []
 
 [tools]
+node = "lts"
+uv = "latest"
+
 github-cli = "latest"
 op = "latest"
 docker-cli = "latest"
@@ -17,8 +20,6 @@ helm = "latest"
 
 "npm:@openai/codex" = "latest"
 "npm:@google/gemini-cli" = "latest"
-
-uv = "latest"
 
 "npm:bash-language-server" = "5.6.0"
 "npm:yaml-language-server" = "1.19.2"
