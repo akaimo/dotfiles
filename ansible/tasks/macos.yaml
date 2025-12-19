@@ -42,6 +42,8 @@
       dest: '~/.ideavimrc'
     - src: '~/dotfiles/.config/mise'
       dest: '~/.config/mise'
+    - src: '~/dotfiles/.config/ghostty'
+      dest: '~/.config/ghostty'
     - src: '~/dotfiles/.claude/CLAUDE.md'
       dest: '~/.claude/CLAUDE.me'
     - src: '~/dotfiles/.claude/settings.json'
