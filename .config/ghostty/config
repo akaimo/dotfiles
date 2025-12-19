@@ -1,0 +1,49 @@
+# Font
+font-family = "Ricty for Powerline"
+font-size = 15
+font-feature = "-calt"
+font-feature = "-dlig"
+font-feature = "-liga"
+
+# Window
+maximize = true
+adjust-cell-height = 5%
+window-padding-x = 8
+
+# Color
+foreground = #f8f8f8
+background = #1b1d1e
+# ANSI 0-7 (normal)
+palette = 0=#5a7085
+palette = 1=#ff6d00
+palette = 2=#aeee00
+palette = 3=#ffdc00
+palette = 4=#01b0f0
+palette = 5=#b996ff
+palette = 6=#69c3ff
+palette = 7=#f8fff9
+# ANSI 8-15 (bright)
+palette = 8=#5a7085
+palette = 9=#ff6d00
+palette = 10=#aeee00
+palette = 11=#ffdc00
+palette = 12=#01b0f0
+palette = 13=#b996ff
+palette = 14=#69c3ff
+palette = 15=#f8fff9
+
+background-opacity = 0.90
+unfocused-split-opacity = 0.50
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = no-cursor
+
+# Mac
+macos-titlebar-proxy-icon= hidden
+macos-window-shadow = true
+
+term = xterm-256color
+
+keybind = global:alt+space=toggle_visibility
