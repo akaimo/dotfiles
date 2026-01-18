@@ -79,6 +79,7 @@
   community.general.homebrew_cask:
     name: "{{ item.name }}"
   with_items:
+    - name: ghostty
     - name: jordanbaird-ice
     - name: browserosaurus
 
