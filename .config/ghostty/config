@@ -1,6 +1,7 @@
 # Font
 font-family = "Ricty for Powerline"
 font-size = 15
+# font-thicken = true
 font-feature = "-calt"
 font-feature = "-dlig"
 font-feature = "-liga"
@@ -32,7 +33,7 @@ palette = 13=#b996ff
 palette = 14=#69c3ff
 palette = 15=#f8fff9
 
-background-opacity = 0.90
+background-opacity = 0.95
 unfocused-split-opacity = 0.50
 
 # Cursor
@@ -43,6 +44,7 @@ shell-integration-features = no-cursor
 # Mac
 macos-titlebar-proxy-icon= hidden
 macos-window-shadow = true
+macos-titlebar-style = tabs
 
 term = xterm-256color
 
