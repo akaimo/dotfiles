@@ -19,7 +19,6 @@
     ],
     "deny": [
       "Bash(sudo:*)",
-      "Bash(rm:*)",
       "Bash(rm -rf:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
@@ -51,6 +50,9 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true
 }
