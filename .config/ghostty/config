@@ -1,3 +1,5 @@
+# auto-update-channel = tip
+auto-update-channel = stable
 # Font
 font-family = "Ricty for Powerline"
 font-size = 15
