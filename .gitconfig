@@ -1,6 +1,7 @@
 [user]
 	name = akaimo
 	email = mail@akaimo.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICJ9aIgXf+yg9r/61Dp0vJB/YnwIs/leiqBF+UPaIT+b
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
@@ -45,3 +46,7 @@
 	gpgsign = true
 [difftool "difftastic"]
 	cmd = difft \"$LOCAL\" \"$REMOTE\"
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
