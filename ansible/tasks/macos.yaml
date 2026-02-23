@@ -83,6 +83,7 @@
     - name: jordanbaird-ice
     - name: browserosaurus
     - name: hammerspoon
+    - name: iina
 
 - name: Create symbolic link fir diff-highlight (Intel)
   when: "ansible_architecture == 'x86_64'"
