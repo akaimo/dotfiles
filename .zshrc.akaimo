@@ -64,6 +64,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 alias tf='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
 alias tfp='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform plan --parallelism=30'
 alias tfa='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform apply'
+alias terraform='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
 
 export GPG_TTY=$(tty)
 
