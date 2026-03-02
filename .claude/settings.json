@@ -7,6 +7,7 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
+      "Bash(cd:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
       "Bash(echo:*)",
@@ -14,6 +15,7 @@
       "Bash(date:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
+      "Bash(git diff:*)",
       "Bash(go test:*)",
       "Bash(go build:*)"
     ],
