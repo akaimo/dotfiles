@@ -23,6 +23,8 @@ helm = "latest"
 "npm:@openai/codex" = "latest"
 "npm:@google/gemini-cli" = "latest"
 
+"npm:difit" = "v3.1.12"
+
 "npm:bash-language-server" = "5.6.0"
 "npm:yaml-language-server" = "1.19.2"
 "npm:typescript-language-server" = "5.0.1"
