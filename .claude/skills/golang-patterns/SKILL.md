@@ -247,7 +247,7 @@ func FetchAll(ctx context.Context, urls []string) ([][]byte, error) {
     results := make([][]byte, len(urls))
 
     for i, url := range urls {
-        i, url := i, url // Capture loop variables
+        i, url := i, url // Go 1.22+ では不要（go fix forvar で自動削除可能）
         g.Go(func() error {
             data, err := FetchWithTimeout(ctx, url)
             if err != nil {
@@ -581,10 +581,14 @@ go test ./...
 go test -race ./...
 go test -cover ./...
 
-# Static analysis
+# 静的解析
 go vet ./...
 staticcheck ./...
 golangci-lint run
+
+# コードモダナイゼーション (Go 1.26+)
+go fix -diff ./...  # 変更内容をプレビュー（推奨: まず差分確認）
+go fix ./...        # 古いパターンを新しい言語機能・APIに自動修正
 
 # Module management
 go mod tidy
@@ -594,6 +598,28 @@ go mod verify
 gofmt -w .
 goimports -w .
 ```
+
+### Code Modernization with go fix (Go 1.26+)
+
+Go 1.26 で `go fix` が Go Analysis Framework 上で再構築され、古いイディオムを新しい言語機能・標準ライブラリ API に自動変換するモダナイザーが搭載されました。`go.mod` の `go` ディレクティブに基づいて、プロジェクトの Go バージョンで安全に適用可能な修正のみが実行されます。
+
+#### コマンド
+
+```bash
+# 変更内容をプレビュー（ファイルは変更しない）
+go fix -diff ./...
+
+# 古いパターンを自動修正
+go fix ./...
+
+# 特定のモダナイザーを無効化して実行
+go fix -rangeint=false ./...
+
+# 利用可能なモダナイザー一覧を確認
+go tool fix help
+```
+
+> **推奨ワークフロー**: コード変更後に `go fix -diff ./...` で差分を確認し、問題なければ `go fix ./...` を適用する。
 
 ### Recommended Linter Configuration (.golangci.yml)
 

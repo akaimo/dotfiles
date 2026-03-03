@@ -110,6 +110,15 @@ function processUsers(users) {
 - **Magic numbers** — Unexplained numeric constants
 - **Inconsistent formatting** — Mixed semicolons, quote styles, indentation
 
+### Go Code Modernization (LOW)
+
+Go プロジェクト（`go.mod` が存在）で `.go` ファイルが変更された場合のみ実行：
+
+- 変更対象パッケージに対して `go fix -diff <package>` を実行し、モダナイゼーションの機会を確認する
+- `./...` ではなく変更があったパッケージに限定して実行する
+- 見つかった場合は LOW レベルの集約メモとして 1 件にまとめて報告する（個別列挙しない）
+- 代表的な修正例: `interface{}` → `any`, `for i := 0; i < n; i++` → `for i := range n`, 冗長なループ変数キャプチャの削除
+
 ## Review Output Format
 
 Organize findings by severity. For each issue:
