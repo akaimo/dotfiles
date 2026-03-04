@@ -31,3 +31,6 @@ node_modules
 
 # serena
 .serena
+
+# claude
+settings.local.json
