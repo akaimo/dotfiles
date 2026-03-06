@@ -2,7 +2,7 @@
 experimental = true
 disable_backends = ["asdf", "vfox"]
 
-idiomatic_version_file_enable_tools = []
+idiomatic_version_file_enable_tools = ["go", "terraform"]
 
 [tools]
 node = "lts"
@@ -20,7 +20,6 @@ kubectx = "0.9.5"
 kustomize = "latest"
 helm = "latest"
 
-"npm:@openai/codex" = "latest"
 "npm:@google/gemini-cli" = "latest"
 
 "npm:difit" = "v3.1.12"
