@@ -10,6 +10,7 @@
       "Bash(cd:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
+      "Bash(wc:*)",
       "Bash(echo:*)",
       "Bash(tail:*)",
       "Bash(date:*)",
@@ -17,7 +18,15 @@
       "Bash(gh pr diff:*)",
       "Bash(git diff:*)",
       "Bash(go test:*)",
-      "Bash(go build:*)"
+      "Bash(go build:*)",
+      "Bash(go vet:*)",
+      "Bash(go fix:*)",
+      "Bash(go tool cover:*)",
+      "Bash(go list:*)",
+      "Bash(staticcheck:*)",
+      "Bash(golangci-lint:*)",
+      "Bash(govulncheck:*)",
+      "Bash(codex -a never -s read-only:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
