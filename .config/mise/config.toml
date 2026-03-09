@@ -2,9 +2,10 @@
 experimental = true
 disable_backends = ["asdf", "vfox"]
 
-idiomatic_version_file_enable_tools = ["go", "terraform"]
+idiomatic_version_file_enable_tools = ["go", "node", "terraform"]
 
 [tools]
+go = "latest"
 node = "lts"
 python = "3.14"
 uv = "latest"
