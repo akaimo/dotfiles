@@ -44,6 +44,8 @@
       dest: '~/.config/mise'
     - src: '~/dotfiles/.config/ghostty'
       dest: '~/.config/ghostty'
+    - src: '~/dotfiles/.config/uv/uv.toml'
+      dest: '~/.config/uv/uv.toml'
     - src: '~/dotfiles/.claude/CLAUDE.md'
       dest: '~/.claude/CLAUDE.md'
     - src: '~/dotfiles/.claude/settings.json'
@@ -107,4 +109,3 @@
     src: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
     dest: '/opt/homebrew/bin/diff-highlight'
     state: link
-

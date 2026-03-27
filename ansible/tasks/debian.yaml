@@ -23,6 +23,8 @@
       dest: '~/.gitconfig'
     - src: '~/dotfiles/.gitignore'
       dest: '~/.gitignore'
+    - src: '~/dotfiles/.config/uv/uv.toml'
+      dest: '~/.config/uv/uv.toml'
 
 - name: Add K8S GPG key
   become: yes
