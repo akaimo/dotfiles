@@ -47,7 +47,15 @@ done
 
 # Initialize variables
 context_length=0
-window_time_remaining=""
+
+# レート制限の消費割合（used_percentageをfloorし0〜100にクランプ）
+rate_limits_display=$(echo "$input" | jq -r '
+    def used: if . == null then empty else floor | if . < 0 then 0 elif . > 100 then 100 else . end end;
+    [
+        (.rate_limits.five_hour.used_percentage | used | "5h:\(.)%"),
+        (.rate_limits.seven_day.used_percentage | used | "7d:\(.)%")
+    ] | join(" ")
+')
 
 # Calculate context length for current session
 if [ -n "$session_id" ]; then
@@ -103,39 +111,6 @@ else
     percentage="0.0"
 fi
 
-# Get 5-hour window remaining time from ccusage
-ccusage_output=$(ccusage blocks --json --active 2>/dev/null || true)
-
-if [ -n "$ccusage_output" ]; then
-    # Extract endTime and isActive from JSON
-    end_time=$(echo "$ccusage_output" | jq -r '.blocks[0].endTime // ""')
-    is_active=$(echo "$ccusage_output" | jq -r '.blocks[0].isActive // false')
-    
-    if [ "$is_active" = "true" ] && [ -n "$end_time" ]; then
-        # Convert UTC ISO8601 to Unix timestamp
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS - parse UTC time (Unix timestamp is timezone-independent)
-            end_timestamp=$(date -j -u -f "%Y-%m-%dT%H:%M:%S" "${end_time%%.*}" "+%s" 2>/dev/null || echo "0")
-        else
-            # Linux - parse UTC time directly
-            end_timestamp=$(date -d "$end_time" +%s 2>/dev/null || echo "0")
-        fi
-        
-        current_timestamp=$(date +%s)
-        
-        if [ "$end_timestamp" -gt "0" ]; then
-            if [ "$end_timestamp" -gt "$current_timestamp" ]; then
-                remaining_seconds=$((end_timestamp - current_timestamp))
-                remaining_hours=$((remaining_seconds / 3600))
-                remaining_minutes=$(((remaining_seconds % 3600) / 60))
-                window_time_remaining="${remaining_hours}h${remaining_minutes}m"
-            else
-                window_time_remaining="Expired"
-            fi
-        fi
-    fi
-fi
-
 # Build status line
 status_line="[${model}] ${current_dir} | ${percentage}%"
 
@@ -144,9 +119,9 @@ if [ "$exceeds_200k" = "true" ]; then
     status_line="${status_line} | WARN:>200k"
 fi
 
-# Add window time if available
-if [ -n "$window_time_remaining" ]; then
-    status_line="${status_line} | ${window_time_remaining}"
+# レート制限残量（取得できた場合のみ）
+if [ -n "$rate_limits_display" ]; then
+    status_line="${status_line} | ${rate_limits_display}"
 fi
 
 # サンドボックス有効時にマーカーを付加
