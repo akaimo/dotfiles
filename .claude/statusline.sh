@@ -13,6 +13,8 @@ context_window_size=$(echo "$input" | jq -r '.context_window.context_window_size
 if ! [[ "$context_window_size" =~ ^[0-9]+$ ]] || [ "$context_window_size" -le 0 ]; then
     context_window_size=200000
 fi
+# 200kトークン超過フラグ
+exceeds_200k=$(echo "$input" | jq -r '.exceeds_200k_tokens // false')
 
 # サンドボックス有効/無効を判定（後勝ち: user < project < local）
 sandbox_enabled="false"
@@ -101,22 +103,6 @@ else
     percentage="0.0"
 fi
 
-# Format token display
-format_token_count() {
-    local tokens=$1
-    if [ $tokens -ge 1000000 ]; then
-        echo "$(echo "scale=1; $tokens/1000000" | bc)M"
-    elif [ $tokens -ge 1000 ]; then
-        echo "$(echo "scale=1; $tokens/1000" | bc)K"
-    else
-        echo "$tokens"
-    fi
-}
-
-token_display=$(format_token_count $context_length)
-
-
-
 # Get 5-hour window remaining time from ccusage
 ccusage_output=$(ccusage blocks --json --active 2>/dev/null || true)
 
@@ -151,7 +137,12 @@ if [ -n "$ccusage_output" ]; then
 fi
 
 # Build status line
-status_line="[${model}] ${current_dir} | ${token_display} | ${percentage}%"
+status_line="[${model}] ${current_dir} | ${percentage}%"
+
+# 200kトークンを超えた場合は警告を付加
+if [ "$exceeds_200k" = "true" ]; then
+    status_line="${status_line} | WARN:>200k"
+fi
 
 # Add window time if available
 if [ -n "$window_time_remaining" ]; then
