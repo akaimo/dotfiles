@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Constants
-CONTEXT_WINDOW_SIZE=200000  # 200k tokens total context window
-
 # Read JSON from stdin
 input=$(cat)
 
@@ -11,6 +8,11 @@ model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
 workspace_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
 current_dir=$(basename "${workspace_dir:-.}")
 session_id=$(echo "$input" | jq -r '.session_id // ""')
+# コンテキストウィンドウサイズ（モデル依存、未提供や不正値の場合は200kにフォールバック）
+context_window_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
+if ! [[ "$context_window_size" =~ ^[0-9]+$ ]] || [ "$context_window_size" -le 0 ]; then
+    context_window_size=200000
+fi
 
 # サンドボックス有効/無効を判定（後勝ち: user < project < local）
 sandbox_enabled="false"
@@ -87,9 +89,9 @@ if [ -n "$session_id" ]; then
     fi
 fi
 
-# Calculate percentage (with decimal precision) - based on 200k context window
+# Calculate percentage (with decimal precision) - based on dynamic context window size
 if [ $context_length -gt 0 ]; then
-    percentage=$(echo "scale=1; $context_length * 100 / $CONTEXT_WINDOW_SIZE" | bc)
+    percentage=$(echo "scale=1; $context_length * 100 / $context_window_size" | bc)
     # Cap at 100%
     percentage_check=$(echo "$percentage > 100" | bc)
     if [ "$percentage_check" -eq 1 ]; then
