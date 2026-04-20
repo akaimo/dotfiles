@@ -8,8 +8,38 @@ input=$(cat)
 
 # Extract values using jq
 model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
-current_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "."' | xargs basename)
+workspace_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
+current_dir=$(basename "${workspace_dir:-.}")
 session_id=$(echo "$input" | jq -r '.session_id // ""')
+
+# サンドボックス有効/無効を判定（後勝ち: user < project < local）
+sandbox_enabled="false"
+settings_files=("$HOME/.claude/settings.json")
+
+# workspace_dirから上位ディレクトリを遡って最初に見つかった .claude/ をプロジェクトルートとする
+if [ -n "$workspace_dir" ]; then
+    project_root=""
+    dir="$workspace_dir"
+    while [ "$dir" != "/" ] && [ -n "$dir" ]; do
+        if [ -d "$dir/.claude" ]; then
+            project_root="$dir"
+            break
+        fi
+        dir=$(dirname "$dir")
+    done
+    if [ -n "$project_root" ]; then
+        settings_files+=("$project_root/.claude/settings.json" "$project_root/.claude/settings.local.json")
+    fi
+fi
+
+for settings_file in "${settings_files[@]}"; do
+    if [ -f "$settings_file" ]; then
+        value=$(jq -r '.sandbox.enabled // empty' "$settings_file" 2>/dev/null)
+        if [ -n "$value" ]; then
+            sandbox_enabled="$value"
+        fi
+    fi
+done
 
 # Initialize variables
 context_length=0
@@ -124,6 +154,11 @@ status_line="[${model}] ${current_dir} | ${token_display} | ${percentage}%"
 # Add window time if available
 if [ -n "$window_time_remaining" ]; then
     status_line="${status_line} | ${window_time_remaining}"
+fi
+
+# サンドボックス有効時にマーカーを付加
+if [ "$sandbox_enabled" = "true" ]; then
+    status_line="${status_line} | SBX"
 fi
 
 # Output status line
