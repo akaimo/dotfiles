@@ -1,6 +1,7 @@
 [settings]
 experimental = true
 disable_backends = ["asdf", "vfox"]
+install_before = "7d"
 
 idiomatic_version_file_enable_tools = ["go", "node", "terraform"]
 
@@ -9,6 +10,7 @@ go = "latest"
 node = "lts"
 python = "3.14"
 uv = "latest"
+terraform = "latest"
 
 github-cli = "latest"
 op = "latest"
@@ -20,8 +22,6 @@ minikube = "latest"
 kubectx = "0.9.5"
 kustomize = "latest"
 helm = "latest"
-
-"npm:@google/gemini-cli" = "latest"
 
 "npm:difit" = "v3.1.12"
 
