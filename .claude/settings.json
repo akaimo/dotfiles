@@ -1,31 +1,44 @@
 {
   "env": {
-    "DISABLE_MICROCOMPACT": "true",
-    "DISABLE_TELEMETRY": "true",
-    "DISABLE_ERROR_REPORTING": "true"
+    "CLAUDE_CODE_NO_FLICKER": "1"
   },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
       "Bash(cd:*)",
       "Bash(find:*)",
+      "Bash(cat:*)",
       "Bash(grep:*)",
       "Bash(wc:*)",
       "Bash(echo:*)",
       "Bash(tail:*)",
       "Bash(date:*)",
+      "Bash(echo:*)",
+      "Bash(head:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
       "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git ls-tree:*)",
       "Bash(go test:*)",
       "Bash(go build:*)",
+      "Bash(go mod:*)",
       "Bash(go vet:*)",
+      "Bash(go fmt:*)",
       "Bash(go fix:*)",
       "Bash(go tool cover:*)",
       "Bash(go list:*)",
+      "Bash(go generate:*)",
+      "Bash(go doc:*)",
+      "Bash(go env:*)",
+      "Bash(goimports:*)",
       "Bash(staticcheck:*)",
       "Bash(golangci-lint:*)",
       "Bash(govulncheck:*)",
+      "Bash(gosec:*)",
+      "Bash(mockgen:*)",
       "Bash(codex -a never -s read-only:*)"
     ],
     "deny": [
@@ -63,7 +76,10 @@
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true
+    "gopls-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
+  "skipAutoPermissionPrompt": true
 }
