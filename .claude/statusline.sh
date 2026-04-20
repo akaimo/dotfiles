@@ -8,6 +8,8 @@ model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
 workspace_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
 current_dir=$(basename "${workspace_dir:-.}")
 session_id=$(echo "$input" | jq -r '.session_id // ""')
+# worktree名（worktreeセッション時のみ提供される）
+worktree_name=$(echo "$input" | jq -r '.worktree.name // empty')
 # コンテキストウィンドウサイズ（モデル依存、未提供や不正値の場合は200kにフォールバック）
 context_window_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
 if ! [[ "$context_window_size" =~ ^[0-9]+$ ]] || [ "$context_window_size" -le 0 ]; then
@@ -112,7 +114,11 @@ else
 fi
 
 # Build status line
-status_line="[${model}] ${current_dir} | ${percentage}%"
+location="${current_dir}"
+if [ -n "$worktree_name" ]; then
+    location="${location} [${worktree_name}]"
+fi
+status_line="[${model}] ${location} | ${percentage}%"
 
 # 200kトークンを超えた場合は警告を付加
 if [ "$exceeds_200k" = "true" ]; then
