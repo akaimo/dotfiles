@@ -11,6 +11,8 @@
 - run basic playbook
   - `make`
   - `exec $SHELL -l`
+- mise
+  - `mise i`
 - install vim
   - `make vim`
 - (mac only) install pkg-based casks manually
