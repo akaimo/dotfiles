@@ -35,6 +35,13 @@ codex -a never -s read-only exec "Your question or task here"
 codex -a never -s read-only exec "How do I implement a binary search in Python?"
 ```
 
+**前回のレスポンスに返信する:**
+
+```bash
+codex -a never -s read-only exec resume --last "指摘内容ですが..."
+
+```
+
 **特定のサブディレクトリのコードを分析:**
 
 ```bash
