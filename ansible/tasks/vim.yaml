@@ -52,8 +52,6 @@
   with_items:
     - name: vim
     - name: neovim
-    - name: llvm
-#    - name: cquery
     - name: yamllint
 
 - name: Install vim and required packages for Debian
@@ -67,7 +65,6 @@
       - vim-gtk
       - neovim
       - python3-neovim
-      - llvm
       - yamllint
 
 - name: Install pynvim in system python
@@ -75,55 +72,6 @@
   shell: /usr/bin/pip3 install pynvim --user
   args:
     executable: /bin/bash
-
-- name: language versions
-  shell: "{{ item }}"
-  args:
-    executable: /bin/bash
-  register: lang_versions
-  with_items:
-    - node -v
-    - go version
-    - python -V
-
-- name: print versions
-  debug:
-    msg: "{{ item.stdout_lines }}"
-  with_items: "{{ lang_versions.results }}"
-  loop_control:
-    label: "{{ item.cmd | default(item) }}"
-  when: lang_versions.results is defined
-    and item.stdout_lines is defined
-
-- name: Install npm packages for vim
-  npm:
-    name: "{{ item }}"
-    global: 'yes'
-  with_items:
-    - yaml-language-server
-    - intelephense
-    - prettier
-
-- name: Install go modules for vim
-  shell: |
-    go get {{ item  }}@latest
-  environment:
-    GO111MODULE: 'on'
-  args:
-    executable: /bin/bash
-  with_items:
-    - golang.org/x/tools/gopls
-    - golang.org/x/lint/golint
-    - golang.org/x/tools/cmd/goimports
-
-- name: Install python packages for vim
-  pip:
-    name:
-      - pynvim
-      - python-language-server
-      - black
-      - flake8
-    executable: pip3
 
 - name: Request installation of vim plugin
   debug:
