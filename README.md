@@ -2,7 +2,7 @@
 
 ## usage
 - (mac only) install homebrew
-  - https://brew.sh/index_ja
+  - https://brew.sh/ja/
 - install tools
   - mac: `brew install git ansible`
   - debian: `apt install zsh ansible make git`
