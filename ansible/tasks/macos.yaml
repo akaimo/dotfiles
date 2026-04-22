@@ -5,63 +5,99 @@
     upgrade_all: 'no'
 
 - name: Setup directory
+  # シンボリックリンクを張る前に、dest の親ディレクトリを先に作成しておく
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.claude"
+    path: "{{ item }}"
     state: directory
     mode: "0755"
+  with_items:
+    - "{{ ansible_env.HOME }}/.claude"
+    - "{{ ansible_env.HOME }}/.config"
+    - "{{ ansible_env.HOME }}/.config/uv"
+
+- name: Define dotfile links
+  # Check と Setup の両方で使い回すため、リンク定義は set_fact にまとめる
+  ansible.builtin.set_fact:
+    dotfile_links:
+      - src: '~/dotfiles/.vimrc'
+        dest: '~/.vimrc'
+      - src: '~/dotfiles/.vim'
+        dest: '~/.vim'
+      - src: '~/dotfiles/.config/nvim'
+        dest: '~/.config/nvim'
+      - src: '~/dotfiles/.bashrc'
+        dest: '~/.bashrc'
+      - src: '~/dotfiles/.bash_profile'
+        dest: '~/.bash_profile'
+      - src: '~/dotfiles/.zshrc.akaimo'
+        dest: '~/.zshrc.akaimo'
+      - src: '~/dotfiles/.tmux.conf'
+        dest: '~/.tmux.conf'
+      - src: '~/dotfiles/.gitconfig'
+        dest: '~/.gitconfig'
+      - src: '~/dotfiles/.gitignore'
+        dest: '~/.gitignore'
+      - src: '~/dotfiles/.rubocop.yml'
+        dest: '~/.rubocop.yml'
+      - src: '~/dotfiles/.xvimrc'
+        dest: '~/.xvimrc'
+      - src: '~/dotfiles/.ideavimrc'
+        dest: '~/.ideavimrc'
+      - src: '~/dotfiles/.config/mise'
+        dest: '~/.config/mise'
+      - src: '~/dotfiles/.config/ghostty'
+        dest: '~/.config/ghostty'
+      - src: '~/dotfiles/.config/uv/uv.toml'
+        dest: '~/.config/uv/uv.toml'
+      - src: '~/dotfiles/.claude/CLAUDE.md'
+        dest: '~/.claude/CLAUDE.md'
+      - src: '~/dotfiles/.claude/settings.json'
+        dest: '~/.claude/settings.json'
+      - src: '~/dotfiles/.claude/statusline.sh'
+        dest: '~/.claude/statusline.sh'
+      - src: '~/dotfiles/.claude/agents'
+        dest: '~/.claude/agents'
+      - src: '~/dotfiles/.claude/commands'
+        dest: '~/.claude/commands'
+      - src: '~/dotfiles/.claude/skills'
+        dest: '~/.claude/skills'
+      - src: '~/dotfiles/.claude/rules'
+        dest: '~/.claude/rules'
+      - src: '~/dotfiles/.npmrc'
+        dest: '~/.npmrc'
+
+- name: Check existing dotfiles targets
+  # シンボリックリンクではない実体(ディレクトリ/ファイル)が既に存在すると
+  # ansible.builtin.file は安全のため変換を拒否するため、事前に全対象を検知する
+  ansible.builtin.stat:
+    path: "{{ item.dest }}"
+    follow: false
+  register: dotfile_targets
+  loop: "{{ dotfile_links }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Fail if dotfiles target exists and is not a symlink
+  ansible.builtin.fail:
+    msg: |
+      {{ item.item.dest }} はシンボリックリンクではない実体として存在しています。
+      既存データを失わないため、手動で退避してから再実行してください:
+        mv {{ item.item.dest }} {{ item.item.dest }}.backup.$(date +%Y%m%d%H%M%S)
+  when:
+    - item.stat.exists
+    - not item.stat.islnk
+  loop: "{{ dotfile_targets.results }}"
+  loop_control:
+    label: "{{ item.item.dest }}"
 
 - name: Setup dotfiles
   ansible.builtin.file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     state: link
-  with_items:
-    - src: '~/dotfiles/.vimrc'
-      dest: '~/.vimrc'
-    - src: '~/dotfiles/.vim'
-      dest: '~/.vim'
-    - src: '~/dotfiles/.config/nvim'
-      dest: '~/.config/nvim'
-    - src: '~/dotfiles/.bashrc'
-      dest: '~/.bashrc'
-    - src: '~/dotfiles/.bash_profile'
-      dest: '~/.bash_profile'
-    - src: '~/dotfiles/.zshrc.akaimo'
-      dest: '~/.zshrc.akaimo'
-    - src: '~/dotfiles/.tmux.conf'
-      dest: '~/.tmux.conf'
-    - src: '~/dotfiles/.gitconfig'
-      dest: '~/.gitconfig'
-    - src: '~/dotfiles/.gitignore'
-      dest: '~/.gitignore'
-    - src: '~/dotfiles/.rubocop.yml'
-      dest: '~/.rubocop.yml'
-    - src: '~/dotfiles/.xvimrc'
-      dest: '~/.xvimrc'
-    - src: '~/dotfiles/.ideavimrc'
-      dest: '~/.ideavimrc'
-    - src: '~/dotfiles/.config/mise'
-      dest: '~/.config/mise'
-    - src: '~/dotfiles/.config/ghostty'
-      dest: '~/.config/ghostty'
-    - src: '~/dotfiles/.config/uv/uv.toml'
-      dest: '~/.config/uv/uv.toml'
-    - src: '~/dotfiles/.claude/CLAUDE.md'
-      dest: '~/.claude/CLAUDE.md'
-    - src: '~/dotfiles/.claude/settings.json'
-      dest: '~/.claude/settings.json'
-    - src: '~/dotfiles/.claude/statusline.sh'
-      dest: '~/.claude/statusline.sh'
-    - src: '~/dotfiles/.claude/agents'
-      dest: '~/.claude/agents'
-    - src: '~/dotfiles/.claude/commands'
-      dest: '~/.claude/commands'
-    - src: '~/dotfiles/.claude/skills'
-      dest: '~/.claude/skills'
-    - src: '~/dotfiles/.claude/rules'
-      dest: '~/.claude/rules'
-    - src: '~/dotfiles/.npmrc'
-      dest: '~/.npmrc'
+  loop: "{{ dotfile_links }}"
+  loop_control:
+    label: "{{ item.dest }}"
 
 - name: Install homebrew packages
   community.general.homebrew:
@@ -100,7 +136,6 @@
     - name: 1password
     - name: karabiner-elements
     - name: google-japanese-ime
-    - name: google-chrome
     - name: firefox
     - name: slack
     - name: obsidian
