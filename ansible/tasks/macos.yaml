@@ -134,15 +134,26 @@
     - name: iina
     - name: swiftbar
     - name: 1password
-    - name: karabiner-elements
-    - name: google-japanese-ime
     - name: firefox
     - name: slack
     - name: obsidian
     - name: zed
-    - name: tailscale-app
     - name: tableplus
     - name: postman
+
+- name: Install homebrew cask packages that require sudo
+  # .pkg インストーラを内部で使う cask は brew が sudo を呼ぶため
+  # sudo_password でパスワードを渡す (brew 自体は become せず通常ユーザーで実行)
+  # --ask-become-pass 未指定時は omit して brew 側のエラーに委ねる
+  community.general.homebrew_cask:
+    name: "{{ item.name }}"
+    install_options: force
+    sudo_password: "{{ ansible_become_password | default(omit) }}"
+  with_items:
+    - name: karabiner-elements
+    - name: google-japanese-ime
+    - name: tailscale-app
+  no_log: true
 
 - name: Create symbolic link fir diff-highlight (Intel)
   when: "ansible_architecture == 'x86_64'"
