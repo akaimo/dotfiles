@@ -2,6 +2,29 @@
   "env": {
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": false,
+    "excludedCommands": ["gh", "codex", "docker", "git"],
+    "filesystem": {
+      "allowWrite": ["/tmp", "~/Library/Caches", "~/**/.git/**", "~/.codex", "~/go/pkg/mod"],
+      "denyRead": ["~/.ssh", "~/.gnupg", "~/.aws", "~/.config/gcloud", "~/.bash_history", "~/.zsh_history"]
+    },
+    "network": {
+      "allowUnixSockets": [
+        "/var/run/docker.sock",
+        "~/.colima/default/docker.sock",
+        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+      ],
+      "allowMachLookup": [
+        "com.apple.SystemConfiguration.configd",
+        "com.apple.secd",
+        "com.apple.trustd.agent"
+      ],
+      "allowLocalBinding": true
+    }
+  },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
@@ -13,7 +36,6 @@
       "Bash(echo:*)",
       "Bash(tail:*)",
       "Bash(date:*)",
-      "Bash(echo:*)",
       "Bash(head:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
@@ -41,21 +63,35 @@
       "Bash(mockgen:*)",
       "Bash(codex -a never -s read-only:*)"
     ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(kill:*)",
+      "Bash(git checkout .)",
+      "Bash(git clean -f:*)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(mysql:*)",
+      "Bash(psql:*)"
+    ],
     "deny": [
       "Bash(sudo:*)",
-      "Bash(rm -rf:*)",
+      "Bash(su:*)",
+      "Bash(chmod:*)",
+      "Bash(chown:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
       "Bash(nc:*)",
-      "Bash(git reset:*)",
-      "Bash(git rebase:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
       "Bash(terraform apply:*)",
-      "Bash(mysql:*)",
-      "Bash(psql:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(gh auth token:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(rsync:*)",
       "Read(**/.env*)",
-      "Read(**/.env.*)",
-      "Read(**/credentials.json)",
-      "Read(**/credentials.*.json)",
+      "Read(**/credentials*.json)",
       "Read(**/secret.json)",
       "Read(**/secrets.json)",
       "Read(**/*.key)",
@@ -67,10 +103,9 @@
       "Read(**/id_rsa)",
       "Read(**/id_dsa)",
       "Read(**/.ssh/**)",
-      "Write(/etc/*)"
+      "Write(/etc/**)"
     ]
   },
-  "enableAllProjectMcpServers": true,
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
@@ -80,6 +115,5 @@
     "typescript-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
   "skipAutoPermissionPrompt": true
 }
