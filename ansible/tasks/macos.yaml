@@ -84,6 +84,7 @@
     - name: pinentry-mac
     - name: mise
     - name: docker-credential-helper
+    - name: codex
 
 - name: Install homebrew cask packages
   community.general.homebrew_cask:
@@ -95,6 +96,18 @@
     - name: browserosaurus
     - name: hammerspoon
     - name: iina
+    - name: swiftbar
+    - name: 1password
+    - name: karabiner-elements
+    - name: google-japanese-ime
+    - name: google-chrome
+    - name: firefox
+    - name: slack
+    - name: obsidian
+    - name: zed
+    - name: tailscale-app
+    - name: tableplus
+    - name: postman
 
 - name: Create symbolic link fir diff-highlight (Intel)
   when: "ansible_architecture == 'x86_64'"
