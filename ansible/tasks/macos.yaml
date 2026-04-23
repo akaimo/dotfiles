@@ -43,6 +43,8 @@
         dest: '~/.xvimrc'
       - src: '~/dotfiles/.ideavimrc'
         dest: '~/.ideavimrc'
+      - src: '~/dotfiles/.finicky.js'
+        dest: '~/.finicky.js'
       - src: '~/dotfiles/.config/mise'
         dest: '~/.config/mise'
       - src: '~/dotfiles/.config/ghostty'
@@ -132,7 +134,7 @@
   with_items:
     - name: ghostty
     - name: jordanbaird-ice
-    - name: browserosaurus
+    - name: finicky
     - name: hammerspoon
     - name: iina
     - name: swiftbar
