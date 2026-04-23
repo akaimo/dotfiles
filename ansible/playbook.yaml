@@ -4,9 +4,6 @@
   connection: local
   become: 'no'
   tasks:
-    - import_tasks: tasks/zsh.yaml
-      vars:
-        the_user: "{{ ansible_user_id }}"
     - import_tasks: tasks/macos.yaml
     - import_tasks: tasks/vim.yaml
       tags:

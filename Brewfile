@@ -26,6 +26,12 @@ brew "vim"
 brew "neovim"
 brew "yamllint"
 
+# --- zsh plugins (pure zsh 構成) ---
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-history-substring-search"
+brew "zsh-syntax-highlighting"
+
 # --- GUI apps (cask) ---
 cask "codex"
 cask "ghostty"

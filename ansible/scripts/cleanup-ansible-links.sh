@@ -3,7 +3,7 @@
 #
 # 安全策:
 #   - 対象パスがシンボリックリンクでない場合はスキップ
-#   - リンク先が $HOME/dotfiles 配下以外なら保持 (ansible 製でない可能性が高い)
+#   - リンク先が ansible-origin の prefix(複数定義)に一致しなければ保持
 #   - リンク先が $HOME/dotfiles/home 配下なら保持 (stow 適用後のリンクは残す)
 #
 # 使い方:
@@ -29,8 +29,16 @@ done
 
 dotfiles_root="${HOME}/dotfiles"
 stow_root="${dotfiles_root}/home"
+prezto_runcoms="${HOME}/.zprezto/runcoms"
 
-# Ansible の playbook に記述されていた dotfile 一覧 (リンク先)
+# ansible が symlink を作っていた「リンク先」の prefix 一覧
+# 削除対象は、resolved がここのいずれかに一致するもの
+ansible_origin_prefixes=(
+  "$dotfiles_root"
+  "$prezto_runcoms"
+)
+
+# Ansible の playbook に記述されていた dotfile / prezto 由来 symlink の一覧 (リンク元)
 targets=(
   "${HOME}/.vimrc"
   "${HOME}/.vim"
@@ -56,6 +64,13 @@ targets=(
   "${HOME}/.claude/commands"
   "${HOME}/.claude/skills"
   "${HOME}/.claude/rules"
+  # prezto ランタイム由来(prezto 廃止に伴い削除)
+  "${HOME}/.zshrc"
+  "${HOME}/.zshenv"
+  "${HOME}/.zprofile"
+  "${HOME}/.zpreztorc"
+  "${HOME}/.zlogin"
+  "${HOME}/.zlogout"
 )
 
 removed=0
@@ -80,18 +95,30 @@ resolve_link_target() {
   fi
 }
 
+# resolved が ansible_origin_prefixes のいずれかの配下にあれば true
+is_ansible_origin() {
+  local resolved="$1"
+  local prefix
+  for prefix in "${ansible_origin_prefixes[@]}"; do
+    if [[ "$resolved" == "$prefix"/* ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 for path in "${targets[@]}"; do
   if [[ -L "$path" ]]; then
     resolved=$(resolve_link_target "$path")
 
-    # $HOME/dotfiles 配下を指していないリンクは触らない
-    if [[ "$resolved" != "$dotfiles_root"/* ]]; then
-      echo "[keep]    $path -> $resolved (dotfiles 外のリンクは保持)"
+    # ansible-origin でないリンク(無関係のリンクなど)は触らない
+    if ! is_ansible_origin "$resolved"; then
+      echo "[keep]    $path -> $resolved (ansible 由来でないため保持)"
       kept=$((kept + 1))
       continue
     fi
 
-    # 既に stow 済み (home/ 配下) のリンクは消さない
+    # 既に stow 済み (dotfiles/home 配下) のリンクは消さない
     if [[ "$resolved" == "$stow_root"/* ]]; then
       echo "[keep]    $path -> $resolved (stow 済み)"
       kept=$((kept + 1))
