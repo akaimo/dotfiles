@@ -1,5 +1,5 @@
 # Homebrew formulas / casks
-# 使い方: `cd ~/dotfiles/ansible && make brew` (ansible/Makefile の brew ターゲット経由で実行する)
+# 使い方: `cd ~/dotfiles && make brew` (Makefile の brew ターゲット経由で実行する)
 # pkg ベースの cask は sudo プロンプトを出すため対話 TTY で実行すること
 
 # --- CLI tools ---

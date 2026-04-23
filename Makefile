@@ -24,7 +24,7 @@ vim:
 	@echo "次に vim / nvim を起動して :PlugInstall を実行してください"
 
 brew:
-	brew bundle --file=../Brewfile
+	brew bundle --file=Brewfile
 
 stow:
 	# folding 防止のため ~/.config, ~/.config/uv, ~/.claude, ~/.vim を事前に実ディレクトリとして確保する

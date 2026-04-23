@@ -7,8 +7,8 @@
   - `brew install git`
 - clone dotfiles
   - `git clone --recursive https://github.com/akaimo/dotfiles.git ~/dotfiles`
-- 以降の手順は `~/dotfiles/ansible` ディレクトリで実行する
-  - `cd ~/dotfiles/ansible`
+- 以降の手順は `~/dotfiles` ディレクトリで実行する
+  - `cd ~/dotfiles`
 - install homebrew packages via Brewfile
   - `make brew`
   - pkg ベースの cask(karabiner-elements, google-japanese-ime, tailscale-app)は sudo プロンプトが出るため、対話ターミナルから実行する
