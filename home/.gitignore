@@ -1,0 +1,37 @@
+.DS_Store
+*~
+*.swp
+
+#Xcode
+#*.xcworkspace
+xcuserdata
+
+# XcodePlugin
+ObjcUML
+iOSInjectionProject
+
+#CocoaPod
+Pods/*
+
+# rubocop
+.rubocop_todo.yml
+
+# vim
+.vim/bundle
+.vim/autoload/plug.vim
+.vim/plugged
+.netrwhist
+.config/nvim/vim-lsp.log
+
+# IntelliJ IDEA
+.idea
+
+# Node
+node_modules
+
+# serena
+.serena
+
+# claude
+settings.local.json
+.claude/worktrees/

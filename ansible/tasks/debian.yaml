@@ -13,19 +13,6 @@
     dest: '/usr/local/bin/diff-highlight'
     state: link
 
-- name: Setup dotfiles
-  file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: link
-  with_items:
-    - src: '~/dotfiles/.gitconfig'
-      dest: '~/.gitconfig'
-    - src: '~/dotfiles/.gitignore'
-      dest: '~/.gitignore'
-    - src: '~/dotfiles/.config/uv/uv.toml'
-      dest: '~/.config/uv/uv.toml'
-
 - name: Add K8S GPG key
   become: yes
   become_method: sudo

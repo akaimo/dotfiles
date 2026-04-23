@@ -33,12 +33,6 @@
   shell: 'echo "[ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo" >> ~/.zshrc'
   when: not zshrc_akaimo.stat.exists
 
-- name: Setup my config
-  file:
-    src: '~/dotfiles/.zshrc.akaimo'
-    dest: '~/.zshrc.akaimo'
-    state: link
-
 - name: set default shell
   become: yes
   become_method: sudo

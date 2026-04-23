@@ -4,6 +4,7 @@
 
 # --- CLI tools ---
 brew "git"
+brew "stow"
 brew "fzf"
 brew "ripgrep"
 brew "colordiff"
@@ -19,7 +20,6 @@ brew "gpg"
 brew "pinentry-mac"
 brew "mise"
 brew "docker-credential-helper"
-brew "codex"
 
 # --- Editors / linters (vim 系) ---
 brew "vim"
@@ -27,6 +27,7 @@ brew "neovim"
 brew "yamllint"
 
 # --- GUI apps (cask) ---
+cask "codex"
 cask "ghostty"
 cask "jordanbaird-ice"
 cask "finicky"
