@@ -7,10 +7,7 @@
     - import_tasks: tasks/zsh.yaml
       vars:
         the_user: "{{ ansible_user_id }}"
-    - import_tasks: tasks/debian.yaml
-      when: "ansible_os_family == 'Debian'"
     - import_tasks: tasks/macos.yaml
-      when: "ansible_os_family == 'Darwin'"
     - import_tasks: tasks/vim.yaml
       tags:
         - never

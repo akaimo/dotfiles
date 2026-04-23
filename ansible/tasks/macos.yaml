@@ -1,30 +1,12 @@
 ---
-- name: Check diff-highlight source (Intel)
+- name: Check diff-highlight source
   # brew bundle 実行前だと diff-highlight が存在せずリンク失敗するため、事前に確認する
-  when: "ansible_architecture == 'x86_64'"
-  ansible.builtin.stat:
-    path: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
-  register: diff_highlight_src_intel
-
-- name: Create symbolic link for diff-highlight (Intel)
-  when:
-    - "ansible_architecture == 'x86_64'"
-    - diff_highlight_src_intel.stat.exists
-  ansible.builtin.file:
-    src: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
-    dest: '/usr/local/bin/diff-highlight'
-    state: link
-
-- name: Check diff-highlight source (ARM)
-  when: "ansible_architecture == 'arm64'"
   ansible.builtin.stat:
     path: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
-  register: diff_highlight_src_arm
+  register: diff_highlight_src
 
-- name: Create symbolic link for diff-highlight (ARM)
-  when:
-    - "ansible_architecture == 'arm64'"
-    - diff_highlight_src_arm.stat.exists
+- name: Create symbolic link for diff-highlight
+  when: diff_highlight_src.stat.exists
   ansible.builtin.file:
     src: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
     dest: '/opt/homebrew/bin/diff-highlight'
