@@ -1,9 +1,4 @@
 ---
-- name: Update homebrew
-  community.general.homebrew:
-    update_homebrew: 'yes'
-    upgrade_all: 'no'
-
 - name: Setup directory
   # シンボリックリンクを張る前に、dest の親ディレクトリを先に作成しておく
   ansible.builtin.file:
@@ -101,67 +96,33 @@
   loop_control:
     label: "{{ item.dest }}"
 
-- name: Install homebrew packages
-  community.general.homebrew:
-    name: "{{ item.name }}"
-    install_options: "{{ item.options|default() }}"
-  with_items:
-    - name: git
-    - name: fzf
-    - name: ripgrep
-    - name: colordiff
-    - name: source-highlight
-    - name: difftastic
-    - name: jq
-    - name: yq
-    - name: direnv
-    - name: watch
-    - name: tree
-    - name: jump
-    - name: gpg
-    - name: pinentry-mac
-    - name: mise
-    - name: docker-credential-helper
-    - name: codex
-
-- name: Install homebrew cask packages
-  # .pkg インストーラを内部で使う cask(karabiner-elements, google-japanese-ime,
-  # tailscale-app)は brew が sudo を呼ぶが Ansible 経由だと TTY が無く失敗するため
-  # この playbook では扱わない。README の手順に従って対話ターミナルから手動で入れる
-  community.general.homebrew_cask:
-    name: "{{ item.name }}"
-    install_options: force
-  with_items:
-    - name: ghostty
-    - name: jordanbaird-ice
-    - name: finicky
-    - name: hammerspoon
-    - name: iina
-    - name: swiftbar
-    - name: 1password
-    - name: firefox
-    - name: slack
-    - name: obsidian
-    - name: zed
-    - name: tableplus
-    - name: postman
-
-- name: Show manual install step for pkg-based casks
-  ansible.builtin.debug:
-    msg:
-      - ".pkg ベースの cask は Ansible からは入れていません"
-      - "手動で実行してください: brew install --cask karabiner-elements google-japanese-ime tailscale-app"
-
-- name: Create symbolic link fir diff-highlight (Intel)
+- name: Check diff-highlight source (Intel)
+  # brew bundle 実行前だと diff-highlight が存在せずリンク失敗するため、事前に確認する
   when: "ansible_architecture == 'x86_64'"
-  file:
+  ansible.builtin.stat:
+    path: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
+  register: diff_highlight_src_intel
+
+- name: Create symbolic link for diff-highlight (Intel)
+  when:
+    - "ansible_architecture == 'x86_64'"
+    - diff_highlight_src_intel.stat.exists
+  ansible.builtin.file:
     src: '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight'
     dest: '/usr/local/bin/diff-highlight'
     state: link
 
-- name: Create symbolic link fir diff-highlight (ARM)
+- name: Check diff-highlight source (ARM)
   when: "ansible_architecture == 'arm64'"
-  file:
+  ansible.builtin.stat:
+    path: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
+  register: diff_highlight_src_arm
+
+- name: Create symbolic link for diff-highlight (ARM)
+  when:
+    - "ansible_architecture == 'arm64'"
+    - diff_highlight_src_arm.stat.exists
+  ansible.builtin.file:
     src: '/opt/homebrew/opt/git/share/git-core/contrib/diff-highlight/diff-highlight'
     dest: '/opt/homebrew/bin/diff-highlight'
     state: link
