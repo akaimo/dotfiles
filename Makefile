@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := help
 
+.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run
+
 help:
 	@echo "Available targets:"
 	@echo "  make brew                          - Brewfile からパッケージをインストール"
