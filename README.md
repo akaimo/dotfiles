@@ -4,7 +4,7 @@
 - install homebrew
   - https://brew.sh/ja/
 - install tools
-  - `brew install git ansible`
+  - `brew install git`
 - clone dotfiles
   - `git clone --recursive https://github.com/akaimo/dotfiles.git ~/dotfiles`
 - 以降の手順は `~/dotfiles/ansible` ディレクトリで実行する
@@ -29,8 +29,11 @@
   - `mise i`
 - install vim
   - `make vim`
+  - vim-plug を `~/.vim/autoload/` と `~/.local/share/nvim/site/autoload/` に配置し、nvim 用の Python provider (pynvim) を `~/.local/share/nvim/venv/` に uv で用意する
+  - 事前に `mise i` で uv が入っている必要あり
 - install vim plugin
-  - `:PlugInstall`
+  - vim / nvim を起動して `:PlugInstall`
+  - nvim では初回のみ `:UpdateRemotePlugins` を実行して remote plugin manifest を生成してから nvim を再起動 (deoplete.nvim 等の Python remote plugin 用)
 - (option) use ssh
   - `git remote set-url origin git@github.com:akaimo/dotfiles.git`
 

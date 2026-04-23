@@ -10,7 +10,18 @@ help:
 	@echo "  make vim                           - vim-plug / pynvim のセットアップ"
 
 vim:
-	ansible-playbook -i .inventory playbook.yaml -t vim --ask-become-pass
+	# vim-plug を vim / nvim の autoload に配置
+	curl -fLo $(HOME)/.vim/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	curl -fLo $(HOME)/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	# nvim 専用 venv を uv で作り、pynvim (Python provider) を入れる
+	# init.vim 側で g:python3_host_prog = ~/.local/share/nvim/venv/bin/python を指す
+	# --allow-existing で再実行時に venv を作り直さず中身を維持 (冪等)
+	uv venv --allow-existing $(HOME)/.local/share/nvim/venv
+	uv pip install --python $(HOME)/.local/share/nvim/venv/bin/python pynvim
+	@echo ""
+	@echo "次に vim / nvim を起動して :PlugInstall を実行してください"
 
 brew:
 	brew bundle --file=../Brewfile
