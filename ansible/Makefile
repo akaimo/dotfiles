@@ -1,5 +1,13 @@
-run:
-	ansible-playbook -i .inventory playbook.yaml --ask-become-pass
+.DEFAULT_GOAL := help
+
+help:
+	@echo "Available targets:"
+	@echo "  make brew                          - Brewfile からパッケージをインストール"
+	@echo "  make stow                          - dotfiles のシンボリックリンクを作成"
+	@echo "  make stow-dry-run                  - stow の計画を確認 (削除しない)"
+	@echo "  make ansible-links-cleanup         - 旧 ansible 由来の symlink を削除"
+	@echo "  make ansible-links-cleanup-dry-run - cleanup の計画を確認"
+	@echo "  make vim                           - vim-plug / pynvim のセットアップ"
 
 vim:
 	ansible-playbook -i .inventory playbook.yaml -t vim --ask-become-pass

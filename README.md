@@ -23,8 +23,7 @@
   - `rm -f ~/.cache/zsh/zcompdump*` (新しく入った zsh-completions を反映させるため、補完キャッシュを一度消す)
 - set login shell (必要なら)
   - macOS は既定で zsh だが、他シェルのままなら `chsh -s /bin/zsh`
-- run basic playbook
-  - `make`
+- reload shell
   - `exec $SHELL -l`
 - mise
   - `mise i`

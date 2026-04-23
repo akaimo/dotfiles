@@ -4,7 +4,6 @@
   connection: local
   become: 'no'
   tasks:
-    - import_tasks: tasks/macos.yaml
     - import_tasks: tasks/vim.yaml
       tags:
         - never
