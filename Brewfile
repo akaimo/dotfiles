@@ -47,6 +47,7 @@ cask "obsidian"
 cask "zed"
 cask "tableplus"
 cask "postman"
+cask "pastebot"
 
 # --- pkg ベースの cask ---
 # インストール時に sudo プロンプトが出る
