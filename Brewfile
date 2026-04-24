@@ -48,6 +48,8 @@ cask "zed"
 cask "tableplus"
 cask "postman"
 cask "pastebot"
+cask "logi-options+"
+cask "spotify"
 
 # --- pkg ベースの cask ---
 # インストール時に sudo プロンプトが出る
