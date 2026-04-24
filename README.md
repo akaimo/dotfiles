@@ -56,3 +56,19 @@ ansible で構築済みの環境から本構成へ乗り換える場合、以下
 - vim 周りを再セットアップ
   - `make vim`
   - 続けて vim / nvim を起動して `:PlugInstall`、nvim では初回のみ `:UpdateRemotePlugins` を実行
+
+## Karabiner 設定のバックアップ
+
+Karabiner-Elements の設定 (`~/.config/karabiner/karabiner.json`) は stow 対象ではなく、リポジトリ直下の `karabiner/` に「バックアップとしてコピー」して git 履歴で過去の設定を追える運用にしている。
+
+- バックアップを取る
+  - `make karabiner-backup`
+  - `~/.config/karabiner/karabiner.json` を `karabiner/karabiner.json` へ上書きコピーする
+  - `git diff karabiner/` で差分を確認し、問題なければコミットする
+- 復元する (新しいマシン等)
+  - Karabiner-Elements を一度終了してから実行 (起動中は書き戻しで上書きされる可能性があるため)
+  - `mkdir -p ~/.config/karabiner && cp karabiner/karabiner.json ~/.config/karabiner/karabiner.json`
+  - Karabiner-Elements を再起動し、端末固有のデバイス設定 (vendor/product ID 指定のキーバインド等) が復元先のキーボードで期待通り効くか確認する
+- 注意
+  - これは stow 対象ではないため、手動で `make karabiner-backup` を叩かない限り更新されない (Karabiner がファイルをアトミック rename で書き戻し symlink が壊れる問題を避けるため、あえて同期しない構成)
+  - `~/.config/karabiner/automatic_backups/` は Karabiner が日次で作る自動バックアップで、本リポジトリの管理対象外

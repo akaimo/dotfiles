@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run
+.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run karabiner-backup
 
 help:
 	@echo "Available targets:"
@@ -10,6 +10,7 @@ help:
 	@echo "  make ansible-links-cleanup         - 旧 ansible 由来の symlink を削除"
 	@echo "  make ansible-links-cleanup-dry-run - cleanup の計画を確認"
 	@echo "  make vim                           - vim-plug / pynvim のセットアップ"
+	@echo "  make karabiner-backup              - Karabiner 設定を karabiner/karabiner.json にコピー (git でバージョン管理用)"
 
 vim:
 	# vim-plug を vim / nvim の autoload に配置
@@ -41,3 +42,13 @@ ansible-links-cleanup:
 
 ansible-links-cleanup-dry-run:
 	./scripts/cleanup-ansible-links.sh --dry-run
+
+# Karabiner-Elements の設定を現在の PC からリポジトリ直下 karabiner/ にコピーする。
+# stow 対象外なので symlink ではなく実ファイルとしてコピーし、差分を git で確認してコミットする運用。
+# automatic_backups/ は Karabiner が日次で自動生成するため対象外。
+karabiner-backup:
+	@test -f $(HOME)/.config/karabiner/karabiner.json \
+		|| (echo "ERROR: $(HOME)/.config/karabiner/karabiner.json が見つかりません。Karabiner-Elements がインストール & 起動済みか確認してください" && exit 1)
+	mkdir -p karabiner
+	cp $(HOME)/.config/karabiner/karabiner.json karabiner/karabiner.json
+	@echo "karabiner/karabiner.json を更新しました。'git diff karabiner/' で差分を確認してコミットしてください"
