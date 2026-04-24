@@ -111,6 +111,7 @@
     "filesystem": {
       "allowWrite": [
         "/tmp",
+        "/private/tmp",
         "~/Library/Caches",
         "~/**/.git/**",
         "~/.codex",
