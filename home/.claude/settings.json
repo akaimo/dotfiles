@@ -2,29 +2,6 @@
   "env": {
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "allowUnsandboxedCommands": false,
-    "excludedCommands": ["gh", "codex", "docker", "git"],
-    "filesystem": {
-      "allowWrite": ["/tmp", "~/Library/Caches", "~/**/.git/**", "~/.codex", "~/go/pkg/mod"],
-      "denyRead": ["~/.ssh", "~/.gnupg", "~/.aws", "~/.config/gcloud", "~/.bash_history", "~/.zsh_history"]
-    },
-    "network": {
-      "allowUnixSockets": [
-        "/var/run/docker.sock",
-        "~/.colima/default/docker.sock",
-        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-      ],
-      "allowMachLookup": [
-        "com.apple.SystemConfiguration.configd",
-        "com.apple.secd",
-        "com.apple.trustd.agent"
-      ],
-      "allowLocalBinding": true
-    }
-  },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
@@ -63,16 +40,6 @@
       "Bash(mockgen:*)",
       "Bash(codex -a never -s read-only:*)"
     ],
-    "ask": [
-      "Bash(rm:*)",
-      "Bash(kill:*)",
-      "Bash(git checkout .)",
-      "Bash(git clean -f:*)",
-      "Bash(git reset:*)",
-      "Bash(git rebase:*)",
-      "Bash(mysql:*)",
-      "Bash(psql:*)"
-    ],
     "deny": [
       "Bash(sudo:*)",
       "Bash(su:*)",
@@ -104,6 +71,16 @@
       "Read(**/id_dsa)",
       "Read(**/.ssh/**)",
       "Write(/etc/**)"
+    ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(kill:*)",
+      "Bash(git checkout .)",
+      "Bash(git clean -f:*)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(mysql:*)",
+      "Bash(psql:*)"
     ]
   },
   "statusLine": {
@@ -114,6 +91,48 @@
     "gopls-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": false,
+    "network": {
+      "allowUnixSockets": [
+        "/var/run/docker.sock",
+        "~/.colima/default/docker.sock",
+        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+      ],
+      "allowLocalBinding": true,
+      "allowMachLookup": [
+        "com.apple.SystemConfiguration.configd",
+        "com.apple.secd",
+        "com.apple.trustd.agent"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "/tmp",
+        "~/Library/Caches",
+        "~/**/.git/**",
+        "~/.codex",
+        "~/go/pkg/mod"
+      ],
+      "denyRead": [
+        "~/.ssh",
+        "~/.gnupg",
+        "~/.aws",
+        "~/.config/gcloud",
+        "~/.bash_history",
+        "~/.zsh_history"
+      ]
+    },
+    "excludedCommands": [
+      "gh",
+      "codex",
+      "docker",
+      "git"
+    ]
+  },
   "alwaysThinkingEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "effortLevel": "xhigh"
 }

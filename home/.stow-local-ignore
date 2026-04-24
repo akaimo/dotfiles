@@ -1,0 +1,21 @@
+# stow の ignore リスト (perl regex)。独自除外は ^/ で package ルートにアンカーする
+# このファイルを作成すると stow のデフォルト ignore リストは上書きされるので、必要な項目を明示する
+
+# リポジトリ内では管理するがシンボリックリンクは作らないファイル
+^/\.claude/settings\.local\.json
+^/\.config/mpv
+
+# stow デフォルトから持ち込み
+# .gitignore は home/.gitignore → ~/.gitignore としてグローバル excludes で使うため除外しない
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitmodules
+.+~
+\#.*\#

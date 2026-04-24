@@ -1,3 +1,8 @@
+" pynvim を含む nvim 専用 venv を Python provider に指定 (make vim で作成)
+if executable(expand('~/.local/share/nvim/venv/bin/python'))
+  let g:python3_host_prog = expand('~/.local/share/nvim/venv/bin/python')
+endif
+
 syntax on
 colorscheme molokai
 
