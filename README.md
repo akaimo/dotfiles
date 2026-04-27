@@ -18,6 +18,9 @@
   - 先に `make stow-dry-run` で想定リンクを確認する
   - 実ファイル/ディレクトリが邪魔する場合は手動で退避してから再実行する: `mv ~/.xxx ~/.xxx.backup.$(date +%Y%m%d%H%M%S)`
   - `make stow`
+- finicky 設定を配置する (使用していれば)
+  - `make finicky-install`
+  - 詳細は本 README の「finicky 設定の配置」セクション参照
 - set login shell (必要なら)
   - macOS は既定で zsh だが、他シェルのままなら `chsh -s /bin/zsh`
 - reload shell
@@ -56,6 +59,35 @@ ansible で構築済みの環境から本構成へ乗り換える場合、以下
 - vim 周りを再セットアップ
   - `make vim`
   - 続けて vim / nvim を起動して `:PlugInstall`、nvim では初回のみ `:UpdateRemotePlugins` を実行
+
+## finicky 設定の配置
+
+finicky は人間がエディタで設定ファイルを編集するアプリのため、リポジトリ内の `finicky/finicky.js` を **正本** として、`make finicky-install` で `~/.config/finicky/finicky.js` に「コピー」で配置する (repo → アプリ方向のデプロイ)。stow 対象外。
+
+> Karabiner はアプリ GUI 側で設定を行うため `make karabiner-backup` で repo に取り込む (アプリ → repo, バックアップ方向)。両者でコピーの向きが逆である点に注意。
+
+### なぜ stow (symlink) を使わないか
+
+finicky v4.2.2 の watcher (fsnotify) は symlink を解決した実体パスを watch するが、`fsnotify.Remove` イベントを受け取ると watcher の goroutine が `return` で終了し、以降設定が一切読み込まれなくなる (再 watch のリトライ実装がない)。
+
+stow で `~/dotfiles/home/.finicky.js` を symlink 配置していると、`git pull` / `git checkout` / `git restore` 等が実体ファイルを delete→create で置換した際に Remove イベントが発火し、finicky が設定を見失う。watch 対象を git 操作の影響範囲外に置くことでこの再発を根本から防いでいる。
+
+### 使い方
+
+- 配置/反映する
+  - `make finicky-install`
+  - `finicky/finicky.js` を `~/.config/finicky/finicky.js` にコピーし、Finicky を再起動する
+  - 旧運用の symlink (`~/.finicky.js`) が残っていれば自動で削除する
+- 設定を変更する
+  - `finicky/finicky.js` を編集してコミット
+  - repo 側の `finicky/finicky.js` を編集しても、配置先には自動反映されない
+  - 反映するときは `make finicky-install` を実行する
+
+### 注意
+
+- `~/.config/finicky/finicky.js` を直接エディタで編集しない (atomic save で同じ Remove イベントが起きる)
+- `make stow` では配置されない。新規マシンセットアップ時は `make stow` の後に `make finicky-install` を別途実行する
+- `~/.finicky.js` に実ファイル/ディレクトリが残っている場合は安全のためエラーで停止する。手動で退避すること
 
 ## Karabiner 設定のバックアップ
 
