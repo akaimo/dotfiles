@@ -12,8 +12,6 @@
   - `cd ~/dotfiles`
 - install homebrew packages via Brewfile
   - `make brew`
-  - pkg ベースの cask(karabiner-elements, google-japanese-ime, tailscale-app)は sudo プロンプトが出るため、対話ターミナルから実行する
-  - インストール後、macOS の「プライバシーとセキュリティ」で追加許可が必要な場合あり
 - create dotfile symlinks via GNU Stow
   - 先に `make stow-dry-run` で想定リンクを確認する
   - 実ファイル/ディレクトリが邪魔する場合は手動で退避してから再実行する: `mv ~/.xxx ~/.xxx.backup.$(date +%Y%m%d%H%M%S)`
