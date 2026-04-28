@@ -31,8 +31,10 @@ brew:
 	brew bundle --file=Brewfile
 
 stow:
-	# folding 防止のため ~/.config, ~/.config/uv, ~/.claude, ~/.vim を事前に実ディレクトリとして確保する
-	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.claude $(HOME)/.vim
+	# folding 防止のため ~/.config, ~/.config/uv, ~/.claude, ~/.vim, ~/Documents/swiftbar を事前に実ディレクトリとして確保する
+	# (~/Documents/swiftbar は SwiftBar プラグイン置き場。ディレクトリごと symlink にされると、
+	#  リポジトリ管理外のプラグインを後から追加しづらくなるため個別ファイル単位で symlink させる)
+	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar
 	stow -d $(HOME)/dotfiles -t $(HOME) home
 
 stow-dry-run:
