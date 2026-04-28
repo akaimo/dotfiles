@@ -34,6 +34,9 @@ brew "zsh-syntax-highlighting"
 
 # --- GUI apps (cask) ---
 cask "codex"
+cask "codex-app"
+cask "chatgpt"
+cask "chatgpt-atlas"
 cask "ghostty"
 cask "jordanbaird-ice"
 cask "finicky"
@@ -50,6 +53,8 @@ cask "postman"
 cask "pastebot"
 cask "logi-options+"
 cask "spotify"
+cask "brave-browser"
+cask "discord"
 
 # --- pkg ベースの cask ---
 # インストール時に sudo プロンプトが出る
