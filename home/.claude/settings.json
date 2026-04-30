@@ -57,10 +57,12 @@
       "Bash(ssh:*)",
       "Bash(scp:*)",
       "Bash(rsync:*)",
+      "Bash(open:*)",
+      "Bash(osascript:*)",
+      "Bash(defaults write:*)",
       "Read(**/.env*)",
-      "Read(**/credentials*.json)",
-      "Read(**/secret.json)",
-      "Read(**/secrets.json)",
+      "Read(**/credentials*)",
+      "Read(**/secret*)",
       "Read(**/*.key)",
       "Read(**/*.pem)",
       "Read(**/*.pfx)",
@@ -79,8 +81,23 @@
       "Bash(git clean -f:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
+      "Bash(docker push:*)",
+      "Bash(brew install:*)",
       "Bash(mysql:*)",
       "Bash(psql:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/block-push-to-main.py"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
