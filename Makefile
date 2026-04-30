@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run karabiner-backup finicky-install
+.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run karabiner-backup finicky-install vscode-backup vscode-extensions-backup
 
 help:
 	@echo "Available targets:"
@@ -12,6 +12,7 @@ help:
 	@echo "  make vim                           - vim-plug / pynvim のセットアップ"
 	@echo "  make karabiner-backup              - Karabiner 設定を ~/.config/karabiner/ から karabiner/ に取り込む (アプリ→repo, バックアップ)"
 	@echo "  make finicky-install               - finicky 設定を finicky/ から ~/.config/finicky/ に配置して再起動 (repo→アプリ, デプロイ)"
+	@echo "  make vscode-backup                 - VSCode 拡張機能リストを vscode/ に取り込む (アプリ→repo, バックアップ)"
 
 vim:
 	# vim-plug を vim / nvim の autoload に配置
@@ -31,10 +32,11 @@ brew:
 	brew bundle --file=Brewfile
 
 stow:
-	# folding 防止のため ~/.config, ~/.config/uv, ~/.claude, ~/.vim, ~/Documents/swiftbar を事前に実ディレクトリとして確保する
+	# folding 防止のため ~/.config, ~/.config/uv, ~/.config/zed, ~/.claude, ~/.vim,
+	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User を事前に実ディレクトリとして確保する
 	# (~/Documents/swiftbar は SwiftBar プラグイン置き場。ディレクトリごと symlink にされると、
 	#  リポジトリ管理外のプラグインを後から追加しづらくなるため個別ファイル単位で symlink させる)
-	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar
+	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User"
 	stow -d $(HOME)/dotfiles -t $(HOME) home
 
 stow-dry-run:
@@ -97,3 +99,20 @@ karabiner-backup:
 	mkdir -p karabiner
 	cp $(HOME)/.config/karabiner/karabiner.json karabiner/karabiner.json
 	@echo "karabiner/karabiner.json を更新しました。'git diff karabiner/' で差分を確認してコミットしてください"
+
+# VSCode の settings.json は stow 対象 (home/Library/Application Support/Code/User/settings.json)。
+# 拡張機能リストだけは code コマンドの出力をバックアップとして管理する。
+vscode-backup: vscode-extensions-backup
+
+vscode-extensions-backup:
+	mkdir -p vscode
+	# code が途中で失敗しても extensions.txt が空で上書きされないよう一時ファイル経由でアトミックに置換する。
+	@if command -v code >/dev/null 2>&1; then \
+		set -e; \
+		code --list-extensions | LC_ALL=C sort > vscode/extensions.txt.tmp; \
+		mv vscode/extensions.txt.tmp vscode/extensions.txt; \
+		echo "vscode/extensions.txt を更新しました"; \
+	else \
+		echo "WARN: code コマンドが見つかりません。拡張機能リストの更新はスキップします (Shell Command: 'code' を VSCode のコマンドパレットから PATH に追加してください)"; \
+	fi
+	@echo "'git diff vscode/' で差分を確認してコミットしてください"

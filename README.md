@@ -87,6 +87,51 @@ stow で `~/dotfiles/home/.finicky.js` を symlink 配置していると、`git 
 - `make stow` では配置されない。新規マシンセットアップ時は `make stow` の後に `make finicky-install` を別途実行する
 - `~/.finicky.js` に実ファイル/ディレクトリが残っている場合は安全のためエラーで停止する。手動で退避すること
 
+## VSCode 設定の管理
+
+VSCode のうち、人が編集する `settings.json` は GNU Stow で管理する。
+
+管理元は `home/Library/Application Support/Code/User/settings.json`、配置先は `~/Library/Application Support/Code/User/settings.json`。`make stow` で symlink が作られる。
+
+- 拡張機能リストをバックアップする
+  - `make vscode-backup`
+  - `make vscode-extensions-backup` でも同じ
+  - `code --list-extensions` の出力を `LC_ALL=C sort` で安定化して `vscode/extensions.txt` へ書き出す (git diff のノイズを避けるため)
+  - `code` コマンドが PATH に無い場合は extensions.txt の更新をスキップする
+  - `git diff vscode/` で差分を確認し、問題なければコミットする
+- 復元する (新しいマシン等)
+  - 先に `make stow-dry-run` で確認し、既存の `~/Library/Application Support/Code/User/settings.json` が邪魔する場合は手動で退避する
+  - `make stow`
+  - 拡張機能を一括インストール: `grep -v '^[[:space:]]*$' vscode/extensions.txt | xargs -L1 code --install-extension`
+  - `code` コマンドが無い場合は VSCode を起動し、コマンドパレットから「Shell Command: Install 'code' command in PATH」を実行してから上記を再実行する
+- 管理対象
+  - stow: `settings.json`
+  - バックアップ: `vscode/extensions.txt`
+  - `keybindings.json` / `snippets/` は必要になったら `home/Library/Application Support/Code/User/` 配下へ追加して stow 対象にする
+  - `profiles/` やアプリが自動更新する state/cache は対象外
+- 注意
+  - VSCode の設定 UI で `settings.json` を変更すると、symlink 経由で repo 側の `home/Library/Application Support/Code/User/settings.json` が更新される。差分を確認してコミットすること
+  - `vscode/extensions.txt` は手動で `make vscode-backup` を叩かない限り更新されない
+  - `code` コマンドが PATH に無い状態で `make vscode-backup` を実行した場合、`vscode/extensions.txt` は前回値のまま据え置きになる
+  - VSCode Insiders は今回の管理対象外 (パスとコマンドが異なるため)
+
+## Zed 設定の管理
+
+Zed のうち、人が編集する `settings.json` は GNU Stow で管理する。
+
+管理元は `home/.config/zed/settings.json`、配置先は `~/.config/zed/settings.json`。`make stow` で symlink が作られる。
+
+- 復元する (新しいマシン等)
+  - 先に `make stow-dry-run` で確認し、既存の `~/.config/zed/settings.json` が邪魔する場合は手動で退避する
+  - Zed を一度終了してから `make stow` を実行する
+- 管理対象
+  - `home/.config/zed/settings.json` のみ
+  - `keymap.json` / `tasks.json` / `snippets/` など、人が編集するものは必要になったら `home/.config/zed/` 配下へ追加して stow 対象にする
+  - `themes/` / `prompts/` は自作で固定管理したい場合のみ追加する
+- 注意
+  - Zed 側で設定を変更すると、symlink 経由で repo 側の `home/.config/zed/settings.json` が更新される。差分を確認してコミットすること
+  - アプリが自動更新する state/cache は stow 対象にしない
+
 ## Karabiner 設定のバックアップ
 
 Karabiner-Elements の設定 (`~/.config/karabiner/karabiner.json`) は stow 対象ではなく、リポジトリ直下の `karabiner/` に「バックアップとしてコピー」して git 履歴で過去の設定を追える運用にしている。

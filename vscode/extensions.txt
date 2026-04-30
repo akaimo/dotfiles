@@ -1,0 +1,5 @@
+anthropic.claude-code
+github.copilot-chat
+golang.go
+ms-azuretools.vscode-containers
+vscodevim.vim

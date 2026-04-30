@@ -1,0 +1,29 @@
+{
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Light+",
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "vim.leader": "<space>",
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["u"],
+            "commands": ["undo"]
+        },
+        {
+            "before": ["<Leader>", "r"],
+            "commands": ["editor.action.rename"],
+            "when": ["editorFocus && vim.mode == 'Normal'"]
+        },
+        {
+            "before": ["<Esc>", "<Esc>"],
+            "commands": [":nohlsearch"],
+            "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+        }
+    ],
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "go.toolsManagement.autoUpdate": true,
+    "workbench.editor.enablePreview": false
+}
