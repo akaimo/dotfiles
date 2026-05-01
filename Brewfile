@@ -20,6 +20,7 @@ brew "gpg"
 brew "pinentry-mac"
 brew "mise"
 brew "docker-credential-helper"
+brew "googleworkspace-cli"
 
 # --- Editors / linters (vim 系) ---
 brew "vim"
@@ -33,6 +34,7 @@ brew "zsh-history-substring-search"
 brew "zsh-syntax-highlighting"
 
 # --- GUI apps (cask) ---
+cask "gcloud-cli"
 cask "codex"
 cask "codex-app"
 cask "chatgpt"
