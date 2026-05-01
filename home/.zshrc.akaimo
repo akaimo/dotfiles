@@ -69,6 +69,12 @@ alias terraform='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
 
 export GPG_TTY=$(tty)
 
+# gcloud
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+
+# claude code
+export PATH="$HOME/.local/bin:$PATH"
+
 # my command
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
