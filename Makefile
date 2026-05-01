@@ -33,10 +33,17 @@ brew:
 
 stow:
 	# folding 防止のため ~/.config, ~/.config/uv, ~/.config/zed, ~/.claude, ~/.vim,
-	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User を事前に実ディレクトリとして確保する
+	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User, ~/.docker/cli-plugins を
+	# 事前に実ディレクトリとして確保する。
 	# (~/Documents/swiftbar は SwiftBar プラグイン置き場。ディレクトリごと symlink にされると、
 	#  リポジトリ管理外のプラグインを後から追加しづらくなるため個別ファイル単位で symlink させる)
-	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User"
+	# (~/.docker/cli-plugins は Docker CLI が読む正規パス。ディレクトリごと symlink にすると
+	#  Docker Desktop 等が後から配置するプラグインと衝突するため個別ファイル単位で管理する)
+	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User" $(HOME)/.docker/cli-plugins
+	# Docker CLI plugin wrapper (home/.docker/cli-plugins/docker-compose) には実行可能ビットが必須。
+	# git では 100755 で記録しているが、何らかの理由で working tree のビットが落ちている場合に
+	# 備えて明示的に確保する (idempotent)。
+	chmod +x home/.docker/cli-plugins/docker-compose
 	stow -d $(HOME)/dotfiles -t $(HOME) home
 
 stow-dry-run:

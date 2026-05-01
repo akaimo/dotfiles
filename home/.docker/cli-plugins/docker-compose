@@ -1,0 +1,20 @@
+#!/bin/sh
+# Docker CLI plugin: docker-compose (mise shim wrapper)
+#
+# 背景: mise の docker-compose プラグインは
+#   ~/.local/share/mise/shims/docker-cli-plugin-docker-compose
+# という shim (mise バイナリへの symlink) を生成する。
+# しかしこの shim を ~/.docker/cli-plugins/docker-compose に直接 symlink すると、
+# argv[0] が "docker-compose" になり mise が "docker-compose" という名前のツールを
+# 探そうとして "is not a valid shim" エラーで失敗する。
+#
+# このラッパースクリプトで shim を絶対パスで明示的に exec することで、
+#   - Docker CLI plugin として要求されるファイル名: docker-compose (Docker から見た名前)
+#   - mise が解決に使う argv[0]: docker-cli-plugin-docker-compose (shim の本来の名前)
+# を両立させる。
+#
+# shim 自体は mise のバージョンに依存せず、内部で active version を解決するため
+# `mise upgrade docker-compose` 後も再リンク不要 (このスクリプトを編集する必要も無い)。
+#
+# MISE_DATA_DIR / XDG_DATA_HOME を尊重するので、デフォルト以外の data dir を使う環境でも動作する。
+exec "${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims/docker-cli-plugin-docker-compose" "$@"
