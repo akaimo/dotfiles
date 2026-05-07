@@ -49,11 +49,16 @@ stow-dry-run:
 # Docker CLI plugin (docker-compose / docker-buildx 等) は Homebrew 管理に統一しているが、
 # Homebrew は plugin 本体を $(brew --prefix)/lib/docker/cli-plugins に配置するのに対し、
 # Docker CLI が標準で読むのは ~/.docker/cli-plugins のため、このままでは認識されない。
-# よって ~/.docker/config.json (実ファイル) に cliPluginsExtraDirs を登録して plugin 探索パス
-# を増やす。symlink で stow 管理すると docker login 等で書かれる auths/credsStore がリポジトリ
-# 側に混入する危険があるため、jq で実ファイルに idempotent に merge する運用とする (jq は Brewfile に同梱)。
+# また Docker の credential helper (docker-credential-osxkeychain, brew の docker-credential-helper
+# が提供) を有効にするため credsStore も設定する。
+# よって ~/.docker/config.json (実ファイル) に cliPluginsExtraDirs と credsStore を登録する。
+# symlink で stow 管理すると docker login 等で書かれる auths がリポジトリ側に混入する危険があるため、
+# jq で実ファイルに idempotent に merge する運用とする (jq は Brewfile に同梱)。
+# credsStore は既存値があれば尊重し未設定時のみデフォルト値を入れる (Docker Desktop が "desktop" を
+# 設定しているケース等を上書きしないため)。
 DOCKER_CONFIG_FILE     := $(HOME)/.docker/config.json
 DOCKER_CLI_PLUGINS_DIR := /opt/homebrew/lib/docker/cli-plugins
+DOCKER_CREDS_STORE     := osxkeychain
 
 docker-config:
 	@mkdir -p $(HOME)/.docker
@@ -65,11 +70,11 @@ docker-config:
 	fi
 	@if [ ! -f "$(DOCKER_CONFIG_FILE)" ]; then echo "{}" > "$(DOCKER_CONFIG_FILE)"; fi
 	@tmp="$$(mktemp)" && \
-	  jq --arg dir "$(DOCKER_CLI_PLUGINS_DIR)" \
-	    '.cliPluginsExtraDirs = ((.cliPluginsExtraDirs // []) as $$dirs | if $$dirs | index($$dir) then $$dirs else $$dirs + [$$dir] end)' \
+	  jq --arg dir "$(DOCKER_CLI_PLUGINS_DIR)" --arg creds "$(DOCKER_CREDS_STORE)" \
+	    '.cliPluginsExtraDirs = ((.cliPluginsExtraDirs // []) as $$dirs | if $$dirs | index($$dir) then $$dirs else $$dirs + [$$dir] end) | .credsStore = (.credsStore // $$creds)' \
 	    "$(DOCKER_CONFIG_FILE)" > "$$tmp" && \
 	  mv "$$tmp" "$(DOCKER_CONFIG_FILE)"
-	@echo "[ok] $(DOCKER_CONFIG_FILE) に cliPluginsExtraDirs=$(DOCKER_CLI_PLUGINS_DIR) を確保しました"
+	@echo "[ok] $(DOCKER_CONFIG_FILE) に cliPluginsExtraDirs / credsStore を確保しました"
 
 ansible-links-cleanup:
 	./scripts/cleanup-ansible-links.sh
