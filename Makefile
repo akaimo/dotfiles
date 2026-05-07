@@ -1,12 +1,13 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help vim brew stow stow-dry-run ansible-links-cleanup ansible-links-cleanup-dry-run karabiner-backup finicky-install vscode-backup vscode-extensions-backup
+.PHONY: help vim brew stow stow-dry-run docker-config ansible-links-cleanup ansible-links-cleanup-dry-run karabiner-backup finicky-install vscode-backup vscode-extensions-backup
 
 help:
 	@echo "Available targets:"
 	@echo "  make brew                          - Brewfile からパッケージをインストール"
 	@echo "  make stow                          - dotfiles のシンボリックリンクを作成"
 	@echo "  make stow-dry-run                  - stow の計画を確認 (削除しない)"
+	@echo "  make docker-config                 - ~/.docker/config.json に Homebrew の cli-plugins 配置先を idempotent に登録"
 	@echo "  make ansible-links-cleanup         - 旧 ansible 由来の symlink を削除"
 	@echo "  make ansible-links-cleanup-dry-run - cleanup の計画を確認"
 	@echo "  make vim                           - vim-plug / pynvim のセットアップ"
@@ -33,21 +34,47 @@ brew:
 
 stow:
 	# folding 防止のため ~/.config, ~/.config/uv, ~/.config/zed, ~/.claude, ~/.vim,
-	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User, ~/.docker/cli-plugins を
-	# 事前に実ディレクトリとして確保する。
+	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User,
+	# ~/Library/Preferences/pnpm を事前に実ディレクトリとして確保する。
 	# (~/Documents/swiftbar は SwiftBar プラグイン置き場。ディレクトリごと symlink にされると、
 	#  リポジトリ管理外のプラグインを後から追加しづらくなるため個別ファイル単位で symlink させる)
-	# (~/.docker/cli-plugins は Docker CLI が読む正規パス。ディレクトリごと symlink にすると
-	#  Docker Desktop 等が後から配置するプラグインと衝突するため個別ファイル単位で管理する)
-	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User" $(HOME)/.docker/cli-plugins
-	# Docker CLI plugin wrapper (home/.docker/cli-plugins/docker-compose) には実行可能ビットが必須。
-	# git では 100755 で記録しているが、何らかの理由で working tree のビットが落ちている場合に
-	# 備えて明示的に確保する (idempotent)。
-	chmod +x home/.docker/cli-plugins/docker-compose
+	# (~/Library/Preferences/pnpm は pnpm 11+ が config.yaml を読む macOS 既定パス。
+	#  pnpm が将来同ディレクトリに別ファイルを書く可能性に備えて個別ファイル単位で管理する)
+	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User" $(HOME)/Library/Preferences/pnpm
 	stow -d $(HOME)/dotfiles -t $(HOME) home
 
 stow-dry-run:
 	stow -nv -d $(HOME)/dotfiles -t $(HOME) home
+
+# Docker CLI plugin (docker-compose / docker-buildx 等) は Homebrew 管理に統一しているが、
+# Homebrew は plugin 本体を $(brew --prefix)/lib/docker/cli-plugins に配置するのに対し、
+# Docker CLI が標準で読むのは ~/.docker/cli-plugins のため、このままでは認識されない。
+# また Docker の credential helper (docker-credential-osxkeychain, brew の docker-credential-helper
+# が提供) を有効にするため credsStore も設定する。
+# よって ~/.docker/config.json (実ファイル) に cliPluginsExtraDirs と credsStore を登録する。
+# symlink で stow 管理すると docker login 等で書かれる auths がリポジトリ側に混入する危険があるため、
+# jq で実ファイルに idempotent に merge する運用とする (jq は Brewfile に同梱)。
+# credsStore は既存値があれば尊重し未設定時のみデフォルト値を入れる (Docker Desktop が "desktop" を
+# 設定しているケース等を上書きしないため)。
+DOCKER_CONFIG_FILE     := $(HOME)/.docker/config.json
+DOCKER_CLI_PLUGINS_DIR := /opt/homebrew/lib/docker/cli-plugins
+DOCKER_CREDS_STORE     := osxkeychain
+
+docker-config:
+	@mkdir -p $(HOME)/.docker
+	# 既存の config.json が symlink だと意図せず symlink 先 (例: 古い stow リンク先) を
+	# 実ファイル化して上書きしてしまうため、まず存在チェックで停止する。
+	@if [ -L "$(DOCKER_CONFIG_FILE)" ]; then \
+		target=$$(readlink "$(DOCKER_CONFIG_FILE)"); \
+		echo "ERROR: $(DOCKER_CONFIG_FILE) が symlink です (-> $$target)。手動で退避してから再実行してください" && exit 1; \
+	fi
+	@if [ ! -f "$(DOCKER_CONFIG_FILE)" ]; then echo "{}" > "$(DOCKER_CONFIG_FILE)"; fi
+	@tmp="$$(mktemp)" && \
+	  jq --arg dir "$(DOCKER_CLI_PLUGINS_DIR)" --arg creds "$(DOCKER_CREDS_STORE)" \
+	    '.cliPluginsExtraDirs = ((.cliPluginsExtraDirs // []) as $$dirs | if $$dirs | index($$dir) then $$dirs else $$dirs + [$$dir] end) | .credsStore = (.credsStore // $$creds)' \
+	    "$(DOCKER_CONFIG_FILE)" > "$$tmp" && \
+	  mv "$$tmp" "$(DOCKER_CONFIG_FILE)"
+	@echo "[ok] $(DOCKER_CONFIG_FILE) に cliPluginsExtraDirs / credsStore を確保しました"
 
 ansible-links-cleanup:
 	./scripts/cleanup-ansible-links.sh
