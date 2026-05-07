@@ -24,6 +24,8 @@ brew "docker-completion"
 brew "docker-compose"
 brew "docker-buildx"
 brew "docker-credential-helper"
+brew "lima"
+brew "colima"
 brew "googleworkspace-cli"
 
 # --- Editors / linters (vim 系) ---
