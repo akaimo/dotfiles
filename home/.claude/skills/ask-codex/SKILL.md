@@ -39,9 +39,34 @@ codex -a never -s read-only exec "How do I implement a binary search in Python?"
 
 **前回のレスポンスに返信する:**
 
-```bash
-codex -a never -s read-only exec resume --last "指摘内容ですが..."
+以下のように初回のレスポンスに付与されている "session id" を "resume" コマンドにセットすると会話を継続できます。
+resumeコマンドを使用しない限り会話は継続されず新規で会話が始まります。
+設計やレビュー内容について議論したいときは "resume" コマンドを使用します。
 
+```bash
+$ codex -a never -s read-only exec "hi"
+OpenAI Codex v0.128.0 (research preview)
+--------
+workdir: /Users/akaimo/dotfiles
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019df6ec-9c3d-72a0-9a1a-eb617114b077
+--------
+user
+hi
+codex
+Hi. What would you like to work on?
+tokens used
+6,622
+```
+
+```bash
+$ codex -a never -s read-only exec resume "019df6ec-9c3d-72a0-9a1a-eb617114b077" "依頼内容は..."
+...
 ```
 
 **特定のサブディレクトリのコードを分析:**
