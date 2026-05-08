@@ -19,6 +19,14 @@ export PATH=${GOPATH}/bin:${PATH}
 # npm global bin path
 export PATH="$PATH:$(npm prefix -g)/bin"
 
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PATH:$PNPM_HOME/bin" ;;
+esac
+
 # bun global bin path
 export PATH="$PATH:$HOME/.bun/bin"
 
