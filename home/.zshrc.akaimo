@@ -84,7 +84,9 @@ export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # 1password
-source ~/.config/op/plugins.sh
+if [[ -f ~/.config/op/plugins.sh ]]; then
+  source ~/.config/op/plugins.sh
+fi
 
 # my command
 fif() {
