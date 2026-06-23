@@ -8,6 +8,10 @@ export default {
         "g.co/*",
         "*.g.co/*",
         "*.esa.io/*",
+        "*.openai.com/*",
+        "claude.ai/*",
+        "claude.com/*",
+        "forms.gle/*",
       ],
       browser: {
         name: "Google Chrome",
