@@ -69,7 +69,7 @@ for f in "${settings_files[@]}"; do
 done
 sandbox_enabled="false"
 if [ "${#existing_files[@]}" -gt 0 ]; then
-    result=$(jq -rs 'map(.sandbox.enabled // empty) | last // empty' "${existing_files[@]}" 2>/dev/null)
+    result=$(jq -rs '[.[].sandbox.enabled | select(type == "boolean")] | if length == 0 then empty else last end' "${existing_files[@]}" 2>/dev/null)
     [ -n "$result" ] && sandbox_enabled="$result"
 fi
 
