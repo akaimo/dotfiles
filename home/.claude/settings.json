@@ -1,6 +1,8 @@
 {
   "env": {
-    "CLAUDE_CODE_NO_FLICKER": "1"
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "DISABLE_TELEMETRY": "true",
+    "DISABLE_ERROR_REPORTING": "true"
   },
   "permissions": {
     "allow": [
@@ -14,9 +16,11 @@
       "Bash(tail:*)",
       "Bash(date:*)",
       "Bash(head:*)",
+      "Bash(jq:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
       "Bash(gh pr checks:*)",
+      "Bash(gh run view:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git show:*)",
@@ -38,6 +42,7 @@
       "Bash(govulncheck:*)",
       "Bash(gosec:*)",
       "Bash(mockgen:*)",
+      "Bash(gcloud logging read:*)",
       "Bash(codex -a never -s read-only:*)"
     ],
     "deny": [
@@ -48,6 +53,23 @@
       "Bash(curl:*)",
       "Bash(wget:*)",
       "Bash(nc:*)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(yarnpkg:*)",
+      "Bash(npx:*)",
+      "Bash(pnpx:*)",
+      "Bash(pip:*)",
+      "Bash(pip3:*)",
+      "Bash(pip3.*:*)",
+      "Bash(python -m pip:*)",
+      "Bash(python3 -m pip:*)",
+      "Bash(python3.* -m pip:*)",
+      "Bash(pipx:*)",
+      "Bash(python -m pipx:*)",
+      "Bash(python3 -m pipx:*)",
+      "Bash(python3.* -m pipx:*)",
+      "Bash(easy_install:*)",
+      "Bash(easy_install-*:*)",
       "Bash(git push -f:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
@@ -84,25 +106,25 @@
       "Bash(git clean -f:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
+      "Bash(gh pr edit:*)",
       "Bash(docker push:*)",
       "Bash(brew install:*)",
-      "Bash(npm install:*)",
-      "Bash(npm i:*)",
       "Bash(pnpm add:*)",
       "Bash(pnpm install:*)",
       "Bash(pnpm i:*)",
-      "Bash(yarn add:*)",
-      "Bash(yarn install:*)",
-      "Bash(yarn i:*)",
-      "Bash(pip install:*)",
-      "Bash(pip3 install:*)",
-      "Bash(pipx install:*)",
+      "Bash(pnpm run:*)",
+      "Bash(pnpm dlx:*)",
+      "Bash(pnpm exec:*)",
       "Bash(uv add:*)",
+      "Bash(uv run:*)",
       "Bash(uv pip install:*)",
+      "Bash(uv tool run:*)",
+      "Bash(uvx:*)",
       "Bash(mysql:*)",
       "Bash(psql:*)"
     ]
   },
+  "model": "sonnet[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -212,10 +234,12 @@
   },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true
   },
   "sandbox": {
     "enabled": true,
+    "failIfUnavailable": true,
     "autoAllowBashIfSandboxed": true,
     "allowUnsandboxedCommands": false,
     "network": {
@@ -239,7 +263,8 @@
         "~/Library/Caches",
         "~/**/.git/**",
         "~/.codex",
-        "~/go/pkg/mod"
+        "~/go/pkg",
+        "~/.docker/buildx"
       ],
       "denyRead": [
         "~/.ssh",
@@ -255,7 +280,8 @@
       "codex *",
       "docker *",
       "git *",
-      "op *"
+      "op *",
+      "terraform *"
     ]
   },
   "alwaysThinkingEnabled": true,
