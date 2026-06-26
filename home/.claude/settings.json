@@ -121,10 +121,11 @@
       "Bash(uv tool run:*)",
       "Bash(uvx:*)",
       "Bash(mysql:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(aws: *)",
+      "Bash(gcloud: *)"
     ]
   },
-  "model": "sonnet[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -281,7 +282,8 @@
       "docker *",
       "git *",
       "op *",
-      "terraform *"
+      "terraform *",
+      "gcloud *"
     ]
   },
   "alwaysThinkingEnabled": true,
