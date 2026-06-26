@@ -105,6 +105,10 @@ git_history() {
   fi
 }
 
+ghro() {
+  op run --env-file "$HOME/dotfiles/op/ghro" -- gh "$@"
+}
+
 alias x86='arch -x86_64 zsh'
 
 # Disable Prezto make wrapper
