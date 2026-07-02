@@ -32,6 +32,8 @@
 - install vim plugin
   - vim / nvim を起動して `:PlugInstall`
   - nvim では初回のみ `:UpdateRemotePlugins` を実行して remote plugin manifest を生成してから nvim を再起動 (deoplete.nvim 等の Python remote plugin 用)
+- gcloudro (gcloud 読み取り専用ラッパー) の SA 認証をセットアップする (使用していれば)
+  - 詳細は本 README の「gcloudro の SA 認証セットアップ」セクション参照
 - (option) use ssh
   - `git remote set-url origin git@github.com:akaimo/dotfiles.git`
 
@@ -147,3 +149,20 @@ Karabiner-Elements の設定 (`~/.config/karabiner/karabiner.json`) は stow 対
 - 注意
   - これは stow 対象ではないため、手動で `make karabiner-backup` を叩かない限り更新されない (Karabiner がファイルをアトミック rename で書き戻し symlink が壊れる問題を避けるため、あえて同期しない構成)
   - `~/.config/karabiner/automatic_backups/` は Karabiner が日次で作る自動バックアップで、本リポジトリの管理対象外
+
+## gcloudro の SA 認証セットアップ
+
+`gcloudro` (gcloud の読み取り専用ラッパー) は、なりすまし先の読み取り専用 SA のメールアドレスを **マシンローカルの平文ファイル `~/.config/gcloudro/sa_email`** から読み込む。この値は GCP プロジェクト名を含むため public リポジトリには置かず (git 管理外・stow 対象外)、かつ機密ではない社内識別子なので gcloud 実行時に 1Password から毎回注入することもしない (実行のたびに Touch ID を要求されるのを避けるため)。ファイルさえ置けば gcloud 実行時に認証プロンプトは出ない。
+
+- 新しいマシンでセットアップする (使用していれば)
+  - ディレクトリを用意する: `mkdir -p ~/.config/gcloudro && chmod 700 ~/.config/gcloudro`
+  - 初回の値を 1Password の `gcloudro` item から保存する (取得時のみ 1 回 Touch ID): `op read 'op://WhitePlus/gcloudro/sa_email' > ~/.config/gcloudro/sa_email`
+  - 権限を絞る: `chmod 600 ~/.config/gcloudro/sa_email`
+  - 値を直接知っている場合は `op read` の代わりに `printf '%s\n' '<SA_EMAIL>' > ~/.config/gcloudro/sa_email` でもよい
+- 動作確認する
+  - 既存のシェルで関数定義が古い場合のみ `exec $SHELL -l` で再読込する (新規構築フローで既に reload shell 済みなら不要)
+  - 読み取り可能な GCP コマンドで確認する (例: `gcloudro projects list`)
+- 注意
+  - stow 対象外・git 管理外。マシンごとに上記手順で用意する
+  - `gcloudro` は空/複数行/SA メール形式でない値を弾くので、`op read` が失敗して空ファイルになっても作り直せばよい
+  - 読み取り専用性の担保は GCP 側 IAM (SA なりすまし) であり、このファイルはなりすまし先の指定に過ぎない。ファイルやラッパーを書き換えても GCP 側の書き込みは拒否される

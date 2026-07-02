@@ -136,13 +136,32 @@ gcloudro() {
     esac
   done
 
+  # なりすまし先の SA メールはマシンローカルの非公開ファイルから読む。
+  local sa_file="$HOME/.config/gcloudro/sa_email"
+  if [[ ! -r "$sa_file" ]]; then
+    print -u2 "gcloudro: SA メール設定ファイルがありません: $sa_file"
+    print -ru2 -- "gcloudro: 作成例: mkdir -p ${sa_file:h} && chmod 700 ${sa_file:h} && printf '%s\n' '<SA_EMAIL>' > $sa_file && chmod 600 $sa_file"
+    return 1
+  fi
+  local sa_email
+  sa_email="$(< "$sa_file")"
+  # 単一行・SA メール形式のみ許可(コメント混入や壊れた値を早期に弾く)
+  if [[ -z "$sa_email" || "$sa_email" == *$'\n'* \
+        || ! "$sa_email" =~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.gserviceaccount\.com$' ]]; then
+    print -u2 "gcloudro: SA メールが不正です: $sa_file"
+    return 1
+  fi
+
   # 親環境からの CLOUDSDK_* 注入(API エンドポイント上書き・トークンホスト変更・python 差し替え等)を
-  # 一掃してから、1Password 経由で必要な設定(なりすまし先)だけを再注入して実行する
+  # 一掃してから、必要な設定(プロンプト無効化・なりすまし先)だけを再注入して実行する
   local -a scrub=()
   for a in ${(k)parameters}; do
     [[ $a == CLOUDSDK_* ]] && scrub+=(-u $a)
   done
-  env $scrub op run --env-file "$HOME/dotfiles/op/gcloudro" -- gcloud "$@"
+  command env "${scrub[@]}" \
+    CLOUDSDK_CORE_DISABLE_PROMPTS=1 \
+    CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT="$sa_email" \
+    gcloud "$@"
 }
 
 alias x86='arch -x86_64 zsh'
