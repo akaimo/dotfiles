@@ -1,2 +1,0 @@
-GH_TOKEN="op://Personal/GitHub Personal Access Token Read Only/token"
-GH_CONFIG_DIR="$HOME/.config/ghro"

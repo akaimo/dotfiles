@@ -106,7 +106,12 @@ git_history() {
 }
 
 ghro() {
-  op run --env-file "$HOME/dotfiles/op/ghro" -- gh "$@"
+  # gh の読み取り専用ラッパー。読み取り専用の Fine-grained PAT でログイン済みの
+  # 専用プロファイル(~/.config/ghro)を使う。
+  # 親環境の GH_TOKEN 等は保存済み認証より優先され readonly 境界を破りうるため、
+  # unset してから実行する(gcloudro が CLOUDSDK_* を除去するのと同じ防御)。
+  command env -u GH_TOKEN -u GITHUB_TOKEN -u GH_ENTERPRISE_TOKEN -u GITHUB_ENTERPRISE_TOKEN \
+    GH_CONFIG_DIR="$HOME/.config/ghro" gh "$@"
 }
 
 gcloudro() {

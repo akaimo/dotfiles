@@ -66,7 +66,7 @@ git worktreeは `./.claude/worktree/` に作成します。
 Read操作を行う場合はこれらのコマンドを優先して使用するようにします。
 
 ### ghro
-`gh` コマンドをRead Onlyの権限に絞ったコマンドです。`gh` コマンドと同様のサブコマンドが使用できます。
+`gh` コマンドをRead Onlyの権限に絞ったコマンドです。`gh` コマンドと同様のサブコマンドが使用できます。読み取り専用のFine-grained PATでログイン済みの専用プロファイル(`~/.config/ghro`)を使い、親環境の `GH_TOKEN` 等は無効化して実行するため、書き込み操作はトークン側の権限で拒否されます。読み取り専用性を担保するため、`auth login` / `auth logout` / `auth refresh` / `auth switch` / `auth setup-git` / `config set` / `config clear-cache` / `alias set` / `alias delete` / `alias import` / `extension` などローカルに副作用を及ぼすサブコマンドは使用できません。
 
 ### gcloudro
 `gcloud` コマンドをRead Onlyの権限に絞ったコマンドです。`gcloud` と同様のサブコマンドが使用できますが、読み取り専用のサービスアカウントになりすまして実行するため、書き込み操作はGCP側のIAMで拒否されます。`auth` / `config` / `init` / `components` の各グループと、なりすまし/認証を上書きするフラグ(`--impersonate-service-account` / `--access-token-file` / `--flags-file` / `--configuration` / `--account`)は使用できません。
