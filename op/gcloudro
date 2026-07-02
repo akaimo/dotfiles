@@ -1,0 +1,3 @@
+# gcloudro: 読み取り専用SAへのなりすまし設定を1Passwordから注入する
+CLOUDSDK_CORE_DISABLE_PROMPTS=1
+CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT="op://WhitePlus/gcloudro/sa_email"

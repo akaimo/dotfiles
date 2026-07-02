@@ -109,6 +109,37 @@ ghro() {
   op run --env-file "$HOME/dotfiles/op/ghro" -- gh "$@"
 }
 
+gcloudro() {
+  # gcloud の読み取り専用ラッパー。書き込み不可は GCP 側 IAM(読み取り専用SAへのなりすまし)が担保する。
+  # ここではなりすまし設定の上書き・無効化と、認証/設定系グループを塞ぐ。
+  local a
+
+  for a in "$@"; do
+    # 認証/クレデンシャル/設定を上書き・情報漏洩しうるフラグを拒否
+    case "${a%%=*}" in
+      --impersonate-service-account|--access-token-file|--flags-file|--configuration|--account|--log-http)
+        print -u2 "gcloudro: このフラグは使用できません: $a"
+        return 1
+        ;;
+    esac
+    # 認証/設定系グループを拒否(値スキップ不要の堅牢な判定: 該当語がトークンとして現れたら拒否)
+    case "$a" in
+      auth|config|init|components)
+        print -u2 "gcloudro: '$a' グループは使用できません"
+        return 1
+        ;;
+    esac
+  done
+
+  # 親環境からの CLOUDSDK_* 注入(API エンドポイント上書き・トークンホスト変更・python 差し替え等)を
+  # 一掃してから、1Password 経由で必要な設定(なりすまし先)だけを再注入して実行する
+  local -a scrub=()
+  for a in ${(k)parameters}; do
+    [[ $a == CLOUDSDK_* ]] && scrub+=(-u $a)
+  done
+  env $scrub op run --env-file "$HOME/dotfiles/op/gcloudro" -- gcloud "$@"
+}
+
 alias x86='arch -x86_64 zsh'
 
 # Disable Prezto make wrapper

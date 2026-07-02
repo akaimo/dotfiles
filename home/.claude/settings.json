@@ -18,6 +18,7 @@
       "Bash(head:*)",
       "Bash(jq:*)",
       "Bash(ghro:*)",
+      "Bash(gcloudro:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git show:*)",
@@ -39,7 +40,6 @@
       "Bash(govulncheck:*)",
       "Bash(gosec:*)",
       "Bash(mockgen:*)",
-      "Bash(gcloud logging read:*)",
       "Bash(codex -a never -s read-only:*)"
     ],
     "deny": [
@@ -74,6 +74,10 @@
       "Bash(terraform destroy:*)",
       "Bash(gh auth token:*)",
       "Bash(ghro auth token:*)",
+      "Bash(gcloudro auth:*)",
+      "Bash(gcloudro config:*)",
+      "Bash(gcloudro init:*)",
+      "Bash(gcloudro components:*)",
       "Bash(ssh:*)",
       "Bash(scp:*)",
       "Bash(rsync:*)",
@@ -277,6 +281,7 @@
     "excludedCommands": [
       "gh *",
       "ghro *",
+      "gcloudro *",
       "codex *",
       "docker *",
       "git *",
