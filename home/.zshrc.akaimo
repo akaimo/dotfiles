@@ -69,11 +69,14 @@ source <(kubectl completion zsh)
 compdef __start_kubectl k
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# terraform
-alias tf='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
-alias tfp='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform plan --parallelism=30'
-alias tfa='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform apply'
-alias terraform='op run --env-file=$HOME/dotfiles/op/aws_env -- terraform'
+# terraform (op 経由で AWS 認証を注入する。env ファイルは private リポジトリ dotfiles-private が
+# ~/.config/op-env/aws_env に配置する。未配置のマシンでは alias を定義せず素の terraform を使う)
+if [[ -f "$HOME/.config/op-env/aws_env" ]]; then
+  alias tf='op run --env-file=$HOME/.config/op-env/aws_env -- terraform'
+  alias tfp='op run --env-file=$HOME/.config/op-env/aws_env -- terraform plan --parallelism=30'
+  alias tfa='op run --env-file=$HOME/.config/op-env/aws_env -- terraform apply'
+  alias terraform='op run --env-file=$HOME/.config/op-env/aws_env -- terraform'
+fi
 
 export GPG_TTY=$(tty)
 

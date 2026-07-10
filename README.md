@@ -16,6 +16,12 @@
   - 先に `make stow-dry-run` で想定リンクを確認する
   - 実ファイル/ディレクトリが邪魔する場合は手動で退避してから再実行する: `mv ~/.xxx ~/.xxx.backup.$(date +%Y%m%d%H%M%S)`
   - `make stow`
+- (private 設定) dotfiles-private を配置する (使用していれば)
+  - Claude Code 設定と 1Password (op run) 用 env ファイルは別の private リポジトリ dotfiles-private で管理している
+  - `git clone git@github.com:akaimo/dotfiles-private.git ~/dotfiles-private`
+  - 先に `make -C ~/dotfiles-private stow-dry-run` で想定リンクを確認する
+  - `make -C ~/dotfiles-private stow`
+  - 詳細は dotfiles-private の README 参照
 - finicky 設定を配置する (使用していれば)
   - `make finicky-install`
   - 詳細は本 README の「finicky 設定の配置」セクション参照
@@ -156,7 +162,7 @@ Karabiner-Elements の設定 (`~/.config/karabiner/karabiner.json`) は stow 対
 
 - 新しいマシンでセットアップする (使用していれば)
   - ディレクトリを用意する: `mkdir -p ~/.config/gcloudro && chmod 700 ~/.config/gcloudro`
-  - 初回の値を 1Password の `gcloudro` item から保存する (取得時のみ 1 回 Touch ID): `op read 'op://WhitePlus/gcloudro/sa_email' > ~/.config/gcloudro/sa_email`
+  - 初回の値を 1Password の `gcloudro` item から保存する (取得時のみ 1 回 Touch ID): `op read 'op://<vault>/gcloudro/sa_email' > ~/.config/gcloudro/sa_email` (`<vault>` は自分の vault 名に置き換える)
   - 権限を絞る: `chmod 600 ~/.config/gcloudro/sa_email`
   - 値を直接知っている場合は `op read` の代わりに `printf '%s\n' '<SA_EMAIL>' > ~/.config/gcloudro/sa_email` でもよい
 - 動作確認する

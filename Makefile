@@ -33,14 +33,14 @@ brew:
 	brew bundle --file=Brewfile
 
 stow:
-	# folding 防止のため ~/.config, ~/.config/uv, ~/.config/zed, ~/.claude, ~/.vim,
+	# folding 防止のため ~/.config, ~/.config/uv, ~/.config/zed, ~/.vim,
 	# ~/Documents/swiftbar, ~/Library/Application Support/Code/User,
 	# ~/Library/Preferences/pnpm を事前に実ディレクトリとして確保する。
 	# (~/Documents/swiftbar は SwiftBar プラグイン置き場。ディレクトリごと symlink にされると、
 	#  リポジトリ管理外のプラグインを後から追加しづらくなるため個別ファイル単位で symlink させる)
 	# (~/Library/Preferences/pnpm は pnpm 11+ が config.yaml を読む macOS 既定パス。
 	#  pnpm が将来同ディレクトリに別ファイルを書く可能性に備えて個別ファイル単位で管理する)
-	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.claude $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User" $(HOME)/Library/Preferences/pnpm
+	mkdir -p $(HOME)/.config $(HOME)/.config/uv $(HOME)/.config/zed $(HOME)/.vim $(HOME)/Documents/swiftbar "$(HOME)/Library/Application Support/Code/User" $(HOME)/Library/Preferences/pnpm
 	stow -d $(HOME)/dotfiles -t $(HOME) home
 
 stow-dry-run:
