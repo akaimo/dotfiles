@@ -269,6 +269,10 @@ fi
 # ユーザー固有の設定 (syntax-highlighting より前に source する)
 [ -f ~/.zshrc.akaimo ] && source ~/.zshrc.akaimo
 
+# このマシン限定の設定 (git 管理外)。
+# .zshrc.akaimo の後に読むので共通設定をこのマシンだけ上書きできる。
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
 # syntax-highlighting は最後
 [ -r "$_brew_share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
   source "$_brew_share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
