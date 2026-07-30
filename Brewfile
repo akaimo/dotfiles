@@ -68,4 +68,3 @@ cask "discord"
 # インストール後に macOS の「プライバシーとセキュリティ」で追加許可が必要な場合あり
 cask "karabiner-elements"
 cask "google-japanese-ime"
-cask "tailscale-app"
