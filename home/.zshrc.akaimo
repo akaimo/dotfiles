@@ -117,9 +117,128 @@ ghro() {
     GH_CONFIG_DIR="$HOME/.config/ghro" gh "$@"
 }
 
+# gcloudro のヘルパーは単一の `_` で始まる名前にしてはいけない。Claude Code は対話シェルの
+# 関数定義を shell snapshot に取り込んで非対話シェルで復元するが、`_名前` は zsh の補完関数と
+# みなされて除外される(`__名前` は残る)ため、エージェントからの実行時に
+# "command not found" になる。
+#
+# gcloudro 専用: 親環境からの CLOUDSDK_* 注入(API エンドポイント上書き・トークンホスト変更・
+# python 差し替え等)を一掃した環境で gcloud を実行する。
+# 呼び出し形式: gcloudro_run [-t <上限秒>] [VAR=VAL ...] -- <gcloud 引数>
+gcloudro_run() {
+  local a
+  local -a scrub=() envs=() timeout_cmd=()
+  # macOS には timeout(1) がないため perl の alarm で上限を付ける。alarm タイマーは exec 後も
+  # 残るので、perl が exec した先(env → gcloud)に SIGALRM が届く。超過時の終了コードは 142。
+  if [[ $1 == -t ]]; then
+    timeout_cmd=(perl -e 'alarm shift; exec @ARGV' "$2")
+    shift 2
+  fi
+  for a in ${(k)parameters}; do
+    [[ $a == CLOUDSDK_* ]] && scrub+=(-u "$a")
+  done
+  local -i sep=0
+  while (( $# )); do
+    if [[ $1 == -- ]]; then
+      shift
+      sep=1
+      break
+    fi
+    envs+=("$1")
+    shift
+  done
+  # 区切りを書き忘れると env が env 指定を command 名と解釈し分かりにくく失敗するため弾く
+  if (( ! sep )); then
+    print -u2 "gcloudro: 内部エラー: gcloudro_run の呼び出しに '--' がありません"
+    return 2
+  fi
+  command "${timeout_cmd[@]}" env "${scrub[@]}" "${envs[@]}" gcloud "$@"
+}
+
+# gcloudro 専用: ユーザー認証(なりすまし抜き)が今も使えるかを終了コードで返す。
+# 英語エラーメッセージのパターンマッチより壊れにくい判定として使う。
+# 永続設定(~/.config/gcloud)の auth/impersonate_service_account・auth/access_token_file は
+# env の除去では消えないため、空の env で明示的に無効化してユーザー認証自体を検査する。
+# stdout にアクセストークンが出るので捨てる。
+gcloudro_auth_ok() {
+  gcloudro_run CLOUDSDK_CORE_DISABLE_PROMPTS=1 \
+    CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT= CLOUDSDK_AUTH_ACCESS_TOKEN_FILE= \
+    -- auth print-access-token >/dev/null 2>&1
+}
+
+# gcloudro 専用: 組織のセッションポリシーにより期限切れになったユーザー認証を再取得する。
+# 認証が使える状態になったときだけ 0 を返す(呼び出し側はそのときだけコマンドを再実行する)。
+gcloudro_relogin() {
+  # 元コマンドの失敗原因が認証切れだったことまでは証明しないが、
+  # 認証が使えないなら再ログインする方針。
+  if gcloudro_auth_ok; then
+    return 1  # ユーザー認証は有効 → 再ログインしない
+  fi
+
+  # ログイン先はアクティブなアカウントに固定する(ブラウザで別アカウントを選んでしまい
+  # active account が入れ替わる事故を防ぐ)。特定できなければ自動ログインしない。
+  local account
+  # `|| account=""` は ERR_RETURN 有効時に取得失敗でそのまま抜けないようにするため
+  account="$(gcloudro_run CLOUDSDK_CORE_DISABLE_PROMPTS=1 -- config get-value account 2>/dev/null)" || account=""
+  if [[ ! "$account" =~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' \
+        || "$account" == *.gserviceaccount.com ]]; then
+    print -u2 "gcloudro: 認証が切れていますが、ログイン先アカウントを特定できません。'gcloud auth login' を手動で実行してください"
+    return 1
+  fi
+
+  # ブラウザ認証の待ち時間の上限。非対話(コーディングエージェント等)でもハングさせないために置く。
+  # 算術評価に不正な文字列を渡さないよう、数値かつ 1〜600 秒のときだけ上書きを受け付ける。
+  local -i limit=90
+  [[ "$GCLOUDRO_LOGIN_TIMEOUT" == <1-600> ]] && limit=$GCLOUDRO_LOGIN_TIMEOUT
+
+  # 並列実行(サブエージェント等)でログインタブが乱立し、それぞれが上限まで待つのを防ぐ。
+  # flock はプロセス終了時に OS が解放するため、異常終了しても stale lock にならない。
+  # shell snapshot 経由で復元された非対話シェルにはモジュールが読み込まれていないため毎回ロードする。
+  if ! zmodload -F zsh/system b:zsystem 2>/dev/null; then
+    print -u2 "gcloudro: zsh/system を読み込めないため自動ログインを中止します。'gcloud auth login' を手動で実行してください"
+    return 1
+  fi
+  local lock_file="$HOME/.config/gcloudro/login.lock" lock_fd
+  # ロック取得後に開き直すと解除されうるので、取得前に用意する
+  if ! : >> "$lock_file" 2>/dev/null; then
+    print -u2 "gcloudro: ロックファイルを作成できません: $lock_file"
+    return 1
+  fi
+  if ! zsystem flock -t 0 -f lock_fd "$lock_file" 2>/dev/null; then
+    print -u2 "gcloudro: 別のプロセスが再ログイン中です。完了後に再実行してください"
+    return 1
+  fi
+
+  # ここから先は早期 return せず、必ず最後にロックを解放する。
+  # 最初の確認からロック取得までの間に先行プロセスがログインを終えていることがあるため、もう一度確認する
+  # (確認しないと、不要な --force ログインでブラウザが開いてしまう)。
+  local -i rc=0
+  if gcloudro_auth_ok; then
+    print -u2 "gcloudro: 別のプロセスが再ログイン済みです"
+  else
+    print -u2 "gcloudro: 認証が切れているためブラウザで再ログインします (最大 ${limit} 秒): $account"
+    # ブラウザ認証の確認プロンプトを通すため、ここでは CLOUDSDK_CORE_DISABLE_PROMPTS を付けない。
+    # --force がないと保存済み credential が再利用されてブラウザフローが走らず、再認証にならない。
+    # `if ! cmd` だと then 節の $? が反転後の 0 になり元の終了コードを取り落とすので if/else で受ける。
+    if gcloudro_run -t $limit \
+        CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT= CLOUDSDK_AUTH_ACCESS_TOKEN_FILE= \
+        -- auth login --force "$account"; then
+      rc=0
+    else
+      rc=$?
+    fi
+  fi
+  exec {lock_fd}>&-
+  if (( rc == 142 )); then  # 128+SIGALRM: 上限内に認証の完了を確認できなかった
+    print -u2 "gcloudro: 待ち時間内に認証の完了を確認できませんでした。同じコマンドを再実行するか、GCLOUDRO_LOGIN_TIMEOUT (1〜600 秒) で待ち時間を延ばしてください"
+  fi
+  return $rc
+}
+
 gcloudro() {
   # gcloud の読み取り専用ラッパー。書き込み不可は GCP 側 IAM(読み取り専用SAへのなりすまし)が担保する。
   # ここではなりすまし設定の上書き・無効化と、認証/設定系グループを塞ぐ。
+  # 認証が切れていた場合は gcloudro_relogin でログインし直して 1 度だけ再実行する。
   local a
 
   for a in "$@"; do
@@ -155,16 +274,28 @@ gcloudro() {
     return 1
   fi
 
-  # 親環境からの CLOUDSDK_* 注入(API エンドポイント上書き・トークンホスト変更・python 差し替え等)を
-  # 一掃してから、必要な設定(プロンプト無効化・なりすまし先)だけを再注入して実行する
-  local -a scrub=()
-  for a in ${(k)parameters}; do
-    [[ $a == CLOUDSDK_* ]] && scrub+=(-u $a)
-  done
-  command env "${scrub[@]}" \
-    CLOUDSDK_CORE_DISABLE_PROMPTS=1 \
-    CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT="$sa_email" \
-    gcloud "$@"
+  # 必要な設定(プロンプト無効化・なりすまし先)だけを注入して実行する
+  local -a run_env=(
+    CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    CLOUDSDK_AUTH_IMPERSONATE_SERVICE_ACCOUNT="$sa_email"
+  )
+  # ERR_RETURN が有効でも ret を取り落とさないよう if 条件の中で実行する
+  local -i ret
+  if gcloudro_run "${run_env[@]}" -- "$@"; then
+    return 0
+  else
+    ret=$?
+  fi
+  # 認証切れの復旧を試みるのは gcloud の実行時エラー(1)のみ。2=使用法エラー、
+  # 126/127=起動失敗、128 以上=シグナル(Ctrl-C の 130 等)は認証と無関係なので触らない。
+  if (( ret != 1 )); then
+    return $ret
+  fi
+  if ! gcloudro_relogin; then
+    return $ret
+  fi
+  # 再ログインできたときだけ、同じコマンドを 1 度だけ再実行する(無限ループ防止)
+  gcloudro_run "${run_env[@]}" -- "$@"
 }
 
 alias x86='arch -x86_64 zsh'
