@@ -109,12 +109,29 @@ git_history() {
 }
 
 ghro() {
-  # gh の読み取り専用ラッパー。読み取り専用の Fine-grained PAT でログイン済みの
-  # 専用プロファイル(~/.config/ghro)を使う。
-  # 親環境の GH_TOKEN 等は保存済み認証より優先され readonly 境界を破りうるため、
-  # unset してから実行する(gcloudro が CLOUDSDK_* を除去するのと同じ防御)。
-  command env -u GH_TOKEN -u GITHUB_TOKEN -u GH_ENTERPRISE_TOKEN -u GITHUB_ENTERPRISE_TOKEN \
-    GH_CONFIG_DIR="$HOME/.config/ghro" gh "$@"
+  # gh の読み取り専用ラッパー。キーチェーンの専用エントリ(サービス名 ghro-github-pat)に保存した
+  # 読み取り専用の Fine-grained PAT を GH_TOKEN で渡して gh を実行する。
+  # gh の保存済み認証(キーチェーンの gh:github.com)は GH_CONFIG_DIR を分けても同じユーザー名なら
+  # 共有・上書きされ、書き込み可能なトークンが使われてしまうため使わない。
+  # 登録: security add-generic-password -U -s ghro-github-pat -a "$USER" -w
+  local token
+  token="$(/usr/bin/security find-generic-password -s ghro-github-pat -a "$USER" -w 2>/dev/null)" || {
+    print -u2 "ghro: キーチェーンから読み取り専用PAT(サービス名 ghro-github-pat)を取得できません"
+    return 1
+  }
+  # OAuth トークン等の誤登録で読み取り専用の前提が崩れないよう、Fine-grained PAT 以外は拒否する
+  if [[ "$token" != github_pat_* ]]; then
+    print -u2 "ghro: キーチェーンの値が Fine-grained PAT(github_pat_...)ではありません"
+    return 1
+  fi
+  # env の引数に渡すとトークンがコマンドラインに載り ps で見えるため、サブシェルで export する。
+  # 親環境の GITHUB_TOKEN 等は readonly 境界を破りうるため除去する(gcloudro が CLOUDSDK_* を除去するのと同じ防御)。
+  (
+    unset GITHUB_TOKEN GH_ENTERPRISE_TOKEN GITHUB_ENTERPRISE_TOKEN
+    export GH_TOKEN="$token"
+    export GH_CONFIG_DIR="$HOME/.config/ghro"
+    command gh "$@"
+  )
 }
 
 # gcloudro のヘルパーは単一の `_` で始まる名前にしてはいけない。Claude Code は対話シェルの
