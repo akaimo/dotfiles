@@ -12,6 +12,8 @@ export default {
         "claude.ai/*",
         "claude.com/*",
         "forms.gle/*",
+        "slack.com/*",
+        "*.slack.com/*",
       ],
       browser: {
         name: "Google Chrome",
