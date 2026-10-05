@@ -315,6 +315,51 @@ gcloudro() {
   gcloudro_run "${run_env[@]}" -- "$@"
 }
 
+codexro() {
+  # codex の読み取り専用ラッパー。承認なし(-a never)と read-only サンドボックス(-s read-only)を固定し、
+  # 相談・レビュー用のサブコマンドだけを実行する。
+  # codex exec は stdin が TTY でないと EOF まで追加入力を待ち、Claude Code の Bash から実行すると止まることがある。
+  # 呼び出し側で `< /dev/null` を付けると Claude Code の sandbox.excludedCommands が適用されずサンドボックス内で
+  # 実行されるため、ラッパーの中で stdin を閉じる。
+
+  # apply / login / mcp add などは CLI 自身が書き込み、read-only サンドボックスでは防げないため許可制にする
+  case "$1 ${2-}" in
+    "exec "*|"review "*|"debug models") ;;
+    *)
+      print -u2 "codexro: 使用できるのは exec / review / debug models だけです: $*"
+      return 1
+      ;;
+  esac
+
+  local a key
+  local -i i
+  for (( i = 2; i <= $#; i++ )); do
+    a="${@[i]}"
+    # `--` 以降はプロンプト等の位置引数なので検査しない
+    [[ "$a" == -- ]] && break
+    # 承認・サンドボックス・書き込み先を上書き・無効化しうるオプションを拒否
+    case "$a" in
+      -a*|--ask-for-approval*|-s*|--sandbox*|-p*|--profile*|-o*|--output-last-message*|--full-auto|--approve-for-me|--add-dir*|--worktree|--enable*|--disable*|--ignore-rules|--dangerously-*)
+        print -u2 "codexro: このオプションは使用できません: $a"
+        return 1
+        ;;
+    esac
+    # -c は設定を任意に上書きできるため、モデルと effort の指定だけ許可する
+    case "$a" in
+      -c|--config) key="${@[i+1]-}"; (( i++ )) ;;
+      --config=*) key="${a#--config=}" ;;
+      -c?*) key="${a#-c}" ;;
+      *) continue ;;
+    esac
+    if [[ ! "$key" =~ '^(model|model_reasoning_effort)=' ]]; then
+      print -u2 "codexro: -c で指定できるのは model / model_reasoning_effort だけです: $key"
+      return 1
+    fi
+  done
+
+  command codex -a never -s read-only "$@" < /dev/null
+}
+
 alias x86='arch -x86_64 zsh'
 
 # Disable Prezto make wrapper
