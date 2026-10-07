@@ -1,7 +1,7 @@
 [settings]
 experimental = true
 disable_backends = ["asdf", "vfox"]
-install_before = "7d"
+minimum_release_age = "7d"
 
 idiomatic_version_file_enable_tools = ["go", "node", "terraform"]
 idiomatic_version_file_disable_files = ["go:go.mod"]
