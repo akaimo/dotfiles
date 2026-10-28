@@ -33,6 +33,9 @@ export PATH="$PATH:$HOME/.bun/bin"
 # diff-highlight (brew の git 同梱 Perl スクリプトを直接 PATH へ。symlink 管理不要)
 path=("${HOMEBREW_PREFIX:-/opt/homebrew}/opt/git/share/git-core/contrib/diff-highlight" $path)
 
+# curl (keg-only で brew の bin にリンクされないため、macOS 標準より優先させる)
+path=("${HOMEBREW_PREFIX:-/opt/homebrew}/opt/curl/bin" $path)
+
 alias gti='git'
 
 # color the diff

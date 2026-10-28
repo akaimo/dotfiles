@@ -4,6 +4,7 @@
 
 # --- CLI tools ---
 brew "git"
+brew "curl"
 brew "stow"
 brew "fzf"
 brew "ripgrep"
